@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import MapEmbed from "@/components/MapEmbed";
 import QRCode from "@/components/QRCode";
-import { site } from "@/lib/site";
+import { site, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -12,10 +12,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-const SITE_URL = "https://themalliwacu.rw";
-
 export default function ContactPage() {
-  const menuUrl = `${SITE_URL}/menu`;
+  const menuUrl = `${siteUrl}/menu`;
 
   return (
     <>

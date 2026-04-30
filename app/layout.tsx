@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { siteUrl } from "@/lib/site";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -19,10 +20,8 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const SITE_URL = "https://themalliwacu.rw";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "The Mall IWACU — Eat, Drink, Shop, Relax | Kigali",
     template: "%s · The Mall IWACU",
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
     title: "The Mall IWACU — Eat, Drink, Shop, Relax",
     description:
       "Groceries, bar, kitchen, and massage & steam, all under one roof in Kabeza, Kicukiro, Kigali.",
-    url: SITE_URL,
+    url: siteUrl,
     siteName: "The Mall IWACU",
     locale: "en_RW",
     type: "website",

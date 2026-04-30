@@ -1,3 +1,10 @@
+// Public site URL — used for OpenGraph, canonical links, and the QR code.
+// Set NEXT_PUBLIC_SITE_URL at build time (the GitHub Pages workflow does this
+// automatically). Falls back to the production domain.
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://themalliwacu.rw";
+
 export const site = {
   name: "The Mall IWACU",
   tagline: "Your Neighborhood Destination — Eat, Drink, Shop, Relax",

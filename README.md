@@ -27,8 +27,41 @@ npm run dev
 Open <http://localhost:3000>.
 
 ```bash
-npm run build && npm run start  # production
+npm run build              # static export → ./out
+npx serve out              # preview the export locally
 ```
+
+> Note: `next start` is **not** used here because the project is configured for
+> static export (`output: 'export'` in `next.config.mjs`). To preview the
+> production output, serve `./out` with any static server.
+
+## Deploy to GitHub Pages
+
+Already wired up. One-time repo setup:
+
+1. Push this repository to GitHub.
+2. In the repo on GitHub, open **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions**.
+
+That is it. Every push to `main` triggers `.github/workflows/deploy.yml`,
+which:
+
+- Computes the base path automatically (project page → `/<repo>`,
+  user/org page → empty).
+- Runs `npm run build` to produce the `out/` static export.
+- Adds `.nojekyll` so GitHub Pages keeps `_next/` assets.
+- Publishes via the official `actions/deploy-pages` action.
+
+The deployed URL is shown in the workflow run summary
+(usually `https://<owner>.github.io/<repo>/`).
+
+### Custom domain
+
+If you point a custom domain (e.g. `themalliwacu.rw`) at GitHub Pages:
+
+1. Add a `CNAME` file to `public/` containing just the domain.
+2. In the workflow, override `NEXT_PUBLIC_SITE_URL` with `https://themalliwacu.rw`
+   and set `NEXT_PUBLIC_BASE_PATH` to empty so internal links resolve at the root.
 
 ## File structure
 
