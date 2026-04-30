@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { unsplashSrc } from "@/lib/site";
 
 const scenes = [
   {
@@ -56,7 +57,7 @@ export default function LifestyleStrip() {
               className="group relative block aspect-[4/5] overflow-hidden bg-forest/10"
             >
               <Image
-                src={s.src}
+                src={unsplashSrc(s.src, 900, 72)}
                 alt={s.alt}
                 fill
                 sizes="(min-width: 768px) 33vw, 100vw"

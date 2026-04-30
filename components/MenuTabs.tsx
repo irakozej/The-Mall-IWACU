@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import type { MenuData } from "@/lib/menu";
+import { unsplashSrc } from "@/lib/site";
 import MenuCard from "./MenuCard";
 
 type Props = {
@@ -159,7 +160,7 @@ export default function MenuTabs({ data }: Props) {
                 {cat.image ? (
                   <div className="relative aspect-[16/7] sm:aspect-[16/6] overflow-hidden mb-6 bg-forest/10">
                     <Image
-                      src={cat.image}
+                      src={unsplashSrc(cat.image, 1600, 72)}
                       alt={cat.imageAlt ?? cat.name}
                       fill
                       sizes="(min-width: 1024px) 960px, 100vw"

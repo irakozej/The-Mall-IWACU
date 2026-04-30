@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Quote, Heart, Sprout, ChefHat, Smile } from "lucide-react";
 import ImigongoPattern from "@/components/ImigongoPattern";
+import { unsplashSrc } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -110,7 +111,7 @@ export default function AboutPage() {
           <div className="md:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden bg-forest text-cream">
               <Image
-                src="https://images.unsplash.com/photo-1593708659671-595be1c95128"
+                src={unsplashSrc("photo-1593708659671-595be1c95128", 1100, 72)}
                 alt="Vegetables and skewers cooking on the grill"
                 fill
                 sizes="(min-width: 768px) 40vw, 100vw"

@@ -5,6 +5,17 @@ export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
   "https://themalliwacu.rw";
 
+/**
+ * Build an Unsplash CDN URL sized for the rendered slot. Without these query
+ * params Unsplash serves the original ~4000px source which can be 3–8MB —
+ * fine in dev where next/image optimizes, but fatal in static export mode
+ * (`unoptimized: true`) where the raw URL ships to the browser.
+ */
+export function unsplashSrc(photoId: string, width = 1400, quality = 72): string {
+  const id = photoId.replace(/^https:\/\/images\.unsplash\.com\//, "").split("?")[0];
+  return `https://images.unsplash.com/${id}?w=${width}&q=${quality}&auto=format&fit=crop`;
+}
+
 export const site = {
   name: "The Mall IWACU",
   tagline: "Your Neighborhood Destination — Eat, Drink, Shop, Relax",
