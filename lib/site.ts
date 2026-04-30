@@ -8,9 +8,9 @@ export const site = {
     country: "Rwanda",
     full: "Kabeza, Kanombe, Kicukiro District, Kigali, Rwanda",
   },
-  phone: "+250 788 874 052",
-  phoneDigits: "250788874052",
-  whatsappDigits: "250788874052",
+  phone: "+250 787 252 490",
+  phoneDigits: "250787252490",
+  whatsappDigits: "250787252490",
   email: "hello@themalliwacu.rw",
   hours: [
     { day: "Sunday – Thursday", time: "07:00 — 01:00" },
