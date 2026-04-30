@@ -1,0 +1,122 @@
+{
+  "currency": "RWF",
+  "disclaimer": "Prices may vary. Photos are illustrative. All items subject to availability.",
+  "categories": [
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "tagline": "Home-cooked Rwandan plates and everyday comforts.",
+      "image": "https://images.unsplash.com/photo-1687365762572-b418d588c225",
+      "imageAlt": "Skewers of grilled brochettes on a charcoal grill",
+      "sections": [
+        {
+          "id": "breakfast",
+          "title": "Breakfast",
+          "subtitle": "Served from 07:00",
+          "items": [
+            { "name": "Omelette", "description": "Three eggs, fresh herbs, served with bread.", "price": 2000 },
+            { "name": "Chapati & Beans", "description": "Slow-cooked beans with warm chapati.", "price": 1500 },
+            { "name": "Tea / Coffee", "description": "African tea or freshly brewed coffee.", "price": 500 }
+          ]
+        },
+        {
+          "id": "lunch-dinner",
+          "title": "Lunch & Dinner",
+          "subtitle": "Served all day from 12:00",
+          "items": [
+            { "name": "Buffet Plate", "description": "Daily selection of Rwandan staples — pick your sides.", "price": 3000 },
+            { "name": "Brochettes — Beef", "description": "Skewered, charcoal-grilled, with onion and chili.", "price": 4000 },
+            { "name": "Brochettes — Goat", "description": "Tender goat skewers, slow-marinated.", "price": 4500 },
+            { "name": "Grilled Tilapia", "description": "Whole tilapia from Lake Kivu, served with sides.", "price": 5000 },
+            { "name": "Rice & Sauce", "description": "Steamed rice with house sauce of the day.", "price": 2000 },
+            { "name": "Chips & Chicken", "description": "Crispy fries with grilled or fried chicken.", "price": 3500 },
+            { "name": "Isombe & Ubugali", "description": "Cassava-leaf stew with traditional ubugali.", "price": 2500 }
+          ]
+        },
+        {
+          "id": "sides",
+          "title": "Sides",
+          "subtitle": "Pair with anything",
+          "items": [
+            { "name": "French Fries", "description": "Hand-cut, golden, salted.", "price": 1500 },
+            { "name": "Garden Salad", "description": "Fresh tomato, lettuce, cucumber.", "price": 1000 },
+            { "name": "Plantains", "description": "Sweet fried plantains.", "price": 1500 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bar",
+      "name": "Bar",
+      "tagline": "Cold beers, smooth drinks, easy nights.",
+      "image": "https://images.unsplash.com/photo-1572116469696-31de0f17cc34",
+      "imageAlt": "Warm bar lights glowing over a wooden bar counter",
+      "sections": [
+        {
+          "id": "beers",
+          "title": "Beers",
+          "subtitle": "All served chilled",
+          "items": [
+            { "name": "Mutzig", "price": 1200 },
+            { "name": "Primus", "price": 1000 },
+            { "name": "Skol", "price": 1000 },
+            { "name": "Turbo King", "price": 1200 },
+            { "name": "Heineken", "price": 2000 },
+            { "name": "Amstel", "price": 1500 }
+          ]
+        },
+        {
+          "id": "soft-drinks",
+          "title": "Soft Drinks",
+          "subtitle": "Non-alcoholic refreshments",
+          "items": [
+            { "name": "Fanta / Coca-Cola / Sprite", "price": 500 },
+            { "name": "Water — 500 ml", "price": 300 },
+            { "name": "Inyange Juice", "description": "Local fruit juice, assorted flavors.", "price": 800 }
+          ]
+        },
+        {
+          "id": "wines-spirits",
+          "title": "Wines & Spirits",
+          "subtitle": "Pour with intention",
+          "items": [
+            { "name": "Glass of Wine", "description": "House red or white.", "price": 3000 },
+            { "name": "Whiskey Shot", "description": "Pour of the day.", "price": 2500 },
+            { "name": "Cocktail of the Day", "description": "Ask your server — it changes.", "price": 4000, "featured": true }
+          ]
+        },
+        {
+          "id": "hot-drinks",
+          "title": "Hot Drinks",
+          "subtitle": "Warm yourself up",
+          "items": [
+            { "name": "Coffee", "price": 500 },
+            { "name": "Tea", "price": 500 },
+            { "name": "Hot Chocolate", "price": 1000 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spa",
+      "name": "Massage & Steam",
+      "tagline": "Slow down. Breathe. Reset.",
+      "image": "https://images.unsplash.com/photo-1696841212541-449ca29397cc",
+      "imageAlt": "Hot stone treatment during a relaxing spa session",
+      "sections": [
+        {
+          "id": "treatments",
+          "title": "Treatments",
+          "subtitle": "Booking recommended — walk-ins welcome",
+          "items": [
+            { "name": "Full Body Massage", "description": "60 minutes — deep relaxation, full-body release.", "price": 15000 },
+            { "name": "Back & Shoulder Massage", "description": "30 minutes — targets daily tension.", "price": 8000 },
+            { "name": "Foot Reflexology", "description": "30 minutes — pressure points, full reset.", "price": 7000 },
+            { "name": "Steam Session", "description": "30 minutes — herbal steam, traditional.", "price": 5000 },
+            { "name": "Combo: Massage + Steam", "description": "Our signature pairing — best value.", "price": 18000, "featured": true }
+          ]
+        }
+      ]
+    }
+  ]
+}

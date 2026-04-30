@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --forest: #1B4332;
+  --forest-deep: #0F2A1F;
+  --gold: #D4A017;
+  --cream: #FAF9F6;
+  --cream-warm: #F4F1EA;
+  --ink: #2D2D2D;
+  --ink-soft: #4A4A4A;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 9rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-feature-settings: "ss01", "cv11", "cv02";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--gold);
+  color: var(--forest-deep);
+}
+
+/* Subtle paper grain — barely there, adds warmth */
+.grain {
+  position: relative;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Imigongo-inspired chevron stripe — gold zigzag on dark background.
+   Used as section dividers. */
+.imigongo-strip {
+  height: 14px;
+  background-color: var(--forest-deep);
+  background-image:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25%),
+    linear-gradient(225deg, var(--gold) 25%, transparent 25%),
+    linear-gradient(315deg, var(--gold) 25%, transparent 25%),
+    linear-gradient(45deg, var(--gold) 25%, transparent 25%);
+  background-position: 7px 0, 7px 0, 0 0, 0 0;
+  background-size: 14px 14px;
+  background-repeat: repeat;
+  opacity: 0.95;
+}
+
+/* Editorial dotted leader between menu name and price.
+   Built with a flex spacer that fills with dots. */
+.leader {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.leader-name {
+  flex: 0 1 auto;
+  white-space: normal;
+}
+.leader-dots {
+  flex: 1 1 auto;
+  border-bottom: 1.5px dotted rgba(45,45,45,0.28);
+  transform: translateY(-4px);
+  min-width: 1.5rem;
+}
+.leader-price {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar on category tabs row */
+.tabs-row {
+  scrollbar-width: none;
+}
+.tabs-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tiny rule that joins an editorial number prefix to the heading */
+.rule {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background-color: currentColor;
+  vertical-align: middle;
+  margin: 0 12px 4px 0;
+  opacity: 0.7;
+}
+
+/* Smooth focus ring */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Hide focus on mouse, keep on keyboard (handled by :focus-visible) */
+button:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
