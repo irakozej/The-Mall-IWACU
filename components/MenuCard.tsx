@@ -7,6 +7,8 @@ type Props = {
 };
 
 export default function MenuCard({ item, currency }: Props) {
+  const hasPrice = typeof item.price === "number";
+
   return (
     <li
       className={[
@@ -28,9 +30,15 @@ export default function MenuCard({ item, currency }: Props) {
           ) : null}
         </h3>
         <span className="leader-dots" aria-hidden />
-        <span className="leader-price font-medium text-forest text-base sm:text-lg">
-          {formatPrice(item.price, currency)}
-        </span>
+        {hasPrice ? (
+          <span className="leader-price font-medium text-forest text-base sm:text-lg">
+            {formatPrice(item.price as number, currency)}
+          </span>
+        ) : (
+          <span className="leader-price text-sm italic text-ink-mute tracking-wide">
+            Ask staff
+          </span>
+        )}
       </div>
 
       {item.description ? (

@@ -3,86 +3,414 @@
   "disclaimer": "Prices may vary. Photos are illustrative. All items subject to availability.",
   "categories": [
     {
-      "id": "kitchen",
-      "name": "Kitchen",
-      "tagline": "Home-cooked Rwandan plates and everyday comforts.",
-      "image": "https://images.unsplash.com/photo-1687365762572-b418d588c225",
-      "imageAlt": "Skewers of grilled brochettes on a charcoal grill",
-      "sections": [
-        {
-          "id": "breakfast",
-          "title": "Breakfast",
-          "subtitle": "Served from 07:00",
-          "items": [
-            { "name": "Omelette", "description": "Three eggs, fresh herbs, served with bread.", "price": 2000 },
-            { "name": "Chapati & Beans", "description": "Slow-cooked beans with warm chapati.", "price": 1500 },
-            { "name": "Tea / Coffee", "description": "African tea or freshly brewed coffee.", "price": 500 }
-          ]
-        },
-        {
-          "id": "lunch-dinner",
-          "title": "Lunch & Dinner",
-          "subtitle": "Served all day from 12:00",
-          "items": [
-            { "name": "Buffet Plate", "description": "Daily selection of Rwandan staples — pick your sides.", "price": 3000 },
-            { "name": "Brochettes — Beef", "description": "Skewered, charcoal-grilled, with onion and chili.", "price": 4000 },
-            { "name": "Brochettes — Goat", "description": "Tender goat skewers, slow-marinated.", "price": 4500 },
-            { "name": "Grilled Tilapia", "description": "Whole tilapia from Lake Kivu, served with sides.", "price": 5000 },
-            { "name": "Rice & Sauce", "description": "Steamed rice with house sauce of the day.", "price": 2000 },
-            { "name": "Chips & Chicken", "description": "Crispy fries with grilled or fried chicken.", "price": 3500 },
-            { "name": "Isombe & Ubugali", "description": "Cassava-leaf stew with traditional ubugali.", "price": 2500 }
-          ]
-        },
-        {
-          "id": "sides",
-          "title": "Sides",
-          "subtitle": "Pair with anything",
-          "items": [
-            { "name": "French Fries", "description": "Hand-cut, golden, salted.", "price": 1500 },
-            { "name": "Garden Salad", "description": "Fresh tomato, lettuce, cucumber.", "price": 1000 },
-            { "name": "Plantains", "description": "Sweet fried plantains.", "price": 1500 }
-          ]
-        }
-      ]
-    },
-    {
       "id": "bar",
       "name": "Bar",
-      "tagline": "Cold beers, smooth drinks, easy nights.",
+      "tagline": "Soft drinks, fresh juice, beers, wines, liquor, shots and house cocktails.",
       "image": "https://images.unsplash.com/photo-1572116469696-31de0f17cc34",
       "imageAlt": "Warm bar lights glowing over a wooden bar counter",
       "sections": [
-        {
-          "id": "beers",
-          "title": "Beers",
-          "subtitle": "All served chilled",
-          "items": [
-            { "name": "Mutzig", "price": 1200 },
-            { "name": "Primus", "price": 1000 },
-            { "name": "Skol", "price": 1000 },
-            { "name": "Turbo King", "price": 1200 },
-            { "name": "Heineken", "price": 2000 },
-            { "name": "Amstel", "price": 1500 }
-          ]
-        },
         {
           "id": "soft-drinks",
           "title": "Soft Drinks",
           "subtitle": "Non-alcoholic refreshments",
           "items": [
-            { "name": "Fanta / Coca-Cola / Sprite", "price": 500 },
-            { "name": "Water — 500 ml", "price": 300 },
-            { "name": "Inyange Juice", "description": "Local fruit juice, assorted flavors.", "price": 800 }
+            { "name": "Water — 500 ml", "price": 1000 },
+            { "name": "Water — 1 L", "price": 1500 },
+            { "name": "Heineken 0% alc", "price": 2000 },
+            { "name": "Bavaria 0% alc", "price": 5000 },
+            { "name": "Panache", "price": 1000 },
+            { "name": "Soda — 30 cl", "price": 1000 },
+            { "name": "Soda — Plastic", "price": 1200 },
+            { "name": "Soda — 1.5 L", "price": 3000 },
+            { "name": "Inyange Juice — 500 ml", "price": 1200 },
+            { "name": "Inyange Juice — 1 L", "price": 3000 }
           ]
         },
         {
-          "id": "wines-spirits",
-          "title": "Wines & Spirits",
-          "subtitle": "Pour with intention",
+          "id": "fresh-juice",
+          "title": "Fresh Juice",
+          "subtitle": "Fresh-pressed",
           "items": [
-            { "name": "Glass of Wine", "description": "House red or white.", "price": 3000 },
-            { "name": "Whiskey Shot", "description": "Pour of the day.", "price": 2500 },
-            { "name": "Cocktail of the Day", "description": "Ask your server — it changes.", "price": 4000, "featured": true }
+            { "name": "Cocktail Juice", "price": 4000 },
+            { "name": "Mango Juice", "price": 4000 },
+            { "name": "Tree Tomato Juice", "price": 4000 },
+            { "name": "Pineapple Juice", "price": 4000 },
+            { "name": "Passion Juice", "price": 4000 }
+          ]
+        },
+        {
+          "id": "beers",
+          "title": "Beers",
+          "subtitle": "All served chilled",
+          "items": [
+            { "name": "Heineken", "price": 2000 },
+            { "name": "Petit Mutzig", "price": 1500 },
+            { "name": "Big Mutzig", "price": 2300 },
+            { "name": "Amstel", "price": 1500 },
+            { "name": "Skol Mart", "price": 1500 },
+            { "name": "Big Skol Mart", "price": 2300 },
+            { "name": "Skol Lager", "price": 1500 },
+            { "name": "Virunga Mist", "price": 1500 },
+            { "name": "Virunga Silver", "price": 1500 },
+            { "name": "Virunga Gold", "price": 1500 },
+            { "name": "Primus", "price": 2300 },
+            { "name": "Knowless", "price": 1500 },
+            { "name": "Tusker Malt", "price": 2500 },
+            { "name": "Leffe", "price": 5000 },
+            { "name": "Stella", "price": 5000 },
+            { "name": "Savannah", "price": 5000 },
+            { "name": "Smirnoff Ice Black", "price": 2500 },
+            { "name": "Smirnoff Guarana", "price": 3500 },
+            { "name": "Exo", "price": 3500 },
+            { "name": "Red Bull", "price": 4000 },
+            { "name": "Guinness", "price": 2500 },
+            { "name": "Desperados", "price": 5000 },
+            { "name": "Budweiser (can)", "price": 5000 },
+            { "name": "Budweiser (bottle)", "price": 5000 },
+            { "name": "Bavaria", "price": 5000 },
+            { "name": "Corona", "price": 5000 }
+          ]
+        },
+        {
+          "id": "wines",
+          "title": "Wines",
+          "subtitle": "By the bottle",
+          "items": [
+            { "name": "Dory", "price": 25000 },
+            { "name": "Simonsig", "price": 25000 },
+            { "name": "Cantarelli Moscato (Sparkling)", "price": 40000 },
+            { "name": "Pintanegra (Sparkling)", "price": 40000 },
+            { "name": "Pintanegra", "price": 25000 },
+            { "name": "Jacob's Creek (Sparkling)", "price": 40000 },
+            { "name": "Lemonthe Parrot", "price": 25000 },
+            { "name": "Baron d'Arignac", "price": 25000 },
+            { "name": "Baron d'Arignac 1.5 L", "price": 35000 },
+            { "name": "Marquis d'Orey", "price": 25000 },
+            { "name": "Jacob's Creek Reserve & Merlot", "price": 25000 },
+            { "name": "EPI Red & White", "price": 25000 },
+            { "name": "CH Valac", "price": 25000 },
+            { "name": "Longchamps", "price": 25000 },
+            { "name": "Prestigium", "price": 25000 },
+            { "name": "Luis Eschaneur", "price": 25000 },
+            { "name": "Drostdy-Hof (large)", "price": 25000 },
+            { "name": "Four Cousins", "price": 25000 },
+            { "name": "Four Cousins 1.5 L", "price": 35000 },
+            { "name": "Four Cousins 5 L", "price": 75000 },
+            { "name": "Veuve du Vernay (Sparkling)", "price": 40000 },
+            { "name": "Cellar Cask 5 L", "price": 75000 },
+            { "name": "Silvaback", "price": 25000 },
+            { "name": "Communion", "price": 25000 },
+            { "name": "don Luciano", "price": 25000 },
+            { "name": "Perlino (Sparkling)", "price": 40000 },
+            { "name": "Cellar Cask", "price": 25000 },
+            { "name": "JP Chenet (Sparkling)", "price": 40000 },
+            { "name": "JP Chenet", "price": 25000 },
+            { "name": "Impara", "price": 25000 },
+            { "name": "Soccaron", "price": 25000 },
+            { "name": "Pintanegra 5 L", "price": 80000 },
+            { "name": "Baron d'Arignac 5 L", "price": 80000 },
+            { "name": "Moët", "price": 150000 }
+          ]
+        },
+        {
+          "id": "glass-wine",
+          "title": "Glass of Wine",
+          "subtitle": "By the glass",
+          "items": [
+            { "name": "Pintanegra", "price": 5000 },
+            { "name": "Baron d'Arignac", "price": 5000 },
+            { "name": "Cellar Cask", "price": 5000 },
+            { "name": "Four Cousins", "price": 5000 }
+          ]
+        },
+        {
+          "id": "liquors",
+          "title": "Liquors",
+          "subtitle": "By the bottle",
+          "items": [
+            { "name": "Chivas 12 yrs (1 L)", "price": 65000 },
+            { "name": "Chivas 12 yrs (375 ml)", "price": 27000 },
+            { "name": "Jameson (Big)", "price": 75000 },
+            { "name": "Jameson (Med)", "price": 40000 },
+            { "name": "Jameson (Small)", "price": 16000 },
+            { "name": "Jameson Black Barrel", "price": 85000 },
+            { "name": "Nelson", "price": 20000 },
+            { "name": "Label 5", "price": 25000 },
+            { "name": "Gibson (1 L)", "price": 35000 },
+            { "name": "Gibson (Small)", "price": 12000 },
+            { "name": "KD&B (Bottle)", "price": 20000 },
+            { "name": "Glen Moray (12 yrs)", "price": 75000 },
+            { "name": "Hennessy VS (1 L)", "price": 150000 },
+            { "name": "Hennessy VSOP", "price": 250000 },
+            { "name": "Martell VS (1 L)", "price": 200000 },
+            { "name": "Martell VSOP (1 L)", "price": 250000 },
+            { "name": "Martell VSOP (Med)", "price": 150000 },
+            { "name": "Martin", "price": 60000 },
+            { "name": "Olmeca (Silver & Gold)", "price": 80000 },
+            { "name": "Olmeca (Chocolate)", "price": 60000 },
+            { "name": "Camino Tequila", "price": 60000 },
+            { "name": "Royal Stag", "price": 20000 },
+            { "name": "Ballentines (Big)", "price": 45000 },
+            { "name": "Ballentines (Med)", "price": 20000 },
+            { "name": "Ballentines (Small)", "price": 15000 },
+            { "name": "Beefeater (Big)", "price": 45000 },
+            { "name": "Beefeater (Small)", "price": 15000 },
+            { "name": "Absolute (C&M)", "price": 40000 },
+            { "name": "Absolute Vodka", "price": 50000 },
+            { "name": "Absolute (Small)", "price": 25000 },
+            { "name": "Poliakov", "price": 20000 },
+            { "name": "Amarura", "price": 40000 },
+            { "name": "Malibu", "price": 45000 },
+            { "name": "Havana Club", "price": 45000 },
+            { "name": "Bacardi", "price": 45000 },
+            { "name": "Captain Morgan", "price": 45000 },
+            { "name": "Kingston", "price": 45000 },
+            { "name": "Gilbey's (Big)", "price": 15000 },
+            { "name": "Gilbey's (Small)", "price": 5000 },
+            { "name": "Gordon's", "price": 40000 },
+            { "name": "Konyagi (Big)", "price": 10000 },
+            { "name": "Konyagi (Med)", "price": 7000 },
+            { "name": "Konyagi (Small)", "price": 4000 },
+            { "name": "Rack Gin", "price": 7000 },
+            { "name": "Kahlúa", "price": 45000 },
+            { "name": "Triple Sec", "price": 40000 },
+            { "name": "Baileys", "price": 45000 },
+            { "name": "Double Black", "price": 150000 }
+          ]
+        },
+        {
+          "id": "liquor-pitchers",
+          "title": "Liquor Pitchers (Piche)",
+          "subtitle": "Pitcher servings — for sharing",
+          "items": [
+            { "name": "Jameson Black", "price": 30000 },
+            { "name": "Jameson Irish", "price": 20000 },
+            { "name": "Absolute Vodka", "price": 17000 },
+            { "name": "Martell VS", "price": 40000 },
+            { "name": "Martell VSOP", "price": 60000 },
+            { "name": "Hennessy VS", "price": 40000 },
+            { "name": "Hennessy VSOP", "price": 60000 },
+            { "name": "Ballentines", "price": 15000 },
+            { "name": "Beefeater", "price": 15000 },
+            { "name": "Camino", "price": 20000 },
+            { "name": "Gibson", "price": 15000 },
+            { "name": "Gordon's", "price": 15000 }
+          ]
+        },
+        {
+          "id": "shots",
+          "title": "Shots",
+          "subtitle": "By the pour",
+          "items": [
+            { "name": "Jameson Black", "price": 5000 },
+            { "name": "Jameson", "price": 4000 },
+            { "name": "Chivas", "price": 5000 },
+            { "name": "Slippery Nipple", "price": 5000 },
+            { "name": "Absolute Vanilla", "price": 3000 },
+            { "name": "Absolute Citron", "price": 3000 },
+            { "name": "Absolute Vodka", "price": 4000 },
+            { "name": "Hennessy VSOP", "price": 10000 },
+            { "name": "Hennessy VS", "price": 8000 },
+            { "name": "Bacardi", "price": 4000 },
+            { "name": "Ruskov", "price": 3000 },
+            { "name": "Olmeca", "price": 5000 },
+            { "name": "Camino", "price": 3000 },
+            { "name": "Gordon's", "price": 3000 },
+            { "name": "Blue Curaçao", "price": 4000 },
+            { "name": "Ballentines", "price": 4000 },
+            { "name": "Martell VSOP", "price": 10000 },
+            { "name": "Martell VS", "price": 8000 },
+            { "name": "Beefeater", "price": 3000 },
+            { "name": "Captain Morgan", "price": 5000 },
+            { "name": "B52", "price": 5000 },
+            { "name": "B54", "price": 5000 },
+            { "name": "Malibu", "price": 3000 },
+            { "name": "Gibson", "price": 3000 },
+            { "name": "Windsor", "price": 3000 },
+            { "name": "Havana", "price": 3000 },
+            { "name": "Kahlúa", "price": 5000 }
+          ]
+        },
+        {
+          "id": "cocktails",
+          "title": "Cocktails",
+          "subtitle": "Shaken with care",
+          "items": [
+            { "name": "Long Island Iced Tea", "price": 10000 },
+            { "name": "Mojito", "price": 10000 },
+            { "name": "Sex on the Beach", "price": 10000 },
+            { "name": "Tequila Sunrise", "price": 10000 },
+            { "name": "Old Fashioned", "price": 10000 },
+            { "name": "Piña Colada", "price": 10000 },
+            { "name": "AMF", "price": 10000 },
+            { "name": "The Mall Punch", "description": "Our house signature.", "price": 10000, "featured": true },
+            { "name": "Cosmopolitan", "price": 8000 },
+            { "name": "Negroni", "price": 10000 },
+            { "name": "The Mall Mimosa", "price": 10000 },
+            { "name": "Manhattan", "price": 10000 },
+            { "name": "The Mall Dawa", "price": 10000 },
+            { "name": "The Mall Strawberry", "price": 10000 },
+            { "name": "Fruits, Gin & Tonic", "price": 10000 },
+            { "name": "Pink Pussy", "price": 10000 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "tagline": "Home-cooked Rwandan plates, brochettes, salads and full plates.",
+      "image": "https://images.unsplash.com/photo-1687365762572-b418d588c225",
+      "imageAlt": "Skewers of brochettes on a charcoal grill",
+      "sections": [
+        {
+          "id": "snacks",
+          "title": "Snacks",
+          "subtitle": "Quick bites",
+          "items": [
+            { "name": "Meatballs", "price": 500 },
+            { "name": "Chapati", "price": 500 },
+            { "name": "Samosa", "price": 500 },
+            { "name": "Mandazi", "price": 500 },
+            { "name": "Crêpe", "price": 500 },
+            { "name": "Virgo", "price": 700 },
+            { "name": "Eggs", "price": 300 },
+            { "name": "Ground Nuts", "price": 1500 }
+          ]
+        },
+        {
+          "id": "salads",
+          "title": "Salads",
+          "subtitle": "Fresh and crisp",
+          "items": [
+            { "name": "Katchumbari", "price": 2500 },
+            { "name": "Simple Salad", "description": "Onion, carrots, tomato, avocado, and cucumber.", "price": 4000 },
+            { "name": "The Mall Salad", "description": "Avocado, chicken, lettuce, eggs, tuna, chips.", "price": 7000, "featured": true },
+            { "name": "Chicken Salad", "price": 5000 }
+          ]
+        },
+        {
+          "id": "soups",
+          "title": "Soups & Pottage",
+          "subtitle": "Warm and hearty",
+          "items": [
+            { "name": "Fish Soup", "price": 5000 },
+            { "name": "Chicken Soup", "price": 5000 },
+            { "name": "Mushroom Soup", "price": 5000 },
+            { "name": "Vegetable Soup", "price": 5000 }
+          ]
+        },
+        {
+          "id": "omelets",
+          "title": "Omelets",
+          "subtitle": "Anytime breakfast",
+          "items": [
+            { "name": "Spanish Omelet", "price": 4000 },
+            { "name": "Special Omelet", "price": 3500 },
+            { "name": "Plain Omelet", "price": 3000 }
+          ]
+        },
+        {
+          "id": "hot-pot",
+          "title": "Hot Pot / Boilo",
+          "subtitle": "Slow-cooked, traditional",
+          "items": [
+            { "name": "Igisafuriya Cy'ihene (Goat)", "price": 25000 },
+            { "name": "Igisafuriya Cy'inkoko (Chicken)", "price": 25000 },
+            { "name": "Fish Boilo", "price": 8000 },
+            { "name": "Chicken Boilo", "price": 6000 },
+            { "name": "Goat Boilo", "price": 6000 },
+            { "name": "Beef Boilo", "price": 6000 }
+          ]
+        },
+        {
+          "id": "lunch-dinner",
+          "title": "Lunch & Dinner",
+          "subtitle": "Full plates",
+          "items": [
+            { "name": "Beef Steak", "description": "Rice or potatoes, mushroom sauce, spinach.", "price": 9000 },
+            { "name": "Cordon Bleu", "description": "Chicken or beef cordon, potatoes or chips, mushroom sauce, steamed veggies.", "price": 12000 },
+            { "name": "Fish Fillet", "description": "Rice or potatoes, mushroom sauce, spinach or steamed vegetables.", "price": 12000 },
+            { "name": "Beef Stroganoff and Chips", "price": 8000 },
+            { "name": "Chicken Stroganoff and Chips", "price": 8000 },
+            { "name": "Beef Burger with Chips", "price": 6000 },
+            { "name": "Chicken Burger with Chips", "price": 7500 },
+            { "name": "Chicken or Beef Wrap with Chips", "price": 5000 },
+            { "name": "Beef Pizza", "price": 8000 },
+            { "name": "Chicken Pizza", "price": 10000 },
+            { "name": "Chips and Liver", "price": 5000 },
+            { "name": "Chicken Leg — Platter", "description": "Rice, chips, spinach, mushroom sauce.", "price": 8000 },
+            { "name": "Chicken Leg or Chicken Breast", "description": "Protein only.", "price": 4500 },
+            { "name": "Chicken Boneless", "price": 7000 },
+            { "name": "Chicken Stew", "description": "Served with rice or chips.", "price": 8000 },
+            { "name": "Chicken Breast — Platter", "description": "Rice, chips, spinach, mushroom sauce.", "price": 8000 },
+            { "name": "Whole Chicken and Rice (Platter)", "price": 25000 },
+            { "name": "Half Chicken and Rice (Platter)", "price": 15000 },
+            { "name": "Whole Goat and Rice", "price": 150000 },
+            { "name": "Rice, Chips, Beef and Greens", "price": 6000 },
+            { "name": "Spaghetti Bolognese", "price": 5000 },
+            { "name": "The Mall Lagu", "description": "Steamed goat with meat, rice, kawunga.", "price": 20000, "featured": true },
+            { "name": "Beef Cordor with Chips / Muzuzu", "price": 9000 },
+            { "name": "The Mall Platter", "description": "Our signature shared plate.", "price": 30000, "featured": true },
+            { "name": "Beef Stew", "description": "Served with rice or chips.", "price": 8000 }
+          ]
+        },
+        {
+          "id": "barbecue",
+          "title": "Barbecue",
+          "subtitle": "Charcoal-grilled to order",
+          "items": [
+            { "name": "Whole Chicken", "price": 17000 },
+            { "name": "Half Chicken", "description": "With potato or banana.", "price": 9000 },
+            { "name": "Whole Fish", "price": 20000 },
+            { "name": "Fish or Chicken Brochette", "description": "With potato or banana.", "price": 5000 },
+            { "name": "Goat Brochette", "price": 2000 },
+            { "name": "Zingaro or Liver", "price": 2500 },
+            { "name": "Ikidari BBQ", "price": 17000 },
+            { "name": "Ikidari Steamed with Kawunga", "price": 20000 },
+            { "name": "Umugongo BBQ", "price": 20000 },
+            { "name": "Umugongo Steamed", "price": 25000 },
+            { "name": "Akabenzi / Pork — 0.5 kg", "description": "With banana or potato.", "price": 6000 },
+            { "name": "Akabenzi / Pork — 1 kg", "description": "With banana or potato.", "price": 12000 },
+            { "name": "Akabenzi / Pork Ribs", "price": 7000 },
+            { "name": "Goat Arm", "price": 17000 },
+            { "name": "Goat Leg Nyamacoma", "price": 25000 },
+            { "name": "Nyamacoma — 1 kg", "description": "With kawunga.", "price": 20000 }
+          ]
+        },
+        {
+          "id": "sides",
+          "title": "Side Dishes",
+          "subtitle": "Pair with anything",
+          "items": [
+            { "name": "Chips", "price": 3000 },
+            { "name": "Chips and Salad", "price": 3500 },
+            { "name": "Potato", "price": 1000 },
+            { "name": "Potato with Salad", "price": 1500 },
+            { "name": "Banana", "price": 500 },
+            { "name": "Banana with Salad", "price": 1000 },
+            { "name": "Steamed Vegetables", "price": 2500 },
+            { "name": "Plantain Chips", "price": 3000 }
+          ]
+        },
+        {
+          "id": "coffee",
+          "title": "Coffee",
+          "subtitle": "Espresso bar",
+          "items": [
+            { "name": "Cappuccino", "price": 3000 },
+            { "name": "Café Latte", "price": 3000 },
+            { "name": "Flat White", "price": 3000 },
+            { "name": "Caramel Macchiato", "price": 3500 },
+            { "name": "Macchiato", "price": 2000 },
+            { "name": "Frappe", "price": 4000 },
+            { "name": "Affogato", "price": 3500 },
+            { "name": "Cortado", "price": 3000 },
+            { "name": "Lungo", "price": 2000 },
+            { "name": "Black Coffee", "price": 2000 },
+            { "name": "Americano", "price": 2000 },
+            { "name": "Espresso", "price": 2000 },
+            { "name": "Mocha", "price": 3500 }
           ]
         },
         {
@@ -90,30 +418,81 @@
           "title": "Hot Drinks",
           "subtitle": "Warm yourself up",
           "items": [
-            { "name": "Coffee", "price": 500 },
-            { "name": "Tea", "price": 500 },
-            { "name": "Hot Chocolate", "price": 1000 }
+            { "name": "Green, Black or Ginger Tea", "price": 3000 },
+            { "name": "African Tea", "price": 3000 },
+            { "name": "Hot Milk", "price": 3000 },
+            { "name": "The Special Tea", "price": 3000 }
+          ]
+        },
+        {
+          "id": "smoothies",
+          "title": "Smoothies",
+          "subtitle": "Fruit-blended",
+          "items": [
+            { "name": "Mango Smoothie", "price": 4000 },
+            { "name": "Peanut Butter Smoothie", "price": 4000 },
+            { "name": "Green Smoothie", "price": 4000 },
+            { "name": "Pineapple Smoothie", "price": 4000 },
+            { "name": "Vanilla Smoothie", "price": 4000 },
+            { "name": "Banana Smoothie", "price": 4000 }
+          ]
+        },
+        {
+          "id": "milkshakes",
+          "title": "Milkshakes",
+          "subtitle": "Cold and creamy",
+          "items": [
+            { "name": "Chocolate Milkshake", "price": 5000 },
+            { "name": "Vanilla Milkshake", "price": 5000 },
+            { "name": "Strawberry Milkshake", "price": 5000 },
+            { "name": "Banana Milkshake", "price": 5000 },
+            { "name": "Mango Milkshake", "price": 5000 },
+            { "name": "Mixed", "description": "Chocolate, vanilla and strawberry.", "price": 7000 }
           ]
         }
       ]
     },
     {
       "id": "spa",
-      "name": "Massage & Steam",
+      "name": "Massage & Wellness",
       "tagline": "Slow down. Breathe. Reset.",
       "image": "https://images.unsplash.com/photo-1696841212541-449ca29397cc",
       "imageAlt": "Hot stone treatment during a relaxing spa session",
       "sections": [
         {
-          "id": "treatments",
-          "title": "Treatments",
-          "subtitle": "Booking recommended — walk-ins welcome",
+          "id": "massage",
+          "title": "Massage",
+          "subtitle": "Working hours 09:00 — 21:00",
           "items": [
-            { "name": "Full Body Massage", "description": "60 minutes — deep relaxation, full-body release.", "price": 15000 },
-            { "name": "Back & Shoulder Massage", "description": "30 minutes — targets daily tension.", "price": 8000 },
-            { "name": "Foot Reflexology", "description": "30 minutes — pressure points, full reset.", "price": 7000 },
-            { "name": "Steam Session", "description": "30 minutes — herbal steam, traditional.", "price": 5000 },
-            { "name": "Combo: Massage + Steam", "description": "Our signature pairing — best value.", "price": 18000, "featured": true }
+            { "name": "Deep Tissue", "description": "60 min.", "price": 25000 },
+            { "name": "Swedish", "description": "60 min.", "price": 20000 },
+            { "name": "Aromatherapy", "description": "60 min.", "price": 20000 },
+            { "name": "Full Back", "description": "40 min.", "price": 15000 },
+            { "name": "Indian Head & Shoulders", "description": "30 min.", "price": 10000 },
+            { "name": "Reflexology", "description": "60 min.", "price": 25000 },
+            { "name": "Foot Pressure Point", "description": "30 min.", "price": 10000 },
+            { "name": "Hot Stone Massage", "description": "60 min.", "price": 35000, "featured": true },
+            { "name": "Four Hands on One Person", "description": "60 min.", "price": 40000, "featured": true }
+          ]
+        },
+        {
+          "id": "body-treatment",
+          "title": "Body Treatment",
+          "subtitle": "Care and pampering",
+          "items": [
+            { "name": "Body Scrub — Coffee", "description": "30 min.", "price": 15000 },
+            { "name": "Facial — Coffee", "description": "30 min.", "price": 35000 },
+            { "name": "Underarm Waxing", "price": 5000 },
+            { "name": "Eyebrow Waxing", "price": 5000 },
+            { "name": "Bikini Line Waxing", "price": 10000 },
+            { "name": "Full Leg Waxing", "price": 20000 },
+            { "name": "Half Leg Waxing", "price": 15000 },
+            { "name": "Ubwiza Facial Combo", "description": "30 min facial, 30 min coffee scrub, 60 min massage.", "price": 55000, "featured": true },
+            { "name": "Beautifying Facial & Anti-Wrinkle", "description": "With 30 min massage.", "price": 57000 },
+            { "name": "Steam / Sauna", "price": 5000 },
+            { "name": "Pedicure and Manicure" },
+            { "name": "Makeup" },
+            { "name": "Eyelashes" }
           ]
         }
       ]

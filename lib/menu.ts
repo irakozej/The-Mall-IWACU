@@ -3,7 +3,7 @@ import menuData from "@/data/menu.json";
 export type MenuItem = {
   name: string;
   description?: string;
-  price: number;
+  price?: number;
   featured?: boolean;
 };
 

@@ -165,7 +165,7 @@ export default function MenuTabs({ data }: Props) {
                       fill
                       sizes="(min-width: 1024px) 960px, 100vw"
                       className="object-cover"
-                      priority={cat.id === "kitchen"}
+                      priority={cat.id === "bar"}
                     />
                     <div
                       aria-hidden
