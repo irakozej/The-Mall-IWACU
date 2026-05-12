@@ -39,6 +39,23 @@
           ]
         },
         {
+          "id": "mocktails",
+          "title": "Mocktails",
+          "subtitle": "Alcohol-free, fully composed",
+          "items": [
+            { "name": "Lemonade", "description": "Classic, passion, watermelon or soda.", "price": 5000 },
+            { "name": "Virgin Mojito", "price": 5000 },
+            { "name": "Fiji", "price": 5000 },
+            { "name": "Mint Pineapple", "price": 5000 },
+            { "name": "Iwacu Sunset Mocktail", "description": "Our house signature, alcohol-free.", "price": 5000, "featured": true },
+            { "name": "Iwacu Punch", "price": 5000 },
+            { "name": "Piña Colada", "price": 5000 },
+            { "name": "Summer Sunrise", "price": 5000 },
+            { "name": "Mai Tai", "price": 5000 },
+            { "name": "Bola Bola", "price": 5000 }
+          ]
+        },
+        {
           "id": "beers",
           "title": "Beers",
           "subtitle": "All served chilled",

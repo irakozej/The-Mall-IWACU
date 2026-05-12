@@ -76,9 +76,26 @@ export default function ContactPage() {
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone size={16} className="text-gold shrink-0" />
-                  <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-gold transition-colors">
+                  <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-gold transition-colors tabular-nums">
                     {site.phone}
                   </a>
+                  <span className="text-[10px] tracking-[0.25em] uppercase text-ink-mute">
+                    Call
+                  </span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <MessageCircle size={16} className="text-gold shrink-0" />
+                  <a
+                    href={`https://wa.me/${site.whatsappDigits}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="hover:text-gold transition-colors tabular-nums"
+                  >
+                    {site.whatsapp}
+                  </a>
+                  <span className="text-[10px] tracking-[0.25em] uppercase text-ink-mute">
+                    WhatsApp
+                  </span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail size={16} className="text-gold shrink-0" />
