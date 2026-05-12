@@ -1,0 +1,25 @@
+{
+  "workingHours": {
+    "open": "09:00",
+    "close": "21:00"
+  },
+  "slotIncrementMin": 30,
+  "leadTimeMin": 60,
+  "maxDaysAhead": 14,
+  "services": [
+    { "id": "deep-tissue", "name": "Deep Tissue Massage", "durationMin": 60, "price": 25000 },
+    { "id": "swedish", "name": "Swedish Massage", "durationMin": 60, "price": 20000 },
+    { "id": "aromatherapy", "name": "Aromatherapy Massage", "durationMin": 60, "price": 20000 },
+    { "id": "full-back", "name": "Full Back Massage", "durationMin": 40, "price": 15000 },
+    { "id": "indian-head", "name": "Indian Head & Shoulders", "durationMin": 30, "price": 10000 },
+    { "id": "reflexology", "name": "Reflexology", "durationMin": 60, "price": 25000 },
+    { "id": "foot-pressure", "name": "Foot Pressure Point", "durationMin": 30, "price": 10000 },
+    { "id": "hot-stone", "name": "Hot Stone Massage", "durationMin": 60, "price": 35000, "featured": true },
+    { "id": "four-hands", "name": "Four Hands on One Person", "durationMin": 60, "price": 40000, "featured": true },
+    { "id": "body-scrub", "name": "Body Scrub — Coffee", "durationMin": 30, "price": 15000 },
+    { "id": "facial-coffee", "name": "Facial — Coffee", "durationMin": 30, "price": 35000 },
+    { "id": "ubwiza-combo", "name": "Ubwiza Facial Combo", "durationMin": 120, "price": 55000, "featured": true },
+    { "id": "beautifying-facial", "name": "Beautifying Facial & Anti-Wrinkle", "durationMin": 60, "price": 57000 },
+    { "id": "steam-sauna", "name": "Steam / Sauna", "durationMin": 30, "price": 5000 }
+  ]
+}

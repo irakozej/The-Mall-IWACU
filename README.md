@@ -101,6 +101,37 @@ public/
   Each item is `{ name, description?, price, featured? }`. Prices are numbers in RWF.
 - **Phone / address / hours / socials**: `lib/site.ts`.
 - **Brand colors**: `tailwind.config.ts` (`forest`, `gold`, `cream`, `ink`).
+- **Bookable massage services**: `data/services.json` (name, duration, price).
+
+## Bookings workflow
+
+The `/book` page lets a customer pick a treatment, date and time, then submits
+the request via WhatsApp. The booking page does **not** write to a database —
+GitHub Pages is static. Two mechanisms together prevent double-booking:
+
+1. **Local hold** — once a customer submits, their slot is held in their own
+   browser's `localStorage` for 24 hours. Same browser cannot pick the same
+   slot again.
+2. **Confirmed bookings file** — when you confirm a request on WhatsApp, add
+   one entry to `data/bookings.json` and push. The next deploy excludes that
+   slot from every visitor's view.
+
+   ```json
+   {
+     "bookings": [
+       { "date": "2026-05-13", "startTime": "10:00", "durationMin": 60 }
+     ]
+   }
+   ```
+
+   `date` is `YYYY-MM-DD`, `startTime` is 24-hour `HH:MM`, `durationMin` is
+   the service length in minutes (must match the service so overlap maths
+   work). Slot starts every 30 minutes inside working hours (`09:00–21:00`);
+   adjust in `data/services.json`.
+
+> For real-time blocking across visitors *before* you confirm, a free
+> Supabase project would replace the JSON file with an API write. Until then,
+> reply on WhatsApp promptly.
 
 ## QR code
 

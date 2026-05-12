@@ -88,8 +88,9 @@ export default function Footer() {
       <div className="border-t border-cream/10">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-cream/55">
           <p>© {year} The Mall IWACU. All rights reserved.</p>
-          <nav className="flex gap-5">
+          <nav className="flex gap-5 flex-wrap">
             <Link href="/menu" className="hover:text-gold transition-colors">Menu</Link>
+            <Link href="/book" className="hover:text-gold transition-colors">Book</Link>
             <Link href="/about" className="hover:text-gold transition-colors">About</Link>
             <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
           </nav>

@@ -49,7 +49,7 @@ const services = [
     title: "Massage & Steam",
     description:
       "Full-body massage, reflexology, herbal steam — slow down, breathe, reset right around the corner.",
-    href: "/menu#cat-spa",
+    href: "/book",
     cta: "Book Time",
   },
 ];

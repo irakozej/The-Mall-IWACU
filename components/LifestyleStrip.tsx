@@ -23,7 +23,7 @@ const scenes = [
     alt: "Hot stone treatment during a relaxing spa session",
     label: "Massage & Steam",
     caption: "Slow down. Breathe. Reset.",
-    href: "/menu#cat-spa",
+    href: "/book",
   },
 ];
 

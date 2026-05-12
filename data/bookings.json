@@ -1,0 +1,4 @@
+{
+  "_comment": "Confirmed bookings — owner edits this after confirming each WhatsApp request. Date is ISO YYYY-MM-DD; startTime is 24-hour HH:MM; durationMin matches the service. The next deploy excludes overlapping slots from the booking page.",
+  "bookings": []
+}

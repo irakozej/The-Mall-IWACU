@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, X } from "lucide-react";
+import { ArrowUpRight, Search, X } from "lucide-react";
 import type { MenuData } from "@/lib/menu";
 import { unsplashSrc } from "@/lib/site";
 import MenuCard from "./MenuCard";
@@ -175,16 +176,27 @@ export default function MenuTabs({ data }: Props) {
                           "linear-gradient(180deg, rgba(15,42,31,0.05) 0%, rgba(15,42,31,0.55) 100%)",
                       }}
                     />
-                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 text-cream">
-                      <p className="text-[10px] tracking-[0.3em] uppercase text-gold/95">
-                        Section
-                      </p>
-                      <h2 className="mt-1 font-display text-4xl sm:text-5xl leading-tight">
-                        {cat.name}
-                      </h2>
-                      <p className="mt-1 text-cream/85 text-sm italic max-w-md">
-                        {cat.tagline}
-                      </p>
+                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 text-cream flex flex-wrap items-end gap-3 justify-between">
+                      <div>
+                        <p className="text-[10px] tracking-[0.3em] uppercase text-gold/95">
+                          Section
+                        </p>
+                        <h2 className="mt-1 font-display text-4xl sm:text-5xl leading-tight">
+                          {cat.name}
+                        </h2>
+                        <p className="mt-1 text-cream/85 text-sm italic max-w-md">
+                          {cat.tagline}
+                        </p>
+                      </div>
+                      {cat.id === "spa" ? (
+                        <Link
+                          href="/book"
+                          className="group inline-flex items-center gap-2 bg-gold text-forest-deep font-medium px-4 py-2.5 text-sm hover:bg-gold-soft transition-colors shrink-0"
+                        >
+                          Book a session
+                          <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 ) : (
@@ -206,19 +218,24 @@ export default function MenuTabs({ data }: Props) {
               </header>
 
               <div className="space-y-12">
-                {cat.sections.map((sec) => (
+                {cat.sections.map((sec, secIdx) => (
                   <div key={sec.id} id={`sec-${sec.id}`} className="scroll-mt-36">
-                    <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-forest/15">
-                      <h3 className="font-display text-xl sm:text-2xl text-forest">
-                        {sec.title}
-                      </h3>
-                      {sec.subtitle ? (
-                        <p className="text-[11px] tracking-[0.2em] uppercase text-ink-mute">
-                          {sec.subtitle}
-                        </p>
-                      ) : null}
+                    <div className="relative bg-cream-warm border-l-4 border-gold px-5 sm:px-6 py-4 sm:py-5 mb-6">
+                      <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
+                        {String(secIdx + 1).padStart(2, "0")} · {cat.name}
+                      </p>
+                      <div className="mt-1 flex items-baseline justify-between gap-4 flex-wrap">
+                        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl text-forest leading-tight">
+                          {sec.title}
+                        </h3>
+                        {sec.subtitle ? (
+                          <p className="text-xs sm:text-sm italic text-ink-soft">
+                            {sec.subtitle}
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
-                    <ul className="mt-4">
+                    <ul className="px-1">
                       {sec.items.map((item) => (
                         <MenuCard key={item.name} item={item} currency={data.currency} />
                       ))}
