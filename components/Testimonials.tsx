@@ -1,5 +1,8 @@
+"use client";
+
 import { Star, Quote } from "lucide-react";
 import testimonialsData from "@/data/testimonials.json";
+import { useT } from "@/lib/i18n";
 
 type Testimonial = {
   name: string;
@@ -12,6 +15,7 @@ type Testimonial = {
 const items = (testimonialsData as { items: Testimonial[] }).items;
 
 export default function Testimonials() {
+  const t = useT();
   // Featured first, then the rest, capped at 6 so the section stays light.
   const ordered = [...items].sort(
     (a, b) => Number(b.featured ?? false) - Number(a.featured ?? false),
@@ -25,15 +29,14 @@ export default function Testimonials() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 sm:mb-16">
           <div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
-              <span className="rule" /> Kind words
+              <span className="rule" /> {t("testimonials.kicker")}
             </p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl text-forest leading-tight max-w-xl">
-              From the neighbors we feed, pour and pamper.
+              {t("testimonials.heading")}
             </h2>
           </div>
           <p className="md:max-w-xs text-sm text-ink-soft">
-            A few words from regulars. Want to add yours? Reply on WhatsApp
-            after your visit.
+            {t("testimonials.intro")}
           </p>
         </div>
 

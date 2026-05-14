@@ -5,7 +5,6 @@ import { Calendar, Clock, Check, MessageCircle, Sparkles } from "lucide-react";
 import {
   bookings as confirmedBookings,
   config,
-  formatDateLabel,
   formatPriceRWF,
   generateDateOptions,
   generateSlots,
@@ -14,6 +13,7 @@ import {
   type Slot,
 } from "@/lib/booking";
 import { site } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 const PENDING_KEY = "themalliwacu:pending-bookings:v1";
 
@@ -47,6 +47,7 @@ function savePending(p: Pending[]): void {
 }
 
 export default function BookingForm() {
+  const t = useT();
   const [service, setService] = useState<Service | null>(null);
   const [date, setDate] = useState<string | null>(null);
   const [slotStart, setSlotStart] = useState<string | null>(null);
@@ -106,17 +107,17 @@ export default function BookingForm() {
     setStatus("submitting");
 
     const text = [
-      "Hello The Mall IWACU 👋",
+      t("book.messagePrefix"),
       "",
-      "I'd like to book a massage / treatment:",
-      `• Service: ${service.name}`,
-      `• Date: ${date}`,
-      `• Time: ${selectedSlot.start} — ${selectedSlot.end}`,
-      `• Duration: ${service.durationMin} min`,
-      `• Price: ${formatPriceRWF(service.price)}`,
-      `• Name: ${name.trim()}`,
-      phone.trim() ? `• Phone: ${phone.trim()}` : "",
-      notes.trim() ? `• Notes: ${notes.trim()}` : "",
+      t("book.messageBody"),
+      `• ${t("step1Service") || "Service"}: ${service.name}`,
+      `• ${t("step2Date") || "Date"}: ${date}`,
+      `• ${t("step3Time") || "Time"}: ${selectedSlot.start} — ${selectedSlot.end}`,
+      `• ${service.durationMin} ${t("book.minutes")}`,
+      `• ${formatPriceRWF(service.price)}`,
+      `• ${t("book.step4.name")}: ${name.trim()}`,
+      phone.trim() ? `• ${t("book.step4.phone")}: ${phone.trim()}` : "",
+      notes.trim() ? `• ${t("book.step4.notes")}: ${notes.trim()}` : "",
     ]
       .filter(Boolean)
       .join("\n");
@@ -150,8 +151,8 @@ export default function BookingForm() {
       {/* Step 1 — Service */}
       <Step
         number={1}
-        title="Choose your treatment"
-        subtitle="Each service has its own duration. Pick one to see times."
+        title={t("book.step1.title")}
+        subtitle={t("book.step1.subtitle")}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {config.services.map((s) => {
@@ -175,7 +176,7 @@ export default function BookingForm() {
                       active ? "text-gold" : "text-gold-deep",
                     ].join(" ")}
                   >
-                    <Sparkles size={10} /> Signature
+                    <Sparkles size={10} /> {t("common.signature")}
                   </span>
                 ) : null}
                 <div className="font-display text-lg leading-tight pr-16">
@@ -183,7 +184,7 @@ export default function BookingForm() {
                 </div>
                 <div className="mt-2 flex items-baseline gap-3 text-xs">
                   <span className={active ? "text-cream/80" : "text-ink-mute"}>
-                    {s.durationMin} min
+                    {s.durationMin} {t("book.minutes")}
                   </span>
                   <span
                     className={[
@@ -203,8 +204,8 @@ export default function BookingForm() {
       {/* Step 2 — Date */}
       <Step
         number={2}
-        title="Pick a date"
-        subtitle={`Booking opens up to ${config.maxDaysAhead} days ahead.`}
+        title={t("book.step2.title")}
+        subtitle={t("book.step2.subtitle", { days: config.maxDaysAhead })}
         disabled={!service}
       >
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 tabs-row">
@@ -241,17 +242,21 @@ export default function BookingForm() {
       {/* Step 3 — Slot */}
       <Step
         number={3}
-        title="Choose a time"
+        title={t("book.step3.title")}
         subtitle={
           service && date
-            ? `${service.durationMin}-minute session · working hours ${config.workingHours.open}–${config.workingHours.close}`
-            : "Pick a service and date first."
+            ? t("book.step3.subtitleReady", {
+                duration: service.durationMin,
+                open: config.workingHours.open,
+                close: config.workingHours.close,
+              })
+            : t("book.step3.subtitleEmpty")
         }
         disabled={!service || !date}
       >
         {!service || !date ? null : slots.length === 0 ? (
           <p className="text-sm text-ink-soft">
-            No times available — try another day.
+            {t("book.step3.noTimes")}
           </p>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -270,11 +275,11 @@ export default function BookingForm() {
                   onClick={() => setSlotStart(s.start)}
                   title={
                     s.reason === "booked"
-                      ? "Already booked"
+                      ? t("book.slotReasons.booked")
                       : s.reason === "past"
-                        ? "Past"
+                        ? t("book.slotReasons.past")
                         : s.reason === "lead-time"
-                          ? "Too soon — needs at least 1h notice"
+                          ? t("book.slotReasons.leadTime")
                           : undefined
                   }
                   className={[
@@ -292,13 +297,13 @@ export default function BookingForm() {
         {selectedSlot?.available ? (
           <div className="mt-5 bg-forest-deep text-cream px-5 py-4 flex flex-wrap items-center gap-x-6 gap-y-1">
             <span className="text-[10px] tracking-[0.3em] uppercase text-gold/85">
-              Your session
+              {t("book.step3.yourSession")}
             </span>
             <span className="font-display text-xl">
               {selectedSlot.start} — {selectedSlot.end}
             </span>
             <span className="text-cream/75 text-sm">
-              {service?.name} · {service?.durationMin} min
+              {service?.name} · {service?.durationMin} {t("book.minutes")}
             </span>
           </div>
         ) : null}
@@ -307,14 +312,14 @@ export default function BookingForm() {
       {/* Step 4 — Your details */}
       <Step
         number={4}
-        title="Your details"
-        subtitle="We confirm bookings on WhatsApp. Add a quick note if you have one."
+        title={t("book.step4.title")}
+        subtitle={t("book.step4.subtitle")}
         disabled={!selectedSlot?.available}
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="b-name" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              Name
+              {t("book.step4.name")}
             </label>
             <input
               id="b-name"
@@ -323,12 +328,12 @@ export default function BookingForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
-              placeholder="Jean-Paul Mugisha"
+              placeholder={t("book.step4.namePlaceholder")}
             />
           </div>
           <div>
             <label htmlFor="b-phone" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              Phone <span className="text-ink-mute lowercase tracking-normal text-xs">(optional)</span>
+              {t("book.step4.phone")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
             </label>
             <input
               id="b-phone"
@@ -338,12 +343,12 @@ export default function BookingForm() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
-              placeholder="+250 7XX XXX XXX"
+              placeholder={t("book.step4.phonePlaceholder")}
             />
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="b-notes" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              Notes <span className="text-ink-mute lowercase tracking-normal text-xs">(optional)</span>
+              {t("book.step4.notes")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
             </label>
             <textarea
               id="b-notes"
@@ -351,7 +356,7 @@ export default function BookingForm() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"
-              placeholder="Preferences, pressure, allergies, etc."
+              placeholder={t("book.step4.notesPlaceholder")}
             />
           </div>
         </div>
@@ -369,23 +374,22 @@ export default function BookingForm() {
         >
           {status === "sent" ? (
             <>
-              <Check size={16} /> Opening WhatsApp…
+              <Check size={16} /> {t("book.step4.opening")}
             </>
           ) : status === "submitting" ? (
             <>
               <span className="w-3.5 h-3.5 rounded-full border-2 border-cream/40 border-t-cream animate-spin" />
-              Preparing…
+              {t("book.step4.preparing")}
             </>
           ) : (
             <>
-              <MessageCircle size={16} /> Request via WhatsApp
+              <MessageCircle size={16} /> {t("book.step4.submit")}
             </>
           )}
         </button>
 
         <p className="mt-3 text-[11px] text-ink-mute max-w-prose">
-          Your slot is held tentatively in your browser for 24 hours. Final
-          confirmation comes when our team replies on WhatsApp.
+          {t("book.step4.hold")}
         </p>
       </Step>
     </form>
@@ -405,11 +409,12 @@ function Step({
   disabled?: boolean;
   children: React.ReactNode;
 }) {
+  const t = useT();
   return (
     <section className={disabled ? "opacity-50 pointer-events-none select-none" : ""} aria-disabled={disabled || undefined}>
       <div className="mb-5">
         <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
-          Step {String(number).padStart(2, "0")}
+          {t("book.step")} {String(number).padStart(2, "0")}
         </p>
         <h2 className="mt-1 font-display text-2xl sm:text-3xl text-forest leading-tight flex items-center gap-2">
           {number === 1 ? <Sparkles size={18} className="text-gold" /> : null}

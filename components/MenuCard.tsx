@@ -1,5 +1,8 @@
+"use client";
+
 import type { MenuItem } from "@/lib/menu";
 import { formatPrice } from "@/lib/menu";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   item: MenuItem;
@@ -7,6 +10,7 @@ type Props = {
 };
 
 export default function MenuCard({ item, currency }: Props) {
+  const t = useT();
   const hasPrice = typeof item.price === "number";
 
   return (
@@ -25,7 +29,7 @@ export default function MenuCard({ item, currency }: Props) {
           {item.name}
           {item.featured ? (
             <span className="ml-2 text-[10px] tracking-[0.25em] uppercase align-middle text-gold-deep">
-              · Signature
+              · {t("common.signature")}
             </span>
           ) : null}
         </h3>
@@ -36,7 +40,7 @@ export default function MenuCard({ item, currency }: Props) {
           </span>
         ) : (
           <span className="leader-price text-sm italic text-ink-mute tracking-wide">
-            Ask staff
+            {t("common.askStaff")}
           </span>
         )}
       </div>

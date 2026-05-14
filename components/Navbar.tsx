@@ -4,16 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useT } from "@/lib/i18n";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/menu", label: "Menu" },
-  { href: "/book", label: "Book" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+const linkDefs = [
+  { href: "/", labelKey: "nav.home" },
+  { href: "/menu", labelKey: "nav.menu" },
+  { href: "/book", labelKey: "nav.book" },
+  { href: "/about", labelKey: "nav.about" },
+  { href: "/contact", labelKey: "nav.contact" },
 ];
 
 export default function Navbar() {
+  const t = useT();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -40,7 +43,7 @@ export default function Navbar() {
         <Link
           href="/"
           className="group inline-flex items-baseline gap-2 select-none"
-          aria-label="The Mall IWACU — Home"
+          aria-label="The Mall IWACU"
         >
           <span className="font-display text-xl sm:text-2xl text-forest leading-none">
             The Mall
@@ -52,7 +55,7 @@ export default function Navbar() {
         </Link>
 
         <ul className="hidden md:flex items-center gap-1">
-          {links.map((l) => {
+          {linkDefs.map((l) => {
             const active =
               l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
             return (
@@ -64,7 +67,7 @@ export default function Navbar() {
                     active ? "text-forest" : "text-ink-soft hover:text-forest",
                   ].join(" ")}
                 >
-                  {l.label}
+                  {t(l.labelKey)}
                   <span
                     className={[
                       "pointer-events-none absolute left-4 right-4 -bottom-0.5 h-px origin-left transition-transform",
@@ -77,12 +80,15 @@ export default function Navbar() {
               </li>
             );
           })}
+          <li className="ml-2 pl-3 border-l border-ink/10">
+            <LanguageSwitcher />
+          </li>
           <li className="ml-3">
             <Link
               href="/menu"
               className="inline-flex items-center gap-2 bg-forest text-cream text-sm px-4 py-2.5 hover:bg-forest-deep transition-colors"
             >
-              View Menu
+              {t("common.viewMenu")}
               <span aria-hidden>→</span>
             </Link>
           </li>
@@ -105,11 +111,11 @@ export default function Navbar() {
         className={[
           "md:hidden overflow-hidden border-t border-ink/5 bg-cream",
           "transition-[max-height,opacity] duration-300",
-          open ? "max-h-80 opacity-100" : "max-h-0 opacity-0",
+          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
         <ul className="px-5 py-4 flex flex-col gap-1">
-          {links.map((l) => {
+          {linkDefs.map((l, i) => {
             const active =
               l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
             return (
@@ -122,19 +128,25 @@ export default function Navbar() {
                   ].join(" ")}
                 >
                   <span className="text-gold/70 text-xs align-top mr-2 font-sans tracking-widest">
-                    0{links.indexOf(l) + 1}
+                    0{i + 1}
                   </span>
-                  {l.label}
+                  {t(l.labelKey)}
                 </Link>
               </li>
             );
           })}
+          <li className="mt-2 px-3 flex items-center justify-between gap-3">
+            <span className="text-[11px] tracking-[0.25em] uppercase text-ink-mute">
+              {t("common.language")}
+            </span>
+            <LanguageSwitcher />
+          </li>
           <li className="mt-2">
             <Link
               href="/menu"
               className="block bg-forest text-cream text-center py-3 text-sm tracking-widest uppercase"
             >
-              Tap to View Menu
+              {t("common.menuShortcut")}
             </Link>
           </li>
         </ul>

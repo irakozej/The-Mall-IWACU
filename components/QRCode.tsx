@@ -3,6 +3,7 @@
 import { useCallback, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Download, Printer } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   url: string;
@@ -10,7 +11,9 @@ type Props = {
   size?: number;
 };
 
-export default function QRCode({ url, label = "Scan to view our menu", size = 220 }: Props) {
+export default function QRCode({ url, label, size = 220 }: Props) {
+  const t = useT();
+  const description = label ?? t("qr.description");
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const downloadPNG = useCallback(async () => {
@@ -51,10 +54,10 @@ export default function QRCode({ url, label = "Scan to view our menu", size = 22
   return (
     <div className="bg-cream-warm border border-ink/10 p-6 sm:p-8 flex flex-col items-center text-center rounded-2xl">
       <div className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
-        Scan · Tap · Order
+        {t("qr.kicker")}
       </div>
-      <h3 className="mt-2 font-display text-2xl text-forest">Menu QR Code</h3>
-      <p className="mt-1 max-w-xs text-sm text-ink-soft">{label}</p>
+      <h3 className="mt-2 font-display text-2xl text-forest">{t("qr.title")}</h3>
+      <p className="mt-1 max-w-xs text-sm text-ink-soft">{description}</p>
 
       <div ref={wrapRef} className="mt-6 p-4 bg-cream border border-gold/40 inline-flex">
         <QRCodeSVG
@@ -73,14 +76,14 @@ export default function QRCode({ url, label = "Scan to view our menu", size = 22
           onClick={downloadPNG}
           className="inline-flex items-center gap-2 bg-forest text-cream px-4 py-2.5 text-sm hover:bg-forest-deep transition-colors"
         >
-          <Download size={16} /> Download PNG
+          <Download size={16} /> {t("qr.download")}
         </button>
         <button
           type="button"
           onClick={print}
           className="inline-flex items-center gap-2 border border-forest/40 text-forest px-4 py-2.5 text-sm hover:bg-forest hover:text-cream transition-colors"
         >
-          <Printer size={16} /> Print
+          <Printer size={16} /> {t("qr.print")}
         </button>
       </div>
 

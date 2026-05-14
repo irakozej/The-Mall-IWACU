@@ -4,8 +4,10 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
 import ImigongoPattern from "./ImigongoPattern";
+import { useT } from "@/lib/i18n";
 
 export default function HeroSection() {
+  const t = useT();
   return (
     <section className="relative overflow-hidden bg-forest-deep text-cream grain isolate">
       <ImigongoPattern
@@ -33,7 +35,7 @@ export default function HeroSection() {
           className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-gold/90 border border-gold/40 px-3 py-1.5"
         >
           <MapPin size={12} className="text-gold" />
-          Kicukiro · Kanombe · Kabeza · Kigali
+          {t("hero.locationChip")}
         </motion.div>
 
         <motion.h1
@@ -53,8 +55,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.25 }}
           className="mt-7 max-w-xl text-lg text-cream/85 leading-relaxed"
         >
-          Your neighborhood destination — eat, drink, shop, relax. Groceries, bar,
-          kitchen, and massage & steam, all under one warm roof.
+          {t("hero.subtitle")}
         </motion.p>
 
         <motion.div
@@ -67,14 +68,14 @@ export default function HeroSection() {
             href="/menu"
             className="group inline-flex items-center gap-2 bg-gold text-forest-deep font-medium px-6 py-3.5 hover:bg-gold-soft transition-colors"
           >
-            View the Menu
+            {t("common.viewFullMenu")}
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 border border-cream/40 px-6 py-3.5 text-cream hover:bg-cream/10 transition-colors"
           >
-            Visit Us
+            {t("common.visitUs")}
           </Link>
         </motion.div>
 
@@ -85,12 +86,12 @@ export default function HeroSection() {
           className="mt-16 sm:mt-24 grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-8 max-w-3xl"
         >
           {[
-            ["07:00", "Doors Open"],
-            ["4", "Services"],
-            ["1", "Roof"],
-            ["100%", "Iwacu"],
+            ["07:00", t("hero.metrics.doorsOpen")],
+            ["4", t("hero.metrics.services")],
+            ["1", t("hero.metrics.roof")],
+            ["100%", t("hero.metrics.iwacu")],
           ].map(([k, v]) => (
-            <div key={v} className="">
+            <div key={v}>
               <div className="font-display text-3xl sm:text-4xl text-gold">{k}</div>
               <div className="mt-1 text-[11px] tracking-[0.2em] uppercase text-cream/65">{v}</div>
             </div>

@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Send, Check } from "lucide-react";
 import { site } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 export default function ContactForm() {
+  const t = useT();
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -14,8 +16,7 @@ export default function ContactForm() {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
     setStatus("submitting");
-    // No backend — open a pre-filled WhatsApp window with the message.
-    const text = `Hello The Mall IWACU 👋%0A%0A` +
+    const text = `${t("book.messagePrefix")}%0A%0A` +
       `Name: ${encodeURIComponent(name)}%0A` +
       (phone ? `Phone: ${encodeURIComponent(phone)}%0A` : "") +
       `%0A${encodeURIComponent(message)}`;
@@ -30,7 +31,7 @@ export default function ContactForm() {
     <form onSubmit={onSubmit} className="bg-cream-warm border border-ink/10 p-6 sm:p-8 space-y-5">
       <div>
         <label htmlFor="name" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-          Name
+          {t("contact.name")}
         </label>
         <input
           id="name"
@@ -40,13 +41,13 @@ export default function ContactForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full bg-cream border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
-          placeholder="Jean-Paul Mugisha"
+          placeholder={t("contact.namePlaceholder")}
         />
       </div>
 
       <div>
         <label htmlFor="phone" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-          Phone <span className="text-ink-mute lowercase tracking-normal text-xs">(optional)</span>
+          {t("contact.phone")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("contact.optional")}</span>
         </label>
         <input
           id="phone"
@@ -63,7 +64,7 @@ export default function ContactForm() {
 
       <div>
         <label htmlFor="message" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-          Message
+          {t("contact.message")}
         </label>
         <textarea
           id="message"
@@ -73,7 +74,7 @@ export default function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="w-full bg-cream border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"
-          placeholder="What can we help you with?"
+          placeholder={t("contact.messagePlaceholder")}
         />
       </div>
 
@@ -90,23 +91,22 @@ export default function ContactForm() {
       >
         {status === "sent" ? (
           <>
-            <Check size={16} /> Opening WhatsApp…
+            <Check size={16} /> {t("contact.opening")}
           </>
         ) : status === "submitting" ? (
           <>
             <span className="w-3.5 h-3.5 rounded-full border-2 border-cream/40 border-t-cream animate-spin" />
-            Preparing…
+            {t("contact.preparing")}
           </>
         ) : (
           <>
-            <Send size={16} /> Send via WhatsApp
+            <Send size={16} /> {t("contact.send")}
           </>
         )}
       </button>
 
       <p className="text-[11px] text-ink-mute">
-        Your message will open in WhatsApp so we can reply quickly. We do not
-        store anything on this site.
+        {t("contact.disclaimer")}
       </p>
     </form>
   );

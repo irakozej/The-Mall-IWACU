@@ -1,10 +1,12 @@
 "use client";
 
 import { site } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 export default function WhatsAppButton() {
+  const t = useT();
   const href = `https://wa.me/${site.whatsappDigits}?text=${encodeURIComponent(
-    "Hello The Mall IWACU 👋 — I'd like to ask about"
+    `${t("book.messagePrefix")} — ${t("contact.formIntro")}`,
   )}`;
 
   return (

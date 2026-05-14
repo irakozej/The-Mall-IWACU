@@ -1,3 +1,5 @@
+"use client";
+
 import { menu } from "@/lib/menu";
 import { site, siteUrl } from "@/lib/site";
 

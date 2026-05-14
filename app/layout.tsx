@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { LocaleProvider } from "@/lib/i18n";
 import { siteOrigin, siteUrl } from "@/lib/site";
 
 const playfair = Playfair_Display({
@@ -88,10 +89,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="font-sans bg-cream text-ink antialiased">
-        <Navbar />
-        <main className="min-h-[60vh]">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <LocaleProvider>
+          <Navbar />
+          <main className="min-h-[60vh]">{children}</main>
+          <Footer />
+          <WhatsAppButton />
+        </LocaleProvider>
       </body>
     </html>
   );

@@ -1,0 +1,231 @@
+{
+  "common": {
+    "viewMenu": "View Menu",
+    "viewFullMenu": "View the Menu",
+    "seeFullMenu": "See Full Menu",
+    "bookSession": "Book a Session",
+    "bookTime": "Book Time",
+    "visitUs": "Visit Us",
+    "getDirections": "Get Directions",
+    "callUs": "Call",
+    "whatsapp": "WhatsApp",
+    "or": "or",
+    "scrollIndicator": "Scroll",
+    "askStaff": "Ask staff",
+    "signature": "Signature",
+    "section": "Section",
+    "pricesMayVary": "Prices may vary. Photos are illustrative. All items subject to availability.",
+    "language": "Language",
+    "menuShortcut": "Tap to View Menu"
+  },
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "book": "Book",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "hero": {
+    "locationChip": "Kicukiro · Kanombe · Kabeza · Kigali",
+    "subtitle": "Your neighborhood destination — eat, drink, shop, relax. Groceries, bar, kitchen, and massage & steam, all under one warm roof.",
+    "metrics": {
+      "doorsOpen": "Doors Open",
+      "services": "Services",
+      "roof": "Roof",
+      "iwacu": "Iwacu"
+    }
+  },
+  "services": {
+    "kicker": "Four services, one address",
+    "heading": "Everything your day needs — under one roof.",
+    "intro": "The Mall IWACU is the corner where errands, meals, drinks and rest come together. Pick a doorway.",
+    "items": {
+      "groceries": {
+        "title": "Groceries",
+        "description": "Daily essentials, fresh produce, and pantry staples — quick stops, fair prices, neighborly service.",
+        "cta": "Stop & Shop"
+      },
+      "bar": {
+        "title": "Bar",
+        "description": "Cold local beers, refreshing soft drinks, wines and a cocktail of the day — the easy way to wind down.",
+        "cta": "Pull Up a Stool"
+      },
+      "kitchen": {
+        "title": "Kitchen",
+        "description": "Home-cooked Rwandan plates, brochettes, grilled tilapia and daily buffet — comfort food, served warm.",
+        "cta": "See the Menu"
+      },
+      "spa": {
+        "title": "Massage & Steam",
+        "description": "Full-body massage, reflexology, herbal steam — slow down, breathe, reset right around the corner.",
+        "cta": "Book Time"
+      }
+    }
+  },
+  "lifestyle": {
+    "kicker": "A glimpse inside",
+    "heading": "Three rooms. One feeling.",
+    "cta": "See the full menu",
+    "scenes": {
+      "kitchen": { "label": "From the Kitchen", "caption": "Brochettes & buffet plates" },
+      "bar": { "label": "From the Bar", "caption": "Cold beers & cocktail of the day" },
+      "spa": { "label": "Massage & Steam", "caption": "Slow down. Breathe. Reset." }
+    }
+  },
+  "whyUs": {
+    "kicker": "Why The Mall IWACU",
+    "heading": "A neighborhood gem — built for the everyday.",
+    "lead": "Iwacu means \"at home,\" and that is the feeling we are after — wherever you walk through our doors, you should feel it the moment you arrive.",
+    "values": {
+      "community": { "title": "Community First", "body": "We were built around our neighbors. Familiar faces, friendly service, real conversations." },
+      "quality": { "title": "Quality You Can Taste", "body": "From fresh ingredients to attentive treatments — quality is the only standard we know." },
+      "convenience": { "title": "All-In-One", "body": "Four services, one warm roof. Stop by once and leave with everything you needed." },
+      "location": { "title": "Right Around the Corner", "body": "Easy to find in Kabeza — close enough that we are part of the everyday." }
+    }
+  },
+  "hours": {
+    "kicker": "Operating Hours",
+    "heading": "Come find us.",
+    "when": "When we are open"
+  },
+  "map": {
+    "kicker": "Find Us",
+    "heading": "Kabeza, Kicukiro."
+  },
+  "testimonials": {
+    "kicker": "Kind words",
+    "heading": "From the neighbors we feed, pour and pamper.",
+    "intro": "A few words from regulars. Want to add yours? Reply on WhatsApp after your visit."
+  },
+  "footer": {
+    "blurb": "Your neighborhood destination in Kabeza, Kicukiro — eat, drink, shop, relax. All under one roof.",
+    "iwacuMeaning": "Iwacu — \"At Home\"",
+    "visit": "Visit",
+    "connect": "Connect",
+    "rights": "All rights reserved."
+  },
+  "menu": {
+    "kicker": "The Mall IWACU",
+    "title": "Menu.",
+    "subtitle": "Tap a category. Search a dish. Prices in RWF.",
+    "searchPlaceholder": "Search the menu…",
+    "searchAriaLabel": "Search the menu",
+    "clearSearch": "Clear search",
+    "noMatches": "No matches",
+    "tryDifferent": "Try a different word — or",
+    "clearLink": "clear your search",
+    "bookCta": "Book a session"
+  },
+  "book": {
+    "kicker": "Massage & Wellness",
+    "title": "Book a session.",
+    "subtitle": "Four steps. Your start and finish times are calculated from the treatment you choose. We confirm on WhatsApp.",
+    "step": "Step",
+    "step1": {
+      "title": "Choose your treatment",
+      "subtitle": "Each service has its own duration. Pick one to see times."
+    },
+    "step2": {
+      "title": "Pick a date",
+      "subtitle": "Booking opens up to {days} days ahead."
+    },
+    "step3": {
+      "title": "Choose a time",
+      "subtitleReady": "{duration}-minute session · working hours {open}–{close}",
+      "subtitleEmpty": "Pick a service and date first.",
+      "noTimes": "No times available — try another day.",
+      "yourSession": "Your session"
+    },
+    "step4": {
+      "title": "Your details",
+      "subtitle": "We confirm bookings on WhatsApp. Add a quick note if you have one.",
+      "name": "Name",
+      "phone": "Phone",
+      "notes": "Notes",
+      "optional": "(optional)",
+      "namePlaceholder": "Jean-Paul Mugisha",
+      "phonePlaceholder": "+250 7XX XXX XXX",
+      "notesPlaceholder": "Preferences, pressure, allergies, etc.",
+      "submit": "Request via WhatsApp",
+      "preparing": "Preparing…",
+      "opening": "Opening WhatsApp…",
+      "hold": "Your slot is held tentatively in your browser for 24 hours. Final confirmation comes when our team replies on WhatsApp."
+    },
+    "minutes": "min",
+    "slotReasons": {
+      "booked": "Already booked",
+      "past": "Past",
+      "leadTime": "Too soon — needs at least 1h notice"
+    },
+    "messagePrefix": "Hello The Mall IWACU 👋",
+    "messageBody": "I'd like to book a massage / treatment:"
+  },
+  "contact": {
+    "kicker": "Say Hello",
+    "title": "Contact.",
+    "subtitle": "Drop in, dial us up, or send a quick message — we are easy to reach.",
+    "formKicker": "Send a message",
+    "formHeading": "Tell us how we can help.",
+    "formIntro": "Reservations, group bookings, treatment availability, or just to say hello — we respond on WhatsApp fastest.",
+    "chatDirectly": "Or chat on WhatsApp directly →",
+    "name": "Name",
+    "phone": "Phone",
+    "message": "Message",
+    "optional": "(optional)",
+    "namePlaceholder": "Jean-Paul Mugisha",
+    "messagePlaceholder": "What can we help you with?",
+    "send": "Send via WhatsApp",
+    "preparing": "Preparing…",
+    "opening": "Opening WhatsApp…",
+    "disclaimer": "Your message will open in WhatsApp so we can reply quickly. We do not store anything on this site.",
+    "visit": "Visit",
+    "hours": "Hours",
+    "goodToKnow": "Good to know",
+    "findUsKicker": "Find Us",
+    "findUsHeading": "We are in Kabeza.",
+    "qrKicker": "Print for the tables",
+    "qrHeading": "Menu QR."
+  },
+  "qr": {
+    "kicker": "Scan · Tap · Order",
+    "title": "Menu QR Code",
+    "description": "Scan to view our menu",
+    "download": "Download PNG",
+    "print": "Print"
+  },
+  "about": {
+    "kicker": "About The Mall IWACU",
+    "heading": "A small place with a big welcome.",
+    "pullQuote": "The Mall IWACU is your all-in-one neighborhood hub in the heart of Kabeza, Kicukiro.",
+    "pullSupport": "Whether you are picking up fresh groceries, enjoying a cold drink at our bar, savoring home-cooked Rwandan meals, or treating yourself to a relaxing massage — we have got you covered, all under one roof.",
+    "storyKicker": "Our Story",
+    "storyHeading": "Four small businesses, one shared idea.",
+    "story1": "We started The Mall IWACU because the people of Kabeza deserve a place that fits how a real day actually goes — pick up tonight's dinner, sit down for a quick brochette, share a beer with a friend, then unwind with a steam before heading home.",
+    "story2": "Every corner of the mall is run with care: produce we would buy ourselves, a kitchen that cooks how Rwandans cook at home, a bar that knows your usual, and a quiet wing for massage and steam when life asks too much.",
+    "story3": "We are not a chain. We are a corner. And we are glad you are here.",
+    "valuesKicker": "What we stand for",
+    "valuesHeading": "Four values, one steady standard.",
+    "values": {
+      "community": { "title": "Community", "body": "Built around our neighbors. The faces who walk in every day make this what it is." },
+      "quality": { "title": "Quality", "body": "From shelves to plates to treatments — we choose better, every day." },
+      "convenience": { "title": "Convenience", "body": "Four services, one warm roof. Stop by once, leave with everything you needed." },
+      "hospitality": { "title": "Hospitality", "body": "Iwacu means at home — and that is exactly the welcome we serve." }
+    },
+    "ownerLabel": "The Owner",
+    "ownerName": "Iwacu Family",
+    "ownerLocation": "Kabeza, Kicukiro",
+    "ownerNoteKicker": "A note from us",
+    "ownerNoteHeading": "We will see you soon.",
+    "ownerNote": "We are a family-run business, proud of our corner. If something could be better — a dish, a service, a smile — please tell us. We listen, and we improve.",
+    "browseMenu": "Browse the Menu",
+    "sayHello": "Say Hello"
+  },
+  "notFound": {
+    "kicker": "You wandered off the menu",
+    "subtitle": "That page is not on the table. But the rest of the mall is open — pull up a chair.",
+    "back": "Back to home",
+    "seeMenu": "See the menu"
+  }
+}

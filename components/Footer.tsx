@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Instagram, Facebook, Music2, MapPin, Phone, Mail } from "lucide-react";
 import { site } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 export default function Footer() {
+  const t = useT();
   const year = new Date().getFullYear();
   return (
     <footer className="bg-forest-deep text-cream/85 mt-20 sm:mt-28">
@@ -13,16 +17,16 @@ export default function Footer() {
             The Mall <span className="italic text-gold">IWACU</span>
           </div>
           <p className="mt-4 text-sm leading-relaxed max-w-xs text-cream/70">
-            Your neighborhood destination in Kabeza, Kicukiro — eat, drink, shop, relax. All under one roof.
+            {t("footer.blurb")}
           </p>
           <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-gold/80">
-            Iwacu — “At Home”
+            {t("footer.iwacuMeaning")}
           </p>
         </div>
 
         <div>
           <h3 className="text-[11px] tracking-[0.25em] uppercase text-gold/80 mb-5">
-            Visit
+            {t("footer.visit")}
           </h3>
           <ul className="space-y-3 text-sm">
             <li className="flex gap-3">
@@ -35,13 +39,19 @@ export default function Footer() {
             </li>
             <li className="flex gap-3 items-center">
               <Phone size={16} className="text-gold shrink-0" />
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-gold transition-colors">
+              <a
+                href={`tel:${site.phone.replace(/\s/g, "")}`}
+                className="hover:text-gold transition-colors"
+              >
                 {site.phone}
               </a>
             </li>
             <li className="flex gap-3 items-center">
               <Mail size={16} className="text-gold shrink-0" />
-              <a href={`mailto:${site.email}`} className="hover:text-gold transition-colors">
+              <a
+                href={`mailto:${site.email}`}
+                className="hover:text-gold transition-colors"
+              >
                 {site.email}
               </a>
             </li>
@@ -50,7 +60,7 @@ export default function Footer() {
 
         <div>
           <h3 className="text-[11px] tracking-[0.25em] uppercase text-gold/80 mb-5">
-            Connect
+            {t("footer.connect")}
           </h3>
           <ul className="space-y-3 text-sm">
             {site.socials.map((s) => {
@@ -87,14 +97,14 @@ export default function Footer() {
 
       <div className="border-t border-cream/10">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-cream/55">
-          <p>© {year} The Mall IWACU. All rights reserved.</p>
+          <p>© {year} The Mall IWACU. {t("footer.rights")}</p>
           <nav className="flex gap-5 flex-wrap">
-            <Link href="/menu" className="hover:text-gold transition-colors">Menu</Link>
-            <Link href="/book" className="hover:text-gold transition-colors">Book</Link>
-            <Link href="/about" className="hover:text-gold transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
-            <Link href="/privacy" className="hover:text-gold transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-gold transition-colors">Terms</Link>
+            <Link href="/menu" className="hover:text-gold transition-colors">{t("nav.menu")}</Link>
+            <Link href="/book" className="hover:text-gold transition-colors">{t("nav.book")}</Link>
+            <Link href="/about" className="hover:text-gold transition-colors">{t("nav.about")}</Link>
+            <Link href="/contact" className="hover:text-gold transition-colors">{t("nav.contact")}</Link>
+            <Link href="/privacy" className="hover:text-gold transition-colors">{t("nav.privacy")}</Link>
+            <Link href="/terms" className="hover:text-gold transition-colors">{t("nav.terms")}</Link>
           </nav>
         </div>
       </div>

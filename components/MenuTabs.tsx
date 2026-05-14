@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, Search, X } from "lucide-react";
 import type { MenuData } from "@/lib/menu";
 import { unsplashSrc } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 import MenuCard from "./MenuCard";
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default function MenuTabs({ data }: Props) {
+  const t = useT();
   const [active, setActive] = useState(data.categories[0]?.id ?? "");
   const [query, setQuery] = useState("");
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -115,15 +117,15 @@ export default function MenuTabs({ data }: Props) {
                 onChange={(e) => setQuery(e.target.value)}
                 type="search"
                 inputMode="search"
-                placeholder="Search the menu…"
-                aria-label="Search the menu"
+                placeholder={t("menu.searchPlaceholder")}
+                aria-label={t("menu.searchAriaLabel")}
                 className="w-full bg-cream-warm border border-ink/10 pl-9 pr-9 py-2 text-sm focus:border-gold focus:outline-none transition-colors"
               />
               {query ? (
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  aria-label="Clear search"
+                  aria-label={t("menu.clearSearch")}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-mute hover:text-forest"
                 >
                   <X size={14} />
@@ -137,11 +139,11 @@ export default function MenuTabs({ data }: Props) {
       <div className="max-w-5xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
         {filtered.length === 0 ? (
           <div className="text-center py-16">
-            <p className="font-display text-2xl text-forest">No matches</p>
+            <p className="font-display text-2xl text-forest">{t("menu.noMatches")}</p>
             <p className="mt-2 text-sm text-ink-soft">
-              Try a different word — or{" "}
+              {t("menu.tryDifferent")}{" "}
               <button onClick={() => setQuery("")} className="text-gold underline underline-offset-4">
-                clear your search
+                {t("menu.clearLink")}
               </button>
               .
             </p>
@@ -179,7 +181,7 @@ export default function MenuTabs({ data }: Props) {
                     <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 text-cream flex flex-wrap items-end gap-3 justify-between">
                       <div>
                         <p className="text-[10px] tracking-[0.3em] uppercase text-gold/95">
-                          Section
+                          {t("common.section")}
                         </p>
                         <h2 className="mt-1 font-display text-4xl sm:text-5xl leading-tight">
                           {cat.name}
@@ -193,7 +195,7 @@ export default function MenuTabs({ data }: Props) {
                           href="/book"
                           className="group inline-flex items-center gap-2 bg-gold text-forest-deep font-medium px-4 py-2.5 text-sm hover:bg-gold-soft transition-colors shrink-0"
                         >
-                          Book a session
+                          {t("menu.bookCta")}
                           <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </Link>
                       ) : null}
@@ -203,7 +205,7 @@ export default function MenuTabs({ data }: Props) {
                   <>
                     <div className="flex items-baseline gap-3">
                       <span className="font-sans text-[11px] tracking-[0.3em] uppercase text-gold-deep">
-                        Section
+                        {t("common.section")}
                       </span>
                       <span className="h-px flex-1 bg-ink/15" aria-hidden />
                     </div>

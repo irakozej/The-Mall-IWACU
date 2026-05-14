@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ShoppingBasket,
@@ -18,68 +20,35 @@ import LifestyleStrip from "@/components/LifestyleStrip";
 import Testimonials from "@/components/Testimonials";
 import JsonLd from "@/components/JsonLd";
 import { site } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 const ICON_PROPS = { size: 20, strokeWidth: 1.6 };
 
-const services = [
-  {
-    icon: <ShoppingBasket {...ICON_PROPS} />,
-    title: "Groceries",
-    description:
-      "Daily essentials, fresh produce, and pantry staples — quick stops, fair prices, neighborly service.",
-    href: "/about#groceries",
-    cta: "Stop & Shop",
-  },
-  {
-    icon: <Wine {...ICON_PROPS} />,
-    title: "Bar",
-    description:
-      "Cold local beers, refreshing soft drinks, wines and a cocktail of the day — the easy way to wind down.",
-    href: "/menu#cat-bar",
-    cta: "Pull Up a Stool",
-  },
-  {
-    icon: <ChefHat {...ICON_PROPS} />,
-    title: "Kitchen",
-    description:
-      "Home-cooked Rwandan plates, brochettes, grilled tilapia and daily buffet — comfort food, served warm.",
-    href: "/menu#cat-kitchen",
-    cta: "See the Menu",
-  },
-  {
-    icon: <Sparkles {...ICON_PROPS} />,
-    title: "Massage & Steam",
-    description:
-      "Full-body massage, reflexology, herbal steam — slow down, breathe, reset right around the corner.",
-    href: "/book",
-    cta: "Book Time",
-  },
-];
+const SERVICE_IDS = ["groceries", "bar", "kitchen", "spa"] as const;
+const SERVICE_ICONS: Record<(typeof SERVICE_IDS)[number], React.ReactNode> = {
+  groceries: <ShoppingBasket {...ICON_PROPS} />,
+  bar: <Wine {...ICON_PROPS} />,
+  kitchen: <ChefHat {...ICON_PROPS} />,
+  spa: <Sparkles {...ICON_PROPS} />,
+};
+const SERVICE_HREFS: Record<(typeof SERVICE_IDS)[number], string> = {
+  groceries: "/about#groceries",
+  bar: "/menu#cat-bar",
+  kitchen: "/menu#cat-kitchen",
+  spa: "/book",
+};
 
-const values = [
-  {
-    icon: Heart,
-    title: "Community First",
-    body: "We were built around our neighbors. Familiar faces, friendly service, real conversations.",
-  },
-  {
-    icon: Award,
-    title: "Quality You Can Taste",
-    body: "From fresh ingredients to attentive treatments — quality is the only standard we know.",
-  },
-  {
-    icon: Sprout,
-    title: "All-In-One",
-    body: "Four services, one warm roof. Stop by once and leave with everything you needed.",
-  },
-  {
-    icon: MapPin,
-    title: "Right Around the Corner",
-    body: "Easy to find in Kabeza — close enough that we are part of the everyday.",
-  },
-];
+const VALUE_IDS = ["community", "quality", "convenience", "location"] as const;
+const VALUE_ICONS: Record<(typeof VALUE_IDS)[number], typeof Heart> = {
+  community: Heart,
+  quality: Award,
+  convenience: Sprout,
+  location: MapPin,
+};
 
 export default function HomePage() {
+  const t = useT();
+
   return (
     <>
       <JsonLd variant="home" />
@@ -92,69 +61,74 @@ export default function HomePage() {
             <div>
               <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
                 <span className="rule" />
-                Four services, one address
+                {t("services.kicker")}
               </p>
               <h2 className="mt-3 font-display text-4xl sm:text-5xl text-forest leading-tight max-w-2xl">
-                Everything your day needs — under one roof.
+                {t("services.heading")}
               </h2>
             </div>
             <p className="md:max-w-sm text-sm text-ink-soft">
-              The Mall IWACU is the corner where errands, meals, drinks and rest
-              come together. Pick a doorway.
+              {t("services.intro")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {services.map((s, i) => (
-              <ServiceCard key={s.title} index={i + 1} {...s} />
+            {SERVICE_IDS.map((id, i) => (
+              <ServiceCard
+                key={id}
+                index={i + 1}
+                icon={SERVICE_ICONS[id]}
+                title={t(`services.items.${id}.title`)}
+                description={t(`services.items.${id}.description`)}
+                href={SERVICE_HREFS[id]}
+                cta={t(`services.items.${id}.cta`)}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Lifestyle photo strip — three scenes from the mall */}
       <LifestyleStrip />
 
-      {/* Testimonials */}
       <Testimonials />
 
-      {/* Why us — editorial split */}
+      {/* Why us */}
       <section className="relative bg-cream-warm py-20 sm:py-28 grain">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 grid md:grid-cols-12 gap-10">
           <div className="md:col-span-5">
             <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
-              <span className="rule" /> Why The Mall IWACU
+              <span className="rule" /> {t("whyUs.kicker")}
             </p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl md:text-6xl text-forest leading-[1.05]">
-              A neighborhood gem — built for the
-              <span className="italic text-gold"> everyday</span>.
+              {t("whyUs.heading")}
             </h2>
             <p className="mt-6 text-ink-soft leading-relaxed max-w-md">
-              <span className="font-display italic text-forest">Iwacu</span> means
-              “at home,” and that is the feeling we are after — wherever you walk
-              through our doors, you should feel it the moment you arrive.
+              {t("whyUs.lead")}
             </p>
           </div>
 
           <div className="md:col-span-7 grid sm:grid-cols-2 gap-x-8 gap-y-10">
-            {values.map((v, i) => (
-              <div key={v.title}>
-                <div className="text-[10px] tracking-[0.3em] uppercase text-ink-mute">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div className="mt-3 flex items-start gap-3">
-                  <v.icon size={20} className="text-gold mt-1 shrink-0" />
-                  <div>
-                    <h3 className="font-display text-2xl text-forest leading-tight">
-                      {v.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-ink-soft leading-relaxed">
-                      {v.body}
-                    </p>
+            {VALUE_IDS.map((id, i) => {
+              const Icon = VALUE_ICONS[id];
+              return (
+                <div key={id}>
+                  <div className="text-[10px] tracking-[0.3em] uppercase text-ink-mute">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <div className="mt-3 flex items-start gap-3">
+                    <Icon size={20} className="text-gold mt-1 shrink-0" />
+                    <div>
+                      <h3 className="font-display text-2xl text-forest leading-tight">
+                        {t(`whyUs.values.${id}.title`)}
+                      </h3>
+                      <p className="mt-2 text-sm text-ink-soft leading-relaxed">
+                        {t(`whyUs.values.${id}.body`)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -164,16 +138,16 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5">
             <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
-              <span className="rule" /> Operating Hours
+              <span className="rule" /> {t("hours.kicker")}
             </p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl text-forest leading-tight">
-              Come find us.
+              {t("hours.heading")}
             </h2>
 
-            <div className="mt-8 bg-cream-warm border border-ink/10 p-6 sm:p-8 ">
+            <div className="mt-8 bg-cream-warm border border-ink/10 p-6 sm:p-8">
               <div className="flex items-center gap-2 text-forest">
                 <Clock size={18} className="text-gold" />
-                <span className="text-[11px] tracking-[0.3em] uppercase">When we are open</span>
+                <span className="text-[11px] tracking-[0.3em] uppercase">{t("hours.when")}</span>
               </div>
               <ul className="mt-5 divide-y divide-ink/10">
                 {site.hours.map((h) => (
@@ -222,7 +196,7 @@ export default function HomePage() {
                   href="/menu"
                   className="inline-flex items-center gap-2 bg-forest text-cream px-5 py-2.5 text-sm hover:bg-forest-deep transition-colors"
                 >
-                  See Full Menu
+                  {t("common.seeFullMenu")}
                 </Link>
                 <a
                   href={site.mapLink}
@@ -230,7 +204,7 @@ export default function HomePage() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 border border-forest/40 text-forest px-5 py-2.5 text-sm hover:bg-forest hover:text-cream transition-colors"
                 >
-                  Get Directions
+                  {t("common.getDirections")}
                 </a>
               </div>
             </div>
@@ -238,10 +212,10 @@ export default function HomePage() {
 
           <div className="lg:col-span-7">
             <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
-              <span className="rule" /> Find Us
+              <span className="rule" /> {t("map.kicker")}
             </p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl text-forest leading-tight">
-              Kabeza, Kicukiro.
+              {t("map.heading")}
             </h2>
             <div className="mt-8 h-[420px]">
               <MapEmbed className="h-full" />

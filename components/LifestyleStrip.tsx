@@ -1,33 +1,34 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { unsplashSrc } from "@/lib/site";
+import { useT } from "@/lib/i18n";
 
 const scenes = [
   {
+    id: "kitchen",
     src: "https://images.unsplash.com/photo-1687365762572-b418d588c225",
     alt: "Charcoal-grilled brochettes on the kitchen grill",
-    label: "From the Kitchen",
-    caption: "Brochettes & buffet plates",
     href: "/menu#cat-kitchen",
   },
   {
+    id: "bar",
     src: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34",
     alt: "Warm bar lights over a wooden bar counter",
-    label: "From the Bar",
-    caption: "Cold beers & cocktail of the day",
     href: "/menu#cat-bar",
   },
   {
+    id: "spa",
     src: "https://images.unsplash.com/photo-1696841212541-449ca29397cc",
     alt: "Hot stone treatment during a relaxing spa session",
-    label: "Massage & Steam",
-    caption: "Slow down. Breathe. Reset.",
     href: "/book",
   },
-];
+] as const;
 
 export default function LifestyleStrip() {
+  const t = useT();
   return (
     <section className="bg-cream py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
@@ -35,24 +36,24 @@ export default function LifestyleStrip() {
           <div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
               <span className="rule" />
-              A glimpse inside
+              {t("lifestyle.kicker")}
             </p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl text-forest leading-tight max-w-xl">
-              Three rooms. One feeling.
+              {t("lifestyle.heading")}
             </h2>
           </div>
           <Link
             href="/menu"
             className="hidden md:inline-flex items-center gap-2 text-sm text-forest hover:text-gold-deep transition-colors"
           >
-            See the full menu <ArrowUpRight size={16} />
+            {t("lifestyle.cta")} <ArrowUpRight size={16} />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
           {scenes.map((s, i) => (
             <Link
-              key={s.label}
+              key={s.id}
               href={s.href}
               className="group relative block aspect-[4/5] overflow-hidden bg-forest/10 rounded-2xl"
             >
@@ -74,10 +75,10 @@ export default function LifestyleStrip() {
               />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 text-cream">
                 <p className="text-[10px] tracking-[0.3em] uppercase text-gold/90">
-                  0{i + 1} · {s.label}
+                  0{i + 1} · {t(`lifestyle.scenes.${s.id}.label`)}
                 </p>
                 <p className="mt-1 font-display text-xl sm:text-2xl leading-tight">
-                  {s.caption}
+                  {t(`lifestyle.scenes.${s.id}.caption`)}
                 </p>
               </div>
             </Link>
