@@ -1,0 +1,40 @@
+{
+  "name": "The Mall IWACU",
+  "short_name": "Iwacu",
+  "description": "Eat, drink, shop, relax — Kabeza, Kicukiro, Kigali.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF9F6",
+  "theme_color": "#1B4332",
+  "orientation": "portrait",
+  "categories": ["food", "lifestyle", "wellness"],
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Menu",
+      "short_name": "Menu",
+      "url": "./menu/",
+      "description": "View the menu"
+    },
+    {
+      "name": "Book a massage",
+      "short_name": "Book",
+      "url": "./book/",
+      "description": "Reserve a treatment"
+    }
+  ]
+}

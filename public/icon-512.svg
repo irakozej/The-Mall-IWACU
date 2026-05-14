@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1B4332"/>
+  <!-- subtle imigongo chevrons, top-right corner -->
+  <g opacity="0.18">
+    <path d="M512 0 L432 80 L512 160 Z" fill="#D4A017"/>
+    <path d="M432 80 L352 160 L432 240 Z" fill="#D4A017"/>
+    <path d="M512 160 L432 240 L512 320 Z" fill="#D4A017"/>
+  </g>
+  <!-- Wordmark "T M I" stacked monogram -->
+  <g fill="#FAF9F6">
+    <path d="M120 360 V160 l60 80 V360 Z"/>
+    <path d="M236 360 V160 l60 80 V360 Z"/>
+  </g>
+  <circle cx="380" cy="190" r="48" fill="#D4A017"/>
+  <rect x="350" y="248" width="60" height="120" fill="#D4A017"/>
+  <!-- gold underline -->
+  <rect x="120" y="404" width="290" height="8" fill="#D4A017"/>
+</svg>

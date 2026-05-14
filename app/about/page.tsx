@@ -109,7 +109,7 @@ export default function AboutPage() {
       <section className="bg-cream py-20 sm:py-28">
         <div className="max-w-5xl mx-auto px-5 sm:px-8 grid md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden bg-forest text-cream">
+            <div className="relative aspect-[4/5] overflow-hidden bg-forest text-cream rounded-2xl">
               <Image
                 src={unsplashSrc("photo-1593708659671-595be1c95128", 1100, 72)}
                 alt="Vegetables and skewers cooking on the grill"

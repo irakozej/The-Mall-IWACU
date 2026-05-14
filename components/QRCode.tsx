@@ -18,7 +18,10 @@ export default function QRCode({ url, label = "Scan to view our menu", size = 22
     if (!svg) return;
 
     const xml = new XMLSerializer().serializeToString(svg);
-    const svg64 = typeof window !== "undefined" ? window.btoa(unescape(encodeURIComponent(xml))) : "";
+    const utf8 = new TextEncoder().encode(xml);
+    let binary = "";
+    for (let i = 0; i < utf8.length; i++) binary += String.fromCharCode(utf8[i]);
+    const svg64 = window.btoa(binary);
     const dataUrl = `data:image/svg+xml;base64,${svg64}`;
 
     const img = new Image();
@@ -46,7 +49,7 @@ export default function QRCode({ url, label = "Scan to view our menu", size = 22
   }, []);
 
   return (
-    <div className="bg-cream-warm border border-ink/10 p-6 sm:p-8 flex flex-col items-center text-center">
+    <div className="bg-cream-warm border border-ink/10 p-6 sm:p-8 flex flex-col items-center text-center rounded-2xl">
       <div className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
         Scan · Tap · Order
       </div>

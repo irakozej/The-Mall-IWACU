@@ -1,0 +1,37 @@
+{
+  "_comment": "Edit these to swap in real customer quotes. Keep `name` and `quote`; the rest are optional. Featured items show first.",
+  "items": [
+    {
+      "name": "Aline U.",
+      "role": "Neighbor — Kabeza",
+      "quote": "The buffet plate at lunch is exactly what home tastes like. I stop by twice a week.",
+      "rating": 5,
+      "featured": true
+    },
+    {
+      "name": "Patrick M.",
+      "role": "Friday regular",
+      "quote": "Cold Mutzig, charcoal brochettes, easy nights. The Mall IWACU is my Friday default.",
+      "rating": 5
+    },
+    {
+      "name": "Diane K.",
+      "role": "Spa client",
+      "quote": "I came for a back massage and ended up booking the steam combo. Genuinely the best hour of my week.",
+      "rating": 5,
+      "featured": true
+    },
+    {
+      "name": "Eric N.",
+      "role": "Local",
+      "quote": "Everything you need on a normal evening — groceries on the way in, a plate inside, and a quick steam before home.",
+      "rating": 5
+    },
+    {
+      "name": "Sarah T.",
+      "role": "First-time visitor",
+      "quote": "Service was warm from the door. The Mall Salad is huge and the staff remembered my order on the second visit.",
+      "rating": 5
+    }
+  ]
+}

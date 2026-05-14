@@ -5,6 +5,17 @@ export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
   "https://themalliwacu.rw";
 
+// Just the origin (no basePath). Use this for Next.js `metadataBase`, because
+// Next.js prepends the basePath again to relative metadata URLs. If we pass
+// the full siteUrl (origin + basePath) the basePath ends up duplicated.
+export const siteOrigin = (() => {
+  try {
+    return new URL(siteUrl).origin;
+  } catch {
+    return siteUrl;
+  }
+})();
+
 /**
  * Build an Unsplash CDN URL sized for the rendered slot. Without these query
  * params Unsplash serves the original ~4000px source which can be 3–8MB —

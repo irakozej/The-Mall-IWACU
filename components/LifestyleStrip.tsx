@@ -54,7 +54,7 @@ export default function LifestyleStrip() {
             <Link
               key={s.label}
               href={s.href}
-              className="group relative block aspect-[4/5] overflow-hidden bg-forest/10"
+              className="group relative block aspect-[4/5] overflow-hidden bg-forest/10 rounded-2xl"
             >
               <Image
                 src={unsplashSrc(s.src, 900, 72)}

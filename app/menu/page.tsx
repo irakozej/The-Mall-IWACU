@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { menu } from "@/lib/menu";
 import MenuTabs from "@/components/MenuTabs";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Menu — Eat, Drink, Spa",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function MenuPage() {
   return (
     <>
+      <JsonLd variant="menu" />
       {/* Compact menu hero — typographic, fast */}
       <section className="bg-forest-deep text-cream relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-90">

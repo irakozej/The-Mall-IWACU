@@ -15,6 +15,8 @@ import HeroSection from "@/components/HeroSection";
 import ServiceCard from "@/components/ServiceCard";
 import MapEmbed from "@/components/MapEmbed";
 import LifestyleStrip from "@/components/LifestyleStrip";
+import Testimonials from "@/components/Testimonials";
+import JsonLd from "@/components/JsonLd";
 import { site } from "@/lib/site";
 
 const ICON_PROPS = { size: 20, strokeWidth: 1.6 };
@@ -80,6 +82,7 @@ const values = [
 export default function HomePage() {
   return (
     <>
+      <JsonLd variant="home" />
       <HeroSection />
 
       {/* Services */}
@@ -111,6 +114,9 @@ export default function HomePage() {
 
       {/* Lifestyle photo strip — three scenes from the mall */}
       <LifestyleStrip />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* Why us — editorial split */}
       <section className="relative bg-cream-warm py-20 sm:py-28 grain">
@@ -164,7 +170,7 @@ export default function HomePage() {
               Come find us.
             </h2>
 
-            <div className="mt-8 bg-cream-warm border border-ink/10 p-6 sm:p-8">
+            <div className="mt-8 bg-cream-warm border border-ink/10 p-6 sm:p-8 ">
               <div className="flex items-center gap-2 text-forest">
                 <Clock size={18} className="text-gold" />
                 <span className="text-[11px] tracking-[0.3em] uppercase">When we are open</span>

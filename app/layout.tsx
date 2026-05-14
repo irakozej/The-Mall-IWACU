@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { siteUrl } from "@/lib/site";
+import { siteOrigin, siteUrl } from "@/lib/site";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -21,7 +21,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(siteOrigin),
   title: {
     default: "The Mall IWACU — Eat, Drink, Shop, Relax | Kigali",
     template: "%s · The Mall IWACU",
@@ -60,8 +60,18 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon-512.svg", sizes: "512x512", type: "image/svg+xml" },
     ],
+    apple: [{ url: "/icon-512.svg" }],
   },
+  manifest: "/manifest.webmanifest",
+  applicationName: "The Mall IWACU",
+  appleWebApp: {
+    capable: true,
+    title: "Iwacu",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: { telephone: true, address: true, email: true },
 };
 
 export const viewport: Viewport = {

@@ -61,7 +61,7 @@ export default function ContactPage() {
           </div>
 
           <aside className="lg:col-span-5 order-1 lg:order-2 space-y-6">
-            <div className="bg-cream-warm border border-ink/10 p-6">
+            <div className="bg-cream-warm border border-ink/10 p-6 ">
               <h3 className="font-display text-2xl text-forest">Visit</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 <li className="flex gap-3">
@@ -106,7 +106,7 @@ export default function ContactPage() {
               </ul>
             </div>
 
-            <div className="bg-cream-warm border border-ink/10 p-6">
+            <div className="bg-cream-warm border border-ink/10 p-6 ">
               <div className="flex items-center gap-2 text-forest">
                 <Clock size={16} className="text-gold" />
                 <h3 className="text-[11px] tracking-[0.3em] uppercase">Hours</h3>
@@ -121,7 +121,7 @@ export default function ContactPage() {
               </ul>
             </div>
 
-            <div className="bg-cream-warm border border-ink/10 p-6">
+            <div className="bg-cream-warm border border-ink/10 p-6 ">
               <h3 className="text-[11px] tracking-[0.3em] uppercase text-gold-deep">
                 Good to know
               </h3>

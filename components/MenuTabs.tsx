@@ -159,7 +159,7 @@ export default function MenuTabs({ data }: Props) {
             >
               <header className="mb-8 sm:mb-10">
                 {cat.image ? (
-                  <div className="relative aspect-[16/7] sm:aspect-[16/6] overflow-hidden mb-6 bg-forest/10">
+                  <div className="relative aspect-[16/7] sm:aspect-[16/6] overflow-hidden mb-6 bg-forest/10 rounded-2xl">
                     <Image
                       src={unsplashSrc(cat.image, 1600, 72)}
                       alt={cat.imageAlt ?? cat.name}
