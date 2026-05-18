@@ -51,6 +51,10 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.base }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.base.outputs.url }}
+          # Optional Supabase secrets. When set, /book becomes live.
+          # When unset, the page falls back to data/bookings.json.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: npm run build
 
       - name: Disable Jekyll on Pages

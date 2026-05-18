@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Calendar, Clock, Check, MessageCircle, Sparkles } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { AlertCircle, Calendar, Clock, Check, MessageCircle, Sparkles } from "lucide-react";
 import {
-  bookings as confirmedBookings,
+  bookings as fallbackBookings,
   config,
+  createPendingBooking,
+  fetchBookings,
   formatPriceRWF,
   generateDateOptions,
   generateSlots,
+  isSupabaseConfigured,
+  subscribeBookings,
   toDateString,
+  type Booking,
   type Service,
   type Slot,
 } from "@/lib/booking";
@@ -55,32 +60,52 @@ export default function BookingForm() {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
+  const [submitError, setSubmitError] = useState<"slot-taken" | "supabase-error" | null>(null);
   const [pending, setPending] = useState<Pending[]>([]);
+  // Bookings come from Supabase when configured (live + shared), otherwise
+  // from the bundled JSON fallback so the page still works in dev.
+  const [serverBookings, setServerBookings] = useState<Booking[]>(fallbackBookings);
   // `now` lives in state so the past/lead-time checks happen after hydration —
   // avoids a server/client mismatch when generating slots.
   const [now, setNow] = useState<Date | null>(null);
 
+  // Reload bookings from Supabase (or fallback to JSON). Defined as a stable
+  // callback so the realtime subscription can poke it on every change.
+  const reloadBookings = useCallback(async () => {
+    try {
+      const fresh = await fetchBookings();
+      setServerBookings(fresh);
+    } catch {
+      // fetchBookings already falls back internally; ignore.
+    }
+  }, []);
+
   useEffect(() => {
     setNow(new Date());
     setPending(loadPending());
-    const t = window.setInterval(() => setNow(new Date()), 60_000);
-    return () => window.clearInterval(t);
-  }, []);
+    reloadBookings();
+    const tick = window.setInterval(() => setNow(new Date()), 60_000);
+    const unsub = subscribeBookings(() => reloadBookings());
+    return () => {
+      window.clearInterval(tick);
+      unsub();
+    };
+  }, [reloadBookings]);
 
   const dateOptions = useMemo(
     () => (now ? generateDateOptions(config.maxDaysAhead, now) : []),
     [now],
   );
 
-  // Treat any pending booking for the same service-or-date as a soft block.
+  // Block the slot when either confirmed/pending in Supabase OR held locally.
   const effectiveBookings = useMemo(() => {
     const pendingAsBookings = pending.map((p) => ({
       date: p.date,
       startTime: p.startTime,
       durationMin: p.durationMin,
     }));
-    return [...confirmedBookings, ...pendingAsBookings];
-  }, [pending]);
+    return [...serverBookings, ...pendingAsBookings];
+  }, [serverBookings, pending]);
 
   const slots: Slot[] = useMemo(() => {
     if (!service || !date || !now) return [];
@@ -109,30 +134,56 @@ export default function BookingForm() {
   function pickService(s: Service) {
     setService(s);
     setSlotStart(null);
+    setSubmitError(null);
     scrollToStep(2);
   }
   function pickDate(d: string) {
     setDate(d);
     setSlotStart(null);
+    setSubmitError(null);
     scrollToStep(3);
   }
   function pickSlot(start: string) {
     setSlotStart(start);
+    setSubmitError(null);
     scrollToStep(4);
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit || !service || !date || !selectedSlot) return;
     setStatus("submitting");
+    setSubmitError(null);
+
+    // Try to lock the slot in Supabase first. If someone else just took it,
+    // the realtime sub will also push a fresh state to the UI seconds later.
+    const result = await createPendingBooking({
+      date,
+      startTime: selectedSlot.start,
+      durationMin: service.durationMin,
+      serviceId: service.id,
+      serviceName: service.name,
+      customerName: name.trim(),
+      customerPhone: phone.trim() || undefined,
+      customerNotes: notes.trim() || undefined,
+    });
+
+    if (!result.ok) {
+      setSubmitError(result.reason);
+      setStatus("idle");
+      setSlotStart(null);
+      // Refresh so the now-taken slot appears greyed.
+      void reloadBookings();
+      return;
+    }
 
     const text = [
       t("book.messagePrefix"),
       "",
       t("book.messageBody"),
-      `• ${t("step1Service") || "Service"}: ${service.name}`,
-      `• ${t("step2Date") || "Date"}: ${date}`,
-      `• ${t("step3Time") || "Time"}: ${selectedSlot.start} — ${selectedSlot.end}`,
+      `• ${t("book.step1.title")}: ${service.name}`,
+      `• ${t("book.step2.title")}: ${date}`,
+      `• ${t("book.step3.title")}: ${selectedSlot.start} — ${selectedSlot.end}`,
       `• ${service.durationMin} ${t("book.minutes")}`,
       `• ${formatPriceRWF(service.price)}`,
       `• ${t("book.step4.name")}: ${name.trim()}`,
@@ -144,7 +195,8 @@ export default function BookingForm() {
 
     const url = `https://wa.me/${site.whatsappDigits}?text=${encodeURIComponent(text)}`;
 
-    // Hold the slot locally so this same browser does not show it as free.
+    // Hold the slot locally too — protects this same browser before realtime
+    // round-trips, and also covers the local-only / no-Supabase fallback path.
     const next = [
       ...pending,
       {
@@ -168,6 +220,18 @@ export default function BookingForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-12">
+      {/* Live-vs-fallback status — small marker so the owner can verify wiring. */}
+      <div className="flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-ink-mute">
+        <span
+          className={[
+            "inline-block w-1.5 h-1.5 rounded-full",
+            isSupabaseConfigured ? "bg-emerald-500" : "bg-amber-500",
+          ].join(" ")}
+          aria-hidden
+        />
+        {isSupabaseConfigured ? "Live availability" : "Offline mode"}
+      </div>
+
       {/* Step 1 — Service */}
       <Step
         number={1}
@@ -392,6 +456,20 @@ export default function BookingForm() {
             />
           </div>
         </div>
+
+        {submitError ? (
+          <div
+            role="alert"
+            className="mt-5 flex items-start gap-3 border border-amber-600/40 bg-amber-50 text-amber-900 px-4 py-3 text-sm"
+          >
+            <AlertCircle size={18} className="mt-0.5 shrink-0 text-amber-700" />
+            <p>
+              {submitError === "slot-taken"
+                ? t("book.slotReasons.booked")
+                : t("book.step4.hold")}
+            </p>
+          </div>
+        ) : null}
 
         <button
           type="submit"

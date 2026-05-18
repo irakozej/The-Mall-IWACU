@@ -67,43 +67,43 @@
   },
   "lifestyle": {
     "kicker": "Reba imbere",
-    "heading": "Inzu eshatu. Ikiyaga kimwe.",
+    "heading": "Inzu eshatu. Igisenge kimwe.",
     "cta": "Reba menu yose",
     "scenes": {
       "kitchen": { "label": "Mu Gikoni", "caption": "Brochettes & buffet" },
       "bar": { "label": "Mu Bari", "caption": "Inzoga zikonje & cocktail ya buri munsi" },
-      "spa": { "label": "Massage n'Umwuka", "caption": "Ihohotere. Huma. Sigaza." }
+      "spa": { "label": "Massage na Souna", "caption": "Humeka. Ruhuka. Mera Neza." }
     }
   },
   "whyUs": {
     "kicker": "Impamvu wakwizera The Mall IWACU",
-    "heading": "Aho dukundira muri agace — kuri buri munsi.",
-    "lead": "Iwacu bivuga \"mu rugo,\" niyo myumvire dushaka — aho munyura mu miryango yacu, ugomba kuyumva mu kanya wageze.",
+    "heading": "Ibyo Badukundira — kuri buri munsi.",
+    "lead": "Iwacu bivuga \"mu rugo,\" niyo myumvire dushaka — aho munyura mu miryango yacu, ugomba kuyumva ukihagera.",
     "values": {
-      "community": { "title": "Umuryango Mbere", "body": "Twubatswe ku baturanyi bacu. Imiranga isanzwe, serivisi y'ubucuti, ibiganiro by'ukuri." },
+      "community": { "title": "Umuryango Mbere", "body": "Twubakiye ku baturanyi bacu. serivisi y'ubucuti, ibiganiro by'ukuri." },
       "quality": { "title": "Ubwiza Ushobora Kumva", "body": "Kuva ku ngufu zifite imbaraga zo kunywa kandi imibereho — ubwiza ni cyo cyiciro kimwe rukumbi tuzi." },
-      "convenience": { "title": "Byose mu Hamwe", "body": "Serivisi enye, inzu imwe ishyushye. Hagarara incuro imwe, usohoke n'ibyo wose wakeneye." },
-      "location": { "title": "Iruhande", "body": "Byoroshye gusanga mu Kabeza — hafi cyane kugeza tukaba ari igice cy'ubuzima bwa buri munsi." }
+      "convenience": { "title": "Byose ni Hano", "body": "Serivisi enye, inzu imwe ishyushye. Hagarara incuro imwe, usohoke n'ibyo wose wakeneye." },
+      "location": { "title": "Ni Hafi Y'iwawe", "body": "Byoroshye kudusanga muri Kabeza — hafi cyane twabaye igice cy'ubuzima bwa buri munsi." }
     }
   },
   "hours": {
     "kicker": "Amasaha y'Akazi",
-    "heading": "Tubarakaze.",
+    "heading": "Murakaza Neza.",
     "when": "Igihe duhari"
   },
   "map": {
     "kicker": "Tubona",
-    "heading": "Kabeza, Kicukiro."
+    "heading": "Kicukiro, Kabeza."
   },
   "testimonials": {
-    "kicker": "Amagambo Meza",
-    "heading": "Bavuga abaturanyi bacu tugaburirwa, tunywesha n'imitse.",
+    "kicker": "Amagambo Meza Batuvugaho",
+    "heading": "ibyo abaturanyi bacu tugaburirwa, tunywesha n'ibindi bavuga — buri munsi.",
     "intro": "Amagambo make ava ku bakiriya basanzwe. Wifuza kongeraho ayawe? Twandikire kuri WhatsApp nyuma yo gusura kwawe."
   },
   "footer": {
-    "blurb": "Aho mukundira muri Kabeza, Kicukiro — kurya, kunywa, kugura, kuruhuka. Byose mu nzu imwe.",
+    "blurb": "kurya, kunywa, kugura, kuruhuka. Byose mu nzu imwe.",
     "iwacuMeaning": "Iwacu — \"Mu Rugo\"",
-    "visit": "Tubona",
+    "visit": "Aho wadusanga",
     "connect": "Twandikire",
     "rights": "Uburenganzira bwose bwabitswe."
   },
@@ -111,8 +111,8 @@
     "kicker": "The Mall IWACU",
     "title": "Menu.",
     "subtitle": "Kanda igice. Shaka ikintu. Ibiciro mu RWF.",
-    "searchPlaceholder": "Shakisha mu menu…",
-    "searchAriaLabel": "Shakisha mu menu",
+    "searchPlaceholder": "Shakisha muri menu…",
+    "searchAriaLabel": "Shakisha muri menu",
     "clearSearch": "Siba ishakisha",
     "noMatches": "Nta byabonetse",
     "tryDifferent": "Gerageza irindi jambo — cyangwa",
@@ -141,24 +141,24 @@
     },
     "step4": {
       "title": "Amakuru yawe",
-      "subtitle": "Twemeza igihe cyo gufata kuri WhatsApp. Ongeraho icyitonderwa niba ufite.",
+      "subtitle": "Twemeza igihe cyo gufata kuri WhatsApp. Ongeraho icyitonderwa niba gihari.",
       "name": "Izina",
       "phone": "Telefoni",
       "notes": "Icyitonderwa",
-      "optional": "(birenzeho)",
+      "optional": "(Ibirenzeho)",
       "namePlaceholder": "Jean-Paul Mugisha",
       "phonePlaceholder": "+250 7XX XXX XXX",
       "notesPlaceholder": "Ibyo ukunda, ingufu, allergie, n'ibindi.",
       "submit": "Saba kuri WhatsApp",
       "preparing": "Birategurwa…",
       "opening": "WhatsApp irafungura…",
-      "hold": "Igihe cyawe cyizigamiwe mu busage bwawe mu masaha 24. Iyo bwemejwe, itsinda ryacu rizakwandikira kuri WhatsApp."
+      "hold": "Igihe cyawe cyizigamiwe mu busabe bwawe mu masaha 24. Iyo bwemejwe, itsinda ryacu rizakwandikira kuri WhatsApp."
     },
     "minutes": "iminota",
     "slotReasons": {
       "booked": "Cyamaze gufatwa",
       "past": "Cyahise",
-      "leadTime": "Hatari kare bihagije — bisaba isaha imwe imbere"
+      "leadTime": "Ni kare cyane — bisaba isaha imwe imbere"
     },
     "messagePrefix": "Muraho The Mall IWACU 👋",
     "messageBody": "Nshaka gufata massage / serivisi:"
@@ -166,10 +166,10 @@
   "contact": {
     "kicker": "Twandikire",
     "title": "Twandikire.",
-    "subtitle": "Twiyumvire, tuhamagare, cyangwa twoherereze ubutumwa bugufi — turi mu byoroshye gusangaho.",
+    "subtitle": "Twiyumvire, tuhamagare, cyangwa twoherereze ubutumwa bugufi.",
     "formKicker": "Twandikire ubutumwa",
     "formHeading": "Tubwire icyo dushobora kugufasha.",
-    "formIntro": "Gufata, gufata mu matsinda, kureba serivisi za massage, cyangwa kutubwira urakaza — dusubiza vuba kuri WhatsApp.",
+    "formIntro": "Gufata, gufata mu matsinda, kureba serivisi za massage, cyangwa kutubwira murakaza — dusubiza vuba kuri WhatsApp.",
     "chatDirectly": "Cyangwa twandikire kuri WhatsApp →",
     "name": "Izina",
     "phone": "Telefoni",
@@ -180,11 +180,11 @@
     "send": "Ohereza kuri WhatsApp",
     "preparing": "Birategurwa…",
     "opening": "WhatsApp irafungura…",
-    "disclaimer": "Ubutumwa bwawe buzafungura mu WhatsApp kugirango tugusubize vuba. Nta byo dubika ku rubuga.",
-    "visit": "Tubona",
+    "disclaimer": "Ubutumwa bwawe buzafungura mu WhatsApp kugirango tugusubize vuba. Nta byo tubika ku rubuga.",
+    "visit": "Mwadusanga",
     "hours": "Amasaha",
-    "goodToKnow": "Ibyiza kumenya",
-    "findUsKicker": "Tubona",
+    "goodToKnow": "Ibyiza Wamenya",
+    "findUsKicker": "Mwadusanga",
     "findUsHeading": "Turi mu Kabeza.",
     "qrKicker": "Capa kuri ameza",
     "qrHeading": "QR ya Menu."
@@ -199,19 +199,19 @@
   "about": {
     "kicker": "Iby'The Mall IWACU",
     "heading": "Ahantu hato hafite ikaze rinini.",
-    "pullQuote": "The Mall IWACU ni aho mukundira muri Kabeza, Kicukiro — byose mu hamwe.",
-    "pullSupport": "Nimba ufata ibyangombwa bishya, unywa ikinyobwa gikonje muri akabari kacu, urya amafunguro y'i Rwanda atetse iwacu, cyangwa ukiwemerera massage — turabigufashije, byose mu nzu imwe.",
+    "pullQuote": "The Mall IWACU ni muri Kabeza, Kicukiro — byose mu hamwe.",
+    "pullSupport": "Nimba ufata ibyangombwa bishya, unywa ikinyobwa gikonje mu akabari kacu, urya amafunguro y'i Rwanda atetse neza, cyangwa ushaka massage — turabigufitiye, byose kuri The Mall IWACU.",
     "storyKicker": "Inkuru Yacu",
     "storyHeading": "Ubucuruzi buto bune, igitekerezo kimwe.",
-    "story1": "Twatangije The Mall IWACU kuko abaturage ba Kabeza bakwiriye ahantu hahuza n'uko umunsi nyawo ugenda — kuvana ibyo kurya nimugoroba, kwicara ugaburirwe brochette, gusangira inzoga n'umunyabwoba, hanyuma ukaruhuka mu mwuka mbere yo gutaha.",
-    "story2": "Buri nguni y'inzu ikorwa neza: imbuto twebwe ubwacu twagura, igikoni gitemba uko Abanyarwanda batema iwacu, akabari kazi ibyo ukunda, n'igice cyatuje cya massage n'umwuka iyo ubuzima bukwiriye cyane.",
+    "story1": "Twatangije The Mall IWACU kuko abaturage ba Kabeza bakwiriye ahantu hahuza n'uko umunsi wabo ugenda — kuvana ibyo kurya nimugoroba, kwicara ugaburirwe brochette, gusangira inzoga n'umunezero, hanyuma ukaruhuka muri souna na massage mbere yo gutaha.",
+    "story2": "Buri nguni y'inzu ikora neza: imbuto twebwe ubwacu twagura, igikoni gitemba uko Abanyarwanda babyifuza, akabari kazi ibyo ukunda, n'igice cyatuje cya massage n'umwuka ubuzima bukwiriye cyane.",
     "story3": "Ntabwo turi chain. Turi inguni. Kandi turishimiye ko uri hano.",
     "valuesKicker": "Icyo dushyigikiye",
     "valuesHeading": "Indangagaciro enye, urugero rumwe rwizihiwe.",
     "values": {
-      "community": { "title": "Umuryango", "body": "Twubatswe ku baturanyi bacu. Imiranga injira buri munsi nibyo bitubaye." },
+      "community": { "title": "Umuryango", "body": "Twubakiye ku baturanyi bacu." },
       "quality": { "title": "Ubwiza", "body": "Kuva ku ibibikwa kugeza kuri serivisi — duhitamo ibyiza, buri munsi." },
-      "convenience": { "title": "Byoroshye", "body": "Serivisi enye, inzu imwe ishyushye. Hagarara incuro imwe, sohoka n'ibyo wose wakeneye." },
+      "convenience": { "title": "Biroroshye", "body": "Serivisi enye, inzu imwe ishyushye. Hagarara incuro imwe, sohokana ibyo ukeneye byose." },
       "hospitality": { "title": "Ikaze", "body": "Iwacu bivuga mu rugo — niyo nzira twohereza." }
     },
     "ownerLabel": "Nyiri Ubucuruzi",
@@ -219,13 +219,13 @@
     "ownerLocation": "Kabeza, Kicukiro",
     "ownerNoteKicker": "Ijambo riva kuri twe",
     "ownerNoteHeading": "Tuzakubona vuba.",
-    "ownerNote": "Turi ubucuruzi bw'umuryango, twishimiye inguni yacu. Niba hari icyo gishobora kuba cyiza — ifunguro, serivisi, ikimwenyura — turabikubwira. Twumva, kandi turagiza neza.",
+    "ownerNote": "Turi ubucuruzi bw'umuryango, twishimiye inguni yacu. Niba hari icyo tugomba kunoza kurushaho — ifunguro, serivisi — tubwire. Turakumva, kandi turabyubahiriza.",
     "browseMenu": "Reba Menu",
     "sayHello": "Twandikire"
   },
   "notFound": {
-    "kicker": "Wagiye mu nzira itari menu",
-    "subtitle": "Iyo paji ntiri kuri meza. Ariko ibindi byose biri mu nzu birafunguye — fata intebe.",
+    "kicker": "Wagiye mu nzira itarimo menu",
+    "subtitle": "Iyo paji ntibashije kuboneka. Ariko ibindi byose biri mu nzu birafunguye — fata intebe.",
     "back": "Subira ahabanza",
     "seeMenu": "Reba menu"
   }

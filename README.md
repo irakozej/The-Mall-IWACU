@@ -103,7 +103,17 @@ public/
 - **Brand colors**: `tailwind.config.ts` (`forest`, `gold`, `cream`, `ink`).
 - **Bookable massage services**: `data/services.json` (name, duration, price).
 
-## Bookings workflow
+## Bookings — live with Supabase (recommended)
+
+For real-time, multi-visitor slot blocking with zero code edits per booking,
+see [SUPABASE.md](SUPABASE.md). One-time setup (~10 minutes); after that, you
+confirm/cancel bookings from the Supabase dashboard and every open `/book`
+page updates within seconds.
+
+If Supabase env vars aren't set, the site automatically falls back to the
+static JSON workflow described below.
+
+## Bookings — static fallback
 
 The `/book` page lets a customer pick a treatment, date and time, then submits
 the request via WhatsApp. The booking page does **not** write to a database —
