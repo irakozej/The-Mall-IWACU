@@ -38,6 +38,10 @@ create index if not exists bookings_status_idx on public.bookings(status);
 -- This is what stops two simultaneous inserts from booking the same slot
 -- even if both pass the soft race check in the client.
 -- ---------------------------------------------------------------------------
+-- Note: the exclude expression must use only IMMUTABLE functions. We use
+-- make_interval(mins => duration_min) because casting `(text || ' minutes')`
+-- to interval is locale-sensitive (not immutable) and Postgres rejects it
+-- inside an index/exclusion expression.
 do $$
 begin
   if not exists (
@@ -48,8 +52,8 @@ begin
       exclude using gist (
         booking_date with =,
         tsrange(
-          (booking_date + start_time)::timestamp,
-          (booking_date + start_time + (duration_min || ' minutes')::interval)::timestamp
+          booking_date + start_time,
+          booking_date + start_time + make_interval(mins => duration_min)
         ) with &&
       ) where (status <> 'cancelled');
   end if;
