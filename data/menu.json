@@ -6,8 +6,8 @@
       "id": "bar",
       "name": "Bar",
       "tagline": "Soft drinks, fresh juice, beers, wines, liquor, shots and house cocktails.",
-      "image": "https://images.unsplash.com/photo-1572116469696-31de0f17cc34",
-      "imageAlt": "Warm bar lights glowing over a wooden bar counter",
+      "image": "/images/Bar.jpeg",
+      "imageAlt": "The bar at The Mall IWACU",
       "sections": [
         {
           "id": "soft-drinks",

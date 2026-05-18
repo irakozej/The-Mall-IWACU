@@ -16,14 +16,36 @@ export const siteOrigin = (() => {
   }
 })();
 
+// Base path the app is served under (e.g. "/The-Mall-IWACU" on GitHub Pages,
+// "" locally). With static export, Next.js auto-prefixes `<Link>` and the
+// `_next/` assets — but NOT local public/ paths in `<Image src="/foo.jpg">`,
+// the manifest, or icons. Use `withBasePath()` for those.
+export const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+export function withBasePath(path: string): string {
+  if (!path.startsWith("/")) return path;
+  if (basePath && !path.startsWith(`${basePath}/`)) return `${basePath}${path}`;
+  return path;
+}
+
 /**
  * Build an Unsplash CDN URL sized for the rendered slot. Without these query
  * params Unsplash serves the original ~4000px source which can be 3–8MB —
  * fine in dev where next/image optimizes, but fatal in static export mode
  * (`unoptimized: true`) where the raw URL ships to the browser.
+ *
+ * Inputs that aren't an Unsplash reference (e.g. a local `/images/foo.jpg`
+ * path) are returned unchanged so the same helper works for mixed sources.
  */
-export function unsplashSrc(photoId: string, width = 1400, quality = 72): string {
-  const id = photoId.replace(/^https:\/\/images\.unsplash\.com\//, "").split("?")[0];
+export function unsplashSrc(input: string, width = 1400, quality = 72): string {
+  // Local public/ path — apply basePath and return.
+  if (input.startsWith("/")) {
+    return withBasePath(input);
+  }
+  if (!input.includes("unsplash.com") && !input.startsWith("photo-")) {
+    return input;
+  }
+  const id = input.replace(/^https:\/\/images\.unsplash\.com\//, "").split("?")[0];
   return `https://images.unsplash.com/${id}?w=${width}&q=${quality}&auto=format&fit=crop`;
 }
 

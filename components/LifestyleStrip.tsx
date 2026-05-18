@@ -15,8 +15,8 @@ const scenes = [
   },
   {
     id: "bar",
-    src: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34",
-    alt: "Warm bar lights over a wooden bar counter",
+    src: "/images/Bar.jpeg",
+    alt: "The bar at The Mall IWACU",
     href: "/menu#cat-bar",
   },
   {

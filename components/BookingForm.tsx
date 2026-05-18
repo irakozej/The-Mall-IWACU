@@ -91,14 +91,34 @@ export default function BookingForm() {
   const canSubmit =
     service && date && selectedSlot?.available && name.trim().length >= 2;
 
-  // Reset deeper picks when an earlier pick changes
+  // Smooth-scroll the next step into view so the next decision is obvious
+  // even on long mobile screens. Two RAFs let the disabled→enabled transition
+  // settle before the scroll fires.
+  function scrollToStep(n: number) {
+    if (typeof window === "undefined") return;
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`booking-step-${n}`);
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }),
+    );
+  }
+
+  // Reset deeper picks when an earlier pick changes, then jump to the next step.
   function pickService(s: Service) {
     setService(s);
     setSlotStart(null);
+    scrollToStep(2);
   }
   function pickDate(d: string) {
     setDate(d);
     setSlotStart(null);
+    scrollToStep(3);
+  }
+  function pickSlot(start: string) {
+    setSlotStart(start);
+    scrollToStep(4);
   }
 
   function onSubmit(e: React.FormEvent) {
@@ -263,31 +283,43 @@ export default function BookingForm() {
             {slots.map((s) => {
               const active = slotStart === s.start;
               const cls = !s.available
-                ? "bg-cream-warm/60 text-ink-mute border-ink/8 line-through cursor-not-allowed"
+                ? "text-ink/40 border-ink/15 cursor-not-allowed bg-[repeating-linear-gradient(135deg,transparent_0,transparent_5px,rgba(45,45,45,0.07)_5px,rgba(45,45,45,0.07)_10px)] bg-cream-warm"
                 : active
                   ? "bg-forest text-cream border-forest"
                   : "bg-cream-warm border-ink/10 hover:border-gold text-ink";
+              const reasonLabel =
+                s.reason === "booked"
+                  ? t("book.slotReasons.booked")
+                  : s.reason === "past"
+                    ? t("book.slotReasons.past")
+                    : s.reason === "lead-time"
+                      ? t("book.slotReasons.leadTime")
+                      : undefined;
               return (
                 <button
                   key={s.start}
                   type="button"
                   disabled={!s.available}
-                  onClick={() => setSlotStart(s.start)}
-                  title={
-                    s.reason === "booked"
-                      ? t("book.slotReasons.booked")
-                      : s.reason === "past"
-                        ? t("book.slotReasons.past")
-                        : s.reason === "lead-time"
-                          ? t("book.slotReasons.leadTime")
-                          : undefined
+                  onClick={() => pickSlot(s.start)}
+                  title={reasonLabel}
+                  aria-label={
+                    s.available
+                      ? `${s.start} — ${s.end}`
+                      : `${s.start} · ${reasonLabel ?? ""}`
                   }
                   className={[
-                    "border py-2.5 text-sm font-medium tabular-nums transition-colors",
+                    "relative border py-2.5 text-sm font-medium tabular-nums transition-colors",
                     cls,
                   ].join(" ")}
                 >
-                  {s.start}
+                  <span className={!s.available ? "line-through" : undefined}>
+                    {s.start}
+                  </span>
+                  {s.reason === "booked" ? (
+                    <span className="absolute inset-x-0 -bottom-0.5 text-[8px] tracking-[0.2em] uppercase text-ink/55">
+                      {t("book.slotReasons.booked")}
+                    </span>
+                  ) : null}
                 </button>
               );
             })}
@@ -411,7 +443,14 @@ function Step({
 }) {
   const t = useT();
   return (
-    <section className={disabled ? "opacity-50 pointer-events-none select-none" : ""} aria-disabled={disabled || undefined}>
+    <section
+      id={`booking-step-${number}`}
+      className={[
+        "scroll-mt-24",
+        disabled ? "opacity-50 pointer-events-none select-none" : "",
+      ].join(" ")}
+      aria-disabled={disabled || undefined}
+    >
       <div className="mb-5">
         <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
           {t("book.step")} {String(number).padStart(2, "0")}

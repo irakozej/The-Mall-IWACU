@@ -4,18 +4,18 @@
     "viewMenu": "Reba Menu",
     "viewFullMenu": "Reba Menu Yose",
     "seeFullMenu": "Reba Menu Yose",
-    "bookSession": "Saba Igihe",
-    "bookTime": "Saba Igihe",
-    "visitUs": "Tubarakaze",
+    "bookSession": "Hitamo Igihe",
+    "bookTime": "Hitamo Igihe",
+    "visitUs": "Mwadusura",
     "getDirections": "Inzira Igana Hano",
-    "callUs": "Hamagara",
+    "callUs": "Duhamagare",
     "whatsapp": "WhatsApp",
     "or": "cyangwa",
     "scrollIndicator": "Manukana",
     "askStaff": "Baza umukozi",
-    "signature": "Ubudasa",
+    "signature": "Umwihariko",
     "section": "Igice",
-    "pricesMayVary": "Ibiciro birashobora guhinduka. Amafoto ni urugero gusa. Ibicuruzwa byose biri mu rwego rw'ubuhabwa.",
+    "pricesMayVary": "Ibiciro bishobora guhinduka. Amafoto ni urugero gusa. Ibicuruzwa byose biri mu rwego rw'ubihabwa.",
     "language": "Ururimi",
     "menuShortcut": "Kanda Urebe Menu"
   },
@@ -25,33 +25,33 @@
     "book": "Saba",
     "about": "Ibyacu",
     "contact": "Twandikire",
-    "privacy": "Ubuzima Bwite",
+    "privacy": "Umwihariko",
     "terms": "Amabwiriza"
   },
   "hero": {
-    "locationChip": "Kicukiro · Kanombe · Kabeza · Kigali",
-    "subtitle": "Aho mukundira muri kariya gace — kurya, kunywa, kugura, kuruhuka. Ibyangombwa, akabari, igikoni, na massage ndetse n'umwuka mushyushye — byose mu nzu imwe.",
+    "locationChip": "Kigali · Kicukiro · Kanombe · Kabeza  ",
+    "subtitle": "Ibyo Tubafitiye — kurya, kunywa, Ibiribwa, kuruhuka. Bitegurwa mu, akabari, igikoni, na massage ndetse na Souna — byose mur The Mall IWACU.",
     "metrics": {
-      "doorsOpen": "Tugufungurira",
+      "doorsOpen": "Dufungurira",
       "services": "Serivisi",
-      "roof": "Inzu",
+      "roof": "The Mall IWACU",
       "iwacu": "Iwacu"
     }
   },
   "services": {
-    "kicker": "Serivisi enye, ahantu hamwe",
+    "kicker": "Serivisi enye, ahantu hamwe.",
     "heading": "Ibyo umunsi wawe ukeneye byose — mu nzu imwe.",
-    "intro": "The Mall IWACU ni inguni aho ibyo gukora, amafunguro, ibinyobwa n'ikiruhuko bihurira. Hitamo umuryango.",
+    "intro": "The Mall IWACU ni inguni yo wabonamo, amafunguro, ibinyobwa n'ikiruhuko bihurira. Hitamo umuryango.",
     "items": {
       "groceries": {
         "title": "Ibyangombwa",
-        "description": "Ibyangombwa bya buri munsi, imbuto n'imboga, n'ibibikwa mu gikoni — guhagarara byihuse, ibiciro bishyizweho, serivisi y'umuturanyi.",
+        "description": "Ibyangombwa bya buri munsi, n'ibibikwa mu gikoni — guhagarara byihuse, ibiciro bishyizweho, serivisi y'umuturanyi.",
         "cta": "Hagarara Ugure"
       },
       "bar": {
         "title": "Akabari",
-        "description": "Inzoga zikonje zo mu Rwanda, ibinyobwa byoroshye, divayi na cocktail ya buri munsi — uburyo bworoshye bwo kuruhuka.",
-        "cta": "Icara ku Mbasi"
+        "description": "Inzoga zikonje zo mu Rwanda, ibinyobwa bidasembuye, divayi na cocktail ya buri munsi — uburyo bworoshye bwo kuruhuka.",
+        "cta": "Ibyicaro birateguye"
       },
       "kitchen": {
         "title": "Igikoni",
@@ -59,8 +59,8 @@
         "cta": "Reba Menu"
       },
       "spa": {
-        "title": "Massage n'Umwuka",
-        "description": "Massage y'umubiri wose, reflexology, umwuka w'ibyatsi — ihohotere, hagarara, wihagararire iruhande.",
+        "title": "Massage na Souna",
+        "description": "Massage y'umubiri wose, reflexology, umwuka w'ibyatsi — Massage iruhura, hagarara.",
         "cta": "Saba Igihe"
       }
     }

@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { LocaleProvider } from "@/lib/i18n";
-import { siteOrigin, siteUrl } from "@/lib/site";
+import { siteOrigin, siteUrl, withBasePath } from "@/lib/site";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -60,12 +60,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon-512.svg", sizes: "512x512", type: "image/svg+xml" },
+      { url: withBasePath("/favicon.svg"), type: "image/svg+xml" },
+      { url: withBasePath("/icon-512.svg"), sizes: "512x512", type: "image/svg+xml" },
     ],
-    apple: [{ url: "/icon-512.svg" }],
+    apple: [{ url: withBasePath("/icon-512.svg") }],
   },
-  manifest: "/manifest.webmanifest",
+  manifest: withBasePath("/manifest.webmanifest"),
   applicationName: "The Mall IWACU",
   appleWebApp: {
     capable: true,
