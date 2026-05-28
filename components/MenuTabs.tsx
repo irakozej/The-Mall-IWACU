@@ -236,6 +236,11 @@ export default function MenuTabs({ data }: Props) {
                           </p>
                         ) : null}
                       </div>
+                      {sec.note ? (
+                        <p className="mt-3 pt-3 border-t border-ink/10 text-xs sm:text-sm italic text-ink-soft whitespace-pre-line leading-relaxed">
+                          {sec.note}
+                        </p>
+                      ) : null}
                     </div>
                     <ul className="px-1">
                       {sec.items.map((item) => (

@@ -11,6 +11,8 @@ export type MenuSection = {
   id: string;
   title: string;
   subtitle?: string;
+  /** Multi-line section-level note rendered under the heading. Use `\n` for line breaks. */
+  note?: string;
   items: MenuItem[];
 };
 

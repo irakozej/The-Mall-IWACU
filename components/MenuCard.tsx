@@ -46,7 +46,7 @@ export default function MenuCard({ item, currency }: Props) {
       </div>
 
       {item.description ? (
-        <p className="mt-1.5 text-sm text-ink-soft max-w-xl">{item.description}</p>
+        <p className="mt-1.5 text-sm italic text-ink-soft max-w-xl">{item.description}</p>
       ) : null}
     </li>
   );
