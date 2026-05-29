@@ -160,7 +160,16 @@
       "leadTime": "Too soon — needs at least 1h notice"
     },
     "messagePrefix": "Hello The Mall IWACU 👋",
-    "messageBody": "I'd like to book a massage / treatment:"
+    "messageBody": "I'd like to book a massage / treatment:",
+    "loadingTimes": "Checking available times…",
+    "success": {
+      "kicker": "Booking received",
+      "heading": "We'll confirm shortly via WhatsApp.",
+      "body": "Keep the reference below — quote it when our team replies.",
+      "reference": "Booking reference",
+      "reopen": "Re-open WhatsApp",
+      "messageLine": "Reference"
+    }
   },
   "contact": {
     "kicker": "Say Hello",

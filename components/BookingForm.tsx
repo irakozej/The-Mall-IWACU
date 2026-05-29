@@ -1,5 +1,22 @@
 "use client";
 
+/**
+ * Booking flow — talks to Supabase when configured, falls back to the bundled
+ * data/bookings.json otherwise so the GitHub Pages build still works without
+ * any secrets.
+ *
+ * To turn real-time availability on:
+ *   1. Run `supabase/schema.sql` once in your Supabase project's SQL Editor.
+ *      It creates the `bookings` table, an exclusion constraint that blocks
+ *      overlapping rows, the public RLS policies, and the realtime publication.
+ *   2. Set NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY locally
+ *      in `.env.local`, and in GitHub Actions as repo secrets — the deploy
+ *      workflow already forwards them at build time.
+ *
+ * All Supabase calls live in `lib/booking.ts` (fetchBookings,
+ * createPendingBooking, subscribeBookings) — this file only orchestrates the UI.
+ */
+
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, Calendar, Clock, Check, MessageCircle, Sparkles } from "lucide-react";
 import {
@@ -51,6 +68,29 @@ function savePending(p: Pending[]): void {
   window.localStorage.setItem(PENDING_KEY, JSON.stringify(p));
 }
 
+// Customer-facing booking reference. Not the DB primary key — it's a short,
+// human-readable code that both the customer and staff can quote on WhatsApp.
+//   IWACU-YYYYMMDD-HHMM-XXXX (XXXX = random 4-char A-Z 0-9 suffix)
+function makeReference(date: string, time: string): string {
+  const compactDate = date.replace(/-/g, "");
+  const compactTime = time.replace(":", "");
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // skip I/O/0/1 for legibility
+  let suffix = "";
+  for (let i = 0; i < 4; i++) {
+    suffix += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return `IWACU-${compactDate}-${compactTime}-${suffix}`;
+}
+
+type Submitted = {
+  reference: string;
+  service: Service;
+  date: string;
+  start: string;
+  end: string;
+  whatsappUrl: string;
+};
+
 export default function BookingForm() {
   const t = useT();
   const [service, setService] = useState<Service | null>(null);
@@ -65,6 +105,12 @@ export default function BookingForm() {
   // Bookings come from Supabase when configured (live + shared), otherwise
   // from the bundled JSON fallback so the page still works in dev.
   const [serverBookings, setServerBookings] = useState<Booking[]>(fallbackBookings);
+  // True once the initial fetchBookings() resolves. When Supabase is not
+  // configured the fallback JSON is already in state, so we skip the loading UI.
+  const [bookingsHydrated, setBookingsHydrated] = useState(!isSupabaseConfigured);
+  // Filled after a successful submit; the form view morphs into a success
+  // panel that shows the reference + WhatsApp link.
+  const [submitted, setSubmitted] = useState<Submitted | null>(null);
   // `now` lives in state so the past/lead-time checks happen after hydration —
   // avoids a server/client mismatch when generating slots.
   const [now, setNow] = useState<Date | null>(null);
@@ -83,6 +129,8 @@ export default function BookingForm() {
       setServerBookings(fresh);
     } catch {
       // fetchBookings already falls back internally; ignore.
+    } finally {
+      setBookingsHydrated(true);
     }
   }, []);
 
@@ -188,10 +236,15 @@ export default function BookingForm() {
       return;
     }
 
+    // Customer-facing reference — quoted in the WhatsApp message so both
+    // sides can refer to the same booking when staff replies.
+    const reference = makeReference(date, selectedSlot.start);
+
     const text = [
       t("book.messagePrefix"),
       "",
       t("book.messageBody"),
+      `• ${t("book.success.messageLine")}: ${reference}`,
       `• ${t("book.step1.title")}: ${service.name}`,
       `• ${t("book.step2.title")}: ${date}`,
       `• ${t("book.step3.title")}: ${selectedSlot.start} — ${selectedSlot.end}`,
@@ -223,9 +276,23 @@ export default function BookingForm() {
     savePending(next);
     setPending(next);
 
+    // Stash everything the success panel needs before the slight delay,
+    // so the panel can render the reference immediately as state flips.
+    const submittedSnapshot: Submitted = {
+      reference,
+      service,
+      date,
+      start: selectedSlot.start,
+      end: selectedSlot.end,
+      whatsappUrl: url,
+    };
+
     window.setTimeout(() => {
+      // Parallel WhatsApp notification path — pop-up blockers may swallow this,
+      // which is why the success panel surfaces a re-open button.
       window.open(url, "_blank", "noopener,noreferrer");
       setStatus("sent");
+      setSubmitted(submittedSnapshot);
     }, 300);
   }
 
@@ -351,7 +418,26 @@ export default function BookingForm() {
         }
         disabled={!service || !date}
       >
-        {!service || !date ? null : slots.length === 0 ? (
+        {!service || !date ? null : !bookingsHydrated ? (
+          // Live-availability loading state. We mirror the slot grid shape
+          // so the layout doesn't jump once the bookings resolve.
+          <div
+            className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2"
+            role="status"
+            aria-live="polite"
+          >
+            <span className="sr-only">{t("book.loadingTimes")}</span>
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div
+                key={i}
+                aria-hidden
+                className="border border-ink/10 bg-cream-warm/60 py-2.5 animate-pulse"
+              >
+                <span className="block mx-auto h-3 w-10 bg-ink/10" />
+              </div>
+            ))}
+          </div>
+        ) : slots.length === 0 ? (
           <p className="text-sm text-ink-soft">
             {t("book.step3.noTimes")}
           </p>
@@ -383,105 +469,178 @@ export default function BookingForm() {
         ) : null}
       </Step>
 
-      {/* Step 4 — Your details */}
+      {/* Step 4 — Your details (or success panel after submit) */}
       <Step
         ref={step4Ref}
         number={4}
         title={t("book.step4.title")}
         subtitle={t("book.step4.subtitle")}
-        disabled={!selectedSlot?.available}
+        disabled={!selectedSlot?.available && !submitted}
       >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="b-name" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              {t("book.step4.name")}
-            </label>
-            <input
-              id="b-name"
-              required
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
-              placeholder={t("book.step4.namePlaceholder")}
-            />
-          </div>
-          <div>
-            <label htmlFor="b-phone" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              {t("book.step4.phone")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
-            </label>
-            <input
-              id="b-phone"
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
-              placeholder={t("book.step4.phonePlaceholder")}
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="b-notes" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
-              {t("book.step4.notes")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
-            </label>
-            <textarea
-              id="b-notes"
-              rows={3}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"
-              placeholder={t("book.step4.notesPlaceholder")}
-            />
-          </div>
-        </div>
+        {submitted ? (
+          <SuccessPanel submitted={submitted} />
+        ) : (
+          <>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="b-name" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
+                  {t("book.step4.name")}
+                </label>
+                <input
+                  id="b-name"
+                  required
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
+                  placeholder={t("book.step4.namePlaceholder")}
+                />
+              </div>
+              <div>
+                <label htmlFor="b-phone" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
+                  {t("book.step4.phone")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
+                </label>
+                <input
+                  id="b-phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors"
+                  placeholder={t("book.step4.phonePlaceholder")}
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="b-notes" className="block text-[11px] tracking-[0.25em] uppercase text-gold-deep mb-2">
+                  {t("book.step4.notes")} <span className="text-ink-mute lowercase tracking-normal text-xs">{t("book.step4.optional")}</span>
+                </label>
+                <textarea
+                  id="b-notes"
+                  rows={3}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"
+                  placeholder={t("book.step4.notesPlaceholder")}
+                />
+              </div>
+            </div>
 
-        {submitError ? (
-          <div
-            role="alert"
-            className="mt-5 flex items-start gap-3 border border-amber-600/40 bg-amber-50 text-amber-900 px-4 py-3 text-sm"
-          >
-            <AlertCircle size={18} className="mt-0.5 shrink-0 text-amber-700" />
-            <p>
-              {submitError === "slot-taken"
-                ? t("book.slotReasons.booked")
-                : t("book.step4.hold")}
+            {submitError ? (
+              <div
+                role="alert"
+                className="mt-5 flex items-start gap-3 border border-amber-600/40 bg-amber-50 text-amber-900 px-4 py-3 text-sm"
+              >
+                <AlertCircle size={18} className="mt-0.5 shrink-0 text-amber-700" />
+                <p>
+                  {submitError === "slot-taken"
+                    ? t("book.slotReasons.booked")
+                    : t("book.step4.hold")}
+                </p>
+              </div>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={!canSubmit || status !== "idle"}
+              className={[
+                "mt-6 inline-flex items-center gap-2 px-6 py-3 text-sm transition-colors",
+                status === "sent"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-forest text-cream hover:bg-forest-deep",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
+              ].join(" ")}
+            >
+              {status === "sent" ? (
+                <>
+                  <Check size={16} /> {t("book.step4.opening")}
+                </>
+              ) : status === "submitting" ? (
+                <>
+                  <span className="w-3.5 h-3.5 rounded-full border-2 border-cream/40 border-t-cream animate-spin" />
+                  {t("book.step4.preparing")}
+                </>
+              ) : (
+                <>
+                  <MessageCircle size={16} /> {t("book.step4.submit")}
+                </>
+              )}
+            </button>
+
+            <p className="mt-3 text-[11px] text-ink-mute max-w-prose">
+              {t("book.step4.hold")}
             </p>
-          </div>
-        ) : null}
-
-        <button
-          type="submit"
-          disabled={!canSubmit || status !== "idle"}
-          className={[
-            "mt-6 inline-flex items-center gap-2 px-6 py-3 text-sm transition-colors",
-            status === "sent"
-              ? "bg-emerald-600 text-white"
-              : "bg-forest text-cream hover:bg-forest-deep",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
-          ].join(" ")}
-        >
-          {status === "sent" ? (
-            <>
-              <Check size={16} /> {t("book.step4.opening")}
-            </>
-          ) : status === "submitting" ? (
-            <>
-              <span className="w-3.5 h-3.5 rounded-full border-2 border-cream/40 border-t-cream animate-spin" />
-              {t("book.step4.preparing")}
-            </>
-          ) : (
-            <>
-              <MessageCircle size={16} /> {t("book.step4.submit")}
-            </>
-          )}
-        </button>
-
-        <p className="mt-3 text-[11px] text-ink-mute max-w-prose">
-          {t("book.step4.hold")}
-        </p>
+          </>
+        )}
       </Step>
     </form>
+  );
+}
+
+function SuccessPanel({ submitted }: { submitted: Submitted }) {
+  const t = useT();
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="border border-emerald-600/30 bg-emerald-50 px-5 py-6 sm:px-7 sm:py-8"
+    >
+      <div className="flex items-center gap-2 text-emerald-800">
+        <Check size={18} />
+        <p className="text-[10px] tracking-[0.3em] uppercase">
+          {t("book.success.kicker")}
+        </p>
+      </div>
+      <h3 className="mt-3 font-display text-2xl sm:text-3xl text-forest leading-tight">
+        {t("book.success.heading")}
+      </h3>
+      <p className="mt-2 text-sm text-ink-soft max-w-prose">
+        {t("book.success.body")}
+      </p>
+
+      <div className="mt-5 bg-cream-warm border border-ink/10 px-4 py-3">
+        <p className="text-[10px] tracking-[0.3em] uppercase text-ink-mute">
+          {t("book.success.reference")}
+        </p>
+        <p className="mt-1 font-mono text-base sm:text-lg text-forest tabular-nums break-all">
+          {submitted.reference}
+        </p>
+      </div>
+
+      <dl className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm">
+        <div className="flex gap-2">
+          <dt className="text-ink-mute">{t("book.step1.title")}:</dt>
+          <dd className="text-ink">{submitted.service.name}</dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="text-ink-mute">{t("book.step2.title")}:</dt>
+          <dd className="text-ink tabular-nums">{submitted.date}</dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="text-ink-mute">{t("book.step3.title")}:</dt>
+          <dd className="text-ink tabular-nums">
+            {submitted.start} — {submitted.end}
+          </dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="text-ink-mute">
+            {submitted.service.durationMin} {t("book.minutes")}
+          </dt>
+          <dd className="text-ink ml-auto tabular-nums">
+            {formatPriceRWF(submitted.service.price)}
+          </dd>
+        </div>
+      </dl>
+
+      <a
+        href={submitted.whatsappUrl}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="mt-6 inline-flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 text-sm hover:bg-emerald-700 transition-colors"
+      >
+        <MessageCircle size={16} /> {t("book.success.reopen")}
+      </a>
+    </div>
   );
 }
 

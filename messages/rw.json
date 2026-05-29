@@ -161,7 +161,16 @@
       "leadTime": "Ni kare cyane — bisaba isaha imwe imbere"
     },
     "messagePrefix": "Muraho The Mall IWACU 👋",
-    "messageBody": "Nshaka gufata massage / serivisi:"
+    "messageBody": "Nshaka gufata massage / serivisi:",
+    "loadingTimes": "Hareba amasaha aboneka…",
+    "success": {
+      "kicker": "Cyaherewe",
+      "heading": "Tugiye kubikwemeza vuba kuri WhatsApp.",
+      "body": "Bika nomero ikurikira — uyivuge igihe itsinda ryacu rizagusubiza.",
+      "reference": "Nomero y'igihe",
+      "reopen": "Subira kuri WhatsApp",
+      "messageLine": "Nomero"
+    }
   },
   "contact": {
     "kicker": "Twandikire",
