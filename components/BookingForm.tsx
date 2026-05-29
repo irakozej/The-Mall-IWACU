@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, Calendar, Clock, Check, MessageCircle, Sparkles } from "lucide-react";
 import {
   bookings as fallbackBookings,
@@ -69,6 +69,12 @@ export default function BookingForm() {
   // avoids a server/client mismatch when generating slots.
   const [now, setNow] = useState<Date | null>(null);
 
+  // Step refs let us smooth-scroll the next step into view as the user picks.
+  // Step 1 has no ref because it's the entry point.
+  const step2Ref = useRef<HTMLElement>(null);
+  const step3Ref = useRef<HTMLElement>(null);
+  const step4Ref = useRef<HTMLElement>(null);
+
   // Reload bookings from Supabase (or fallback to JSON). Defined as a stable
   // callback so the realtime subscription can poke it on every change.
   const reloadBookings = useCallback(async () => {
@@ -116,16 +122,21 @@ export default function BookingForm() {
   const canSubmit =
     service && date && selectedSlot?.available && name.trim().length >= 2;
 
-  // Smooth-scroll the next step into view so the next decision is obvious
+  // Smooth-scroll the target step into view so the next decision is obvious
   // even on long mobile screens. Two RAFs let the disabled→enabled transition
-  // settle before the scroll fires.
-  function scrollToStep(n: number) {
+  // settle before the scroll fires. Falls back to instant when the user has
+  // `prefers-reduced-motion: reduce` set.
+  function scrollToRef(target: React.RefObject<HTMLElement>) {
     if (typeof window === "undefined") return;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
-        const el = document.getElementById(`booking-step-${n}`);
-        if (!el) return;
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.current?.scrollIntoView({
+          behavior: reduceMotion ? "auto" : "smooth",
+          block: "start",
+        });
       }),
     );
   }
@@ -135,18 +146,18 @@ export default function BookingForm() {
     setService(s);
     setSlotStart(null);
     setSubmitError(null);
-    scrollToStep(2);
+    scrollToRef(step2Ref);
   }
   function pickDate(d: string) {
     setDate(d);
     setSlotStart(null);
     setSubmitError(null);
-    scrollToStep(3);
+    scrollToRef(step3Ref);
   }
   function pickSlot(start: string) {
     setSlotStart(start);
     setSubmitError(null);
-    scrollToStep(4);
+    scrollToRef(step4Ref);
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -287,6 +298,7 @@ export default function BookingForm() {
 
       {/* Step 2 — Date */}
       <Step
+        ref={step2Ref}
         number={2}
         title={t("book.step2.title")}
         subtitle={t("book.step2.subtitle", { days: config.maxDaysAhead })}
@@ -325,6 +337,7 @@ export default function BookingForm() {
 
       {/* Step 3 — Slot */}
       <Step
+        ref={step3Ref}
         number={3}
         title={t("book.step3.title")}
         subtitle={
@@ -344,49 +357,14 @@ export default function BookingForm() {
           </p>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-            {slots.map((s) => {
-              const active = slotStart === s.start;
-              const cls = !s.available
-                ? "text-ink/40 border-ink/15 cursor-not-allowed bg-[repeating-linear-gradient(135deg,transparent_0,transparent_5px,rgba(45,45,45,0.07)_5px,rgba(45,45,45,0.07)_10px)] bg-cream-warm"
-                : active
-                  ? "bg-forest text-cream border-forest"
-                  : "bg-cream-warm border-ink/10 hover:border-gold text-ink";
-              const reasonLabel =
-                s.reason === "booked"
-                  ? t("book.slotReasons.booked")
-                  : s.reason === "past"
-                    ? t("book.slotReasons.past")
-                    : s.reason === "lead-time"
-                      ? t("book.slotReasons.leadTime")
-                      : undefined;
-              return (
-                <button
-                  key={s.start}
-                  type="button"
-                  disabled={!s.available}
-                  onClick={() => pickSlot(s.start)}
-                  title={reasonLabel}
-                  aria-label={
-                    s.available
-                      ? `${s.start} — ${s.end}`
-                      : `${s.start} · ${reasonLabel ?? ""}`
-                  }
-                  className={[
-                    "relative border py-2.5 text-sm font-medium tabular-nums transition-colors",
-                    cls,
-                  ].join(" ")}
-                >
-                  <span className={!s.available ? "line-through" : undefined}>
-                    {s.start}
-                  </span>
-                  {s.reason === "booked" ? (
-                    <span className="absolute inset-x-0 -bottom-0.5 text-[8px] tracking-[0.2em] uppercase text-ink/55">
-                      {t("book.slotReasons.booked")}
-                    </span>
-                  ) : null}
-                </button>
-              );
-            })}
+            {slots.map((s) => (
+              <SlotButton
+                key={s.start}
+                slot={s}
+                active={slotStart === s.start}
+                onPick={pickSlot}
+              />
+            ))}
           </div>
         )}
 
@@ -407,6 +385,7 @@ export default function BookingForm() {
 
       {/* Step 4 — Your details */}
       <Step
+        ref={step4Ref}
         number={4}
         title={t("book.step4.title")}
         subtitle={t("book.step4.subtitle")}
@@ -506,25 +485,79 @@ export default function BookingForm() {
   );
 }
 
-function Step({
-  number,
-  title,
-  subtitle,
-  disabled = false,
-  children,
+function SlotButton({
+  slot,
+  active,
+  onPick,
 }: {
+  slot: Slot;
+  active: boolean;
+  onPick: (start: string) => void;
+}) {
+  const t = useT();
+  const reasonLabel =
+    slot.reason === "booked"
+      ? t("book.slotReasons.booked")
+      : slot.reason === "past"
+        ? t("book.slotReasons.past")
+        : slot.reason === "lead-time"
+          ? t("book.slotReasons.leadTime")
+          : undefined;
+
+  const base =
+    "relative border py-2.5 text-sm font-medium tabular-nums transition-colors";
+  // Strong "taken" read — forest-tinted base + diagonal stripe overlay sit
+  // together because background-color and background-image are independent
+  // CSS properties. Available states stay primary (gold hover, forest fill
+  // when selected) so the eye is drawn to actionable slots.
+  const state = !slot.available
+    ? "text-ink/45 border-forest/30 cursor-not-allowed bg-forest/10 bg-[repeating-linear-gradient(135deg,transparent_0,transparent_6px,rgba(27,67,50,0.22)_6px,rgba(27,67,50,0.22)_12px)]"
+    : active
+      ? "bg-forest text-cream border-forest"
+      : "bg-cream-warm border-ink/10 hover:border-gold text-ink";
+
+  return (
+    <button
+      type="button"
+      disabled={!slot.available}
+      aria-disabled={!slot.available || undefined}
+      onClick={() => onPick(slot.start)}
+      title={reasonLabel}
+      aria-label={
+        slot.available ? `${slot.start} — ${slot.end}` : slot.start
+      }
+      className={[base, state].join(" ")}
+    >
+      <span className={!slot.available ? "line-through" : undefined}>
+        {slot.start}
+      </span>
+      {!slot.available && reasonLabel ? (
+        <span className="sr-only">{reasonLabel}</span>
+      ) : null}
+    </button>
+  );
+}
+
+type StepProps = {
   number: number;
   title: string;
   subtitle?: string;
   disabled?: boolean;
   children: React.ReactNode;
-}) {
+};
+
+const Step = forwardRef<HTMLElement, StepProps>(function Step(
+  { number, title, subtitle, disabled = false, children },
+  ref,
+) {
   const t = useT();
   return (
     <section
+      ref={ref}
       id={`booking-step-${number}`}
       className={[
-        "scroll-mt-24",
+        // ~80px top offset so the sticky navbar doesn't cover the heading.
+        "scroll-mt-20",
         disabled ? "opacity-50 pointer-events-none select-none" : "",
       ].join(" ")}
       aria-disabled={disabled || undefined}
@@ -546,4 +579,5 @@ function Step({
       {children}
     </section>
   );
-}
+});
+Step.displayName = "Step";
