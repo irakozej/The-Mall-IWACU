@@ -11,11 +11,17 @@ The Supabase project is created, the schema is applied, and the credentials
 are baked into the deploy workflow — `/book` runs with **Live availability**
 in production. Two dashboard-side steps remain (they cannot be done from code):
 
-1. **Disable public sign-ups (security — do this first).** Supabase dashboard
+1. **Re-run [`supabase/schema.sql`](supabase/schema.sql) once (required).**
+   The booking flow changed on June 11, 2026 to an approval model — pending
+   requests no longer reserve slots, and staff approve/reject from `/staff`.
+   That needs the updated overlap constraint and the staff update policy from
+   the current schema file. Until it's re-run, approving from `/staff` will
+   fail. SQL Editor → paste the whole file → Run (idempotent, safe).
+2. **Disable public sign-ups (security).** Supabase dashboard
    → **Authentication → Sign In / Up → Email** → turn off *"Allow new users to
    sign up"*. As of June 11, 2026 sign-ups were still ON, which would let a
    stranger self-register and read customer details through the staff policy.
-2. **Create the massage employee's login** for the **`/staff` dashboard** —
+3. **Create the massage employee's login** for the **`/staff` dashboard** —
    **Authentication → Users → Add user** (tick *Auto Confirm User*). See
    "Staff dashboard" in [SUPABASE.md](SUPABASE.md).
 

@@ -36,30 +36,28 @@ create index if not exists bookings_status_idx on public.bookings(status);
 -- ---------------------------------------------------------------------------
 -- 3. Exclusion constraint — atomic protection against double-booking.
 --
--- Non-cancelled rows for the same date cannot have overlapping time ranges.
--- This is what stops two simultaneous inserts from booking the same slot
--- even if both pass the soft race check in the client.
+-- Only CONFIRMED rows participate. Pending requests do NOT reserve a slot —
+-- staff approve them from /staff, and approval is the moment the slot locks.
+-- Several customers may request the same time; confirming the second one
+-- fails on this constraint, which is exactly the protection we want.
+--
+-- Drop-and-recreate so re-running this file upgrades older installs where
+-- the constraint also covered pending rows.
 -- ---------------------------------------------------------------------------
 -- Note: the exclude expression must use only IMMUTABLE functions. We use
 -- make_interval(mins => duration_min) because casting `(text || ' minutes')`
 -- to interval is locale-sensitive (not immutable) and Postgres rejects it
 -- inside an index/exclusion expression.
-do $$
-begin
-  if not exists (
-    select 1 from pg_constraint where conname = 'bookings_no_overlap'
-  ) then
-    alter table public.bookings
-      add constraint bookings_no_overlap
-      exclude using gist (
-        booking_date with =,
-        tsrange(
-          booking_date + start_time,
-          booking_date + start_time + make_interval(mins => duration_min)
-        ) with &&
-      ) where (status <> 'cancelled');
-  end if;
-end $$;
+alter table public.bookings drop constraint if exists bookings_no_overlap;
+alter table public.bookings
+  add constraint bookings_no_overlap
+  exclude using gist (
+    booking_date with =,
+    tsrange(
+      booking_date + start_time,
+      booking_date + start_time + make_interval(mins => duration_min)
+    ) with &&
+  ) where (status = 'confirmed');
 
 -- ---------------------------------------------------------------------------
 -- 4. Row-Level Security.
@@ -84,8 +82,8 @@ create policy "anon can insert pending"
   for insert
   with check (status = 'pending');
 
--- No public updates / deletes. You manage status changes from the
--- Supabase dashboard (which uses the service_role bypass).
+-- No public updates / deletes. Status changes happen through the staff
+-- dashboard (authenticated, below) or the Supabase dashboard (service_role).
 
 -- Staff read access — any signed-in user (created from the dashboard under
 -- Authentication → Users) can read every row, including cancelled ones and
@@ -97,6 +95,23 @@ create policy "staff can read all bookings"
   for select
   to authenticated
   using (true);
+
+-- Staff approve / reject — signed-in staff can change a booking's status
+-- from the /staff dashboard (approve → confirmed, reject → cancelled).
+-- The column grant below limits them to the status column; confirming a
+-- time that overlaps an already-confirmed booking is rejected atomically
+-- by the bookings_no_overlap constraint.
+drop policy if exists "staff can update status" on public.bookings;
+create policy "staff can update status"
+  on public.bookings
+  for update
+  to authenticated
+  using (true)
+  with check (status in ('pending', 'confirmed', 'cancelled'));
+
+revoke update on public.bookings from anon;
+revoke update on public.bookings from authenticated;
+grant update (status) on public.bookings to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- 4b. Column privacy — anonymous visitors only need availability data.

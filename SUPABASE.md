@@ -101,29 +101,33 @@ user**.
 ### When a customer books
 
 1. They pick service → date → time → name on `/book` and tap **Request via WhatsApp**.
-2. A `pending` row is inserted; their WhatsApp opens with the full booking details pre-filled.
-3. Every other browser that has the booking page open sees that slot go grey within ~1 second.
+2. A `pending` row is inserted; their WhatsApp opens with the full booking
+   details pre-filled.
+3. **The slot stays open to other customers** — a request does not reserve
+   anything. Several people may request the same time; staff approval decides.
 
-### When you reply
+### Approving / rejecting (the employee does this on `/staff`)
 
-1. Open the **Supabase dashboard → Table Editor → bookings**.
-2. Find the row (sorted by `created_at` newest first by default).
-3. Change `status`:
-   - **`confirmed`** — locks the slot permanently.
-   - **`cancelled`** — frees the slot back up immediately for everyone.
-4. Reply to the customer on WhatsApp.
+1. Open `/staff` → **Week ahead**. Pending requests show amber with
+   **Approve** and **Reject** buttons.
+2. **Approve** — the slot locks and greys out on every open booking page
+   within ~1 second. If the time was already approved for someone else, the
+   database refuses and the dashboard explains the overlap.
+3. **Reject** — the request is cancelled and the slot stays available.
+4. Reply to the customer on WhatsApp either way.
 
-### Pending auto-expiry
+The Supabase dashboard (Table Editor → change `status`) still works as a
+fallback for the owner.
 
-Pending rows older than 30 minutes are ignored by the client query, so
-abandoned half-bookings (customer never sent the WhatsApp message) free up
-on their own. You don't need to clean them up. If you want to keep the
-table tidy, run this from time to time in the SQL editor:
+### Housekeeping
+
+Pending requests stay until acted on. If old ones pile up, reject them from
+`/staff`, or clear them in the SQL editor:
 
 ```sql
 delete from bookings
 where status = 'pending'
-  and created_at < now() - interval '24 hours';
+  and created_at < now() - interval '7 days';
 ```
 
 ---

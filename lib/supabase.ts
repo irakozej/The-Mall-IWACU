@@ -47,5 +47,3 @@ export function getSupabase(): SupabaseClient | null {
 }
 
 export const isSupabaseConfigured = Boolean(url && anonKey);
-
-export const PENDING_EXPIRY_MIN = 30;

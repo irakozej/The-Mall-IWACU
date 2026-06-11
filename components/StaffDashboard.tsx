@@ -10,7 +10,9 @@
  * availability columns — see supabase/schema.sql §4b.
  *
  * Two views:
- *   - Week ahead: today through +7 days, one card per day (planning view).
+ *   - Week ahead: today through +7 days, one card per day (planning view),
+ *     with Approve/Reject controls on pending requests — approval is what
+ *     locks a slot for the public booking page; rejection frees it.
  *   - Past: the last PAST_DAYS days grouped by month, with status filters
  *     and a per-service breakdown (sessions + revenue).
  */
@@ -20,16 +22,19 @@ import type { Session } from "@supabase/supabase-js";
 import {
   AlertCircle,
   CalendarDays,
+  Check,
   History,
   Lock,
   LogOut,
   Phone,
   RefreshCw,
+  X,
 } from "lucide-react";
 import {
   fetchStaffBookings,
   staffSignIn,
   staffSignOut,
+  updateBookingStatus,
   watchStaffSession,
   type StaffBooking,
 } from "@/lib/staff";
@@ -39,7 +44,6 @@ import {
   subscribeBookings,
   toDateString,
 } from "@/lib/booking";
-import { PENDING_EXPIRY_MIN } from "@/lib/supabase";
 import { useLocale, useT } from "@/lib/i18n";
 
 const PAST_DAYS = 60;
@@ -61,22 +65,6 @@ function isoToDate(iso: string): Date {
 
 function localeTag(locale: string): string {
   return locale === "rw" ? "rw-RW" : "en-GB";
-}
-
-/**
- * A pending request older than PENDING_EXPIRY_MIN is ignored by the public
- * booking page (the slot is offered again), so for staff it's effectively a
- * dead request — shown as "expired" so it isn't mistaken for one that still
- * needs a WhatsApp reply.
- */
-function displayStatus(b: StaffBooking): StaffBooking["status"] | "expired" {
-  if (
-    b.status === "pending" &&
-    Date.now() - new Date(b.createdAt).getTime() > PENDING_EXPIRY_MIN * 60_000
-  ) {
-    return "expired";
-  }
-  return b.status;
 }
 
 export default function StaffDashboard() {
@@ -290,7 +278,7 @@ function Dashboard({ session }: { session: Session }) {
           {t("staff.loading")}
         </div>
       ) : view === "week" ? (
-        <WeekView bookings={bookings} />
+        <WeekView bookings={bookings} onChanged={() => load(view)} />
       ) : (
         <PastView bookings={bookings} />
       )}
@@ -328,7 +316,13 @@ function ViewTab({
 
 /* ----------------------------- Week view -------------------------------- */
 
-function WeekView({ bookings }: { bookings: StaffBooking[] }) {
+function WeekView({
+  bookings,
+  onChanged,
+}: {
+  bookings: StaffBooking[];
+  onChanged: () => void;
+}) {
   const t = useT();
   const { locale } = useLocale();
 
@@ -348,7 +342,7 @@ function WeekView({ bookings }: { bookings: StaffBooking[] }) {
   }, [bookings]);
 
   const confirmed = bookings.filter((b) => b.status === "confirmed").length;
-  const pending = bookings.filter((b) => displayStatus(b) === "pending").length;
+  const pending = bookings.filter((b) => b.status === "pending").length;
 
   return (
     <div className="space-y-8">
@@ -402,7 +396,7 @@ function WeekView({ bookings }: { bookings: StaffBooking[] }) {
               {dayBookings.length > 0 ? (
                 <ul className="divide-y divide-ink/10">
                   {dayBookings.map((b) => (
-                    <BookingRow key={b.id} booking={b} />
+                    <BookingRow key={b.id} booking={b} onChanged={onChanged} />
                   ))}
                 </ul>
               ) : null}
@@ -594,14 +588,17 @@ function Stat({
 function BookingRow({
   booking: b,
   showDate = false,
+  onChanged,
 }: {
   booking: StaffBooking;
   showDate?: boolean;
+  // When provided and the row is pending, Approve/Reject buttons appear.
+  onChanged?: () => void;
 }) {
   const t = useT();
   const { locale } = useLocale();
-  const status = displayStatus(b);
-  const dimmed = status === "cancelled" || status === "expired";
+  const status = b.status;
+  const dimmed = status === "cancelled";
 
   const edge =
     status === "confirmed"
@@ -674,15 +671,83 @@ function BookingRow({
           </div>
         </div>
       </div>
+
+      {status === "pending" && onChanged ? (
+        <RowActions booking={b} onChanged={onChanged} />
+      ) : null}
     </li>
   );
 }
 
-function StatusBadge({
-  status,
+/**
+ * Approve / Reject controls for a pending request. Approving locks the time
+ * for everyone (the public page greys it out within ~1s via realtime);
+ * rejecting frees it. If the time was meanwhile approved for someone else,
+ * the database refuses the overlap and we explain why.
+ */
+function RowActions({
+  booking: b,
+  onChanged,
 }: {
-  status: StaffBooking["status"] | "expired";
+  booking: StaffBooking;
+  onChanged: () => void;
 }) {
+  const t = useT();
+  const [busy, setBusy] = useState<"confirmed" | "cancelled" | null>(null);
+  const [error, setError] = useState<"overlap" | "error" | null>(null);
+
+  async function act(status: "confirmed" | "cancelled") {
+    setBusy(status);
+    setError(null);
+    const result = await updateBookingStatus(b.id, status);
+    if (!result.ok) {
+      setError(result.reason);
+      setBusy(null);
+      return;
+    }
+    onChanged();
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        disabled={busy !== null}
+        onClick={() => act("confirmed")}
+        className="inline-flex items-center gap-1.5 bg-emerald-600 text-white px-4 py-2 text-xs hover:bg-emerald-700 transition-colors disabled:opacity-60"
+      >
+        {busy === "confirmed" ? (
+          <span className="w-3 h-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+        ) : (
+          <Check size={13} />
+        )}
+        {t("staff.actions.approve")}
+      </button>
+      <button
+        type="button"
+        disabled={busy !== null}
+        onClick={() => act("cancelled")}
+        className="inline-flex items-center gap-1.5 border border-ink/20 text-ink px-4 py-2 text-xs hover:border-red-500 hover:text-red-700 transition-colors disabled:opacity-60"
+      >
+        {busy === "cancelled" ? (
+          <span className="w-3 h-3 rounded-full border-2 border-ink/30 border-t-ink animate-spin" />
+        ) : (
+          <X size={13} />
+        )}
+        {t("staff.actions.reject")}
+      </button>
+      {error ? (
+        <p role="alert" className="basis-full sm:basis-auto text-xs text-amber-900">
+          {error === "overlap"
+            ? t("staff.actions.overlap")
+            : t("staff.actions.error")}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function StatusBadge({ status }: { status: StaffBooking["status"] }) {
   const t = useT();
   const style =
     status === "confirmed"

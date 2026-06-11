@@ -151,8 +151,12 @@ export default function BookingForm() {
     [now],
   );
 
-  // Block the slot when either confirmed/pending in Supabase OR held locally.
+  // Live mode: only CONFIRMED bookings block slots — a pending request keeps
+  // the time open for everyone until staff approves it from /staff (and a
+  // rejected request never blocks). The local-hold list only participates in
+  // the no-Supabase fallback, where there is no server state at all.
   const effectiveBookings = useMemo(() => {
+    if (isSupabaseConfigured) return serverBookings;
     const pendingAsBookings = pending.map((p) => ({
       date: p.date,
       startTime: p.startTime,
@@ -259,22 +263,25 @@ export default function BookingForm() {
 
     const url = `https://wa.me/${site.whatsappDigits}?text=${encodeURIComponent(text)}`;
 
-    // Hold the slot locally too — protects this same browser before realtime
-    // round-trips, and also covers the local-only / no-Supabase fallback path.
-    const next = [
-      ...pending,
-      {
-        date,
-        startTime: selectedSlot.start,
-        endTime: selectedSlot.end,
-        serviceId: service.id,
-        serviceName: service.name,
-        durationMin: service.durationMin,
-        createdAt: Date.now(),
-      },
-    ];
-    savePending(next);
-    setPending(next);
+    // Fallback mode only: without a server, hold the slot in this browser so
+    // the same visitor can't re-pick it. In live mode the slot intentionally
+    // stays open until staff approves the request.
+    if (!isSupabaseConfigured) {
+      const next = [
+        ...pending,
+        {
+          date,
+          startTime: selectedSlot.start,
+          endTime: selectedSlot.end,
+          serviceId: service.id,
+          serviceName: service.name,
+          durationMin: service.durationMin,
+          createdAt: Date.now(),
+        },
+      ];
+      savePending(next);
+      setPending(next);
+    }
 
     // Stash everything the success panel needs before the slight delay,
     // so the panel can render the reference immediately as state flips.

@@ -79,6 +79,37 @@ export async function fetchStaffBookings(
   return ((data ?? []) as unknown as BookingRow[]).map(rowToStaffBooking);
 }
 
+export type UpdateStatusResult =
+  | { ok: true }
+  | { ok: false; reason: "overlap" | "error"; message?: string };
+
+/**
+ * Approve (confirmed) or reject (cancelled) a booking request. Requires a
+ * staff session — RLS restricts updates to the authenticated role, and the
+ * column grant limits them to the status column.
+ *
+ * Confirming a time that overlaps an already-confirmed booking fails on the
+ * bookings_no_overlap exclusion constraint (code 23P01) — surfaced as
+ * "overlap" so the UI can explain it instead of showing a raw error.
+ */
+export async function updateBookingStatus(
+  id: string,
+  status: "confirmed" | "cancelled",
+): Promise<UpdateStatusResult> {
+  const supabase = getSupabase();
+  if (!supabase) return { ok: false, reason: "error", message: "Supabase is not configured" };
+
+  const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+  if (error) {
+    return {
+      ok: false,
+      reason: error.code === "23P01" ? "overlap" : "error",
+      message: error.message,
+    };
+  }
+  return { ok: true };
+}
+
 /* ------------------------------- Auth ----------------------------------- */
 
 export async function staffSignIn(

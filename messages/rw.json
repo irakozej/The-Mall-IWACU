@@ -173,7 +173,7 @@
       "submit": "Saba kuri WhatsApp",
       "preparing": "Birategurwa…",
       "opening": "WhatsApp irafungura…",
-      "hold": "Igihe cyawe cyizigamiwe mu busabe bwawe mu masaha 24. Iyo bwemejwe, itsinda ryacu rizakwandikira kuri WhatsApp."
+      "hold": "Ubusabe bwawe bujya ku itsinda ryacu kugira ngo bwemezwe — igihe gifatwa burundu ari uko twabyemeje. Tuzabikwemeza kuri WhatsApp."
     },
     "minutes": "iminota",
     "slotReasons": {
@@ -283,7 +283,7 @@
     "empty": "Nta gahunda zihari.",
     "fetchError": "Ntibyakunze gufungura gahunda. Reba interineti yawe wongere ugerageze.",
     "retry": "Ongera ugerageze",
-    "weekSubtitle": "Ibyafashwe byose kuva uyu munsi kugeza ku minsi 7 iri imbere. Bihinduka ako kanya iyo hari gahunda nshya.",
+    "weekSubtitle": "Ibyasabwe byose kuva uyu munsi kugeza ku minsi 7 iri imbere. Kwemeza ni byo bifata igihe — mbere y'aho, igihe gisigara gifunguye ku bandi bakiriya.",
     "pastSubtitle": "Gahunda zose z'iminsi {days} ishize, izishya zibanza.",
     "login": {
       "title": "Kwinjira kw'abakozi",
@@ -305,14 +305,19 @@
     "status": {
       "pending": "Itegerejwe",
       "confirmed": "Yemejwe",
-      "cancelled": "Yahagaritswe",
-      "expired": "Byarengeje igihe"
+      "cancelled": "Yahagaritswe"
     },
     "dayCount": "Gahunda: {n}",
     "byService": "Hakurikijwe serivisi",
     "byServiceSubtitle": "Inshuro zemejwe n'amafaranga kuri buri serivisi muri iki gihe.",
     "serviceCol": "Serivisi",
     "sessions": "Inshuro",
-    "filterAll": "Zose"
+    "filterAll": "Zose",
+    "actions": {
+      "approve": "Emeza",
+      "reject": "Yanga",
+      "overlap": "Ntibishoboka kwemeza — iki gihe gihuye n'indi gahunda yamaze kwemezwa.",
+      "error": "Ntibyakunze guhindura gahunda. Ongera ugerageze."
+    }
   }
 }

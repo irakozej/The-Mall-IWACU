@@ -3,7 +3,6 @@ import bookingsData from "@/data/bookings.json";
 import {
   getSupabase,
   isSupabaseConfigured,
-  PENDING_EXPIRY_MIN,
   type BookingRow,
 } from "./supabase";
 
@@ -23,7 +22,6 @@ export type Booking = {
 
 export type BookingConfig = {
   workingHours: { open: string; close: string };
-  slotIncrementMin: number;
   leadTimeMin: number;
   maxDaysAhead: number;
   services: Service[];
@@ -85,8 +83,11 @@ export function generateSlots(
 
   const dateBookings = allBookings.filter((b) => b.date === date);
 
+  // Slots step by the service's own duration, so the offered times tile the
+  // working day back-to-back for the chosen treatment (60-min → 09:00, 10:00…;
+  // 40-min → 09:00, 09:40…).
   const slots: Slot[] = [];
-  for (let m = openMin; m + durationMin <= closeMin; m += cfg.slotIncrementMin) {
+  for (let m = openMin; m + durationMin <= closeMin; m += durationMin) {
     const endM = m + durationMin;
 
     let available = true;
@@ -151,9 +152,9 @@ function rowToBooking(r: Pick<BookingRow, "booking_date" | "start_time" | "durat
 }
 
 /**
- * Fetch the bookings that should block slots:
- *  - all `confirmed` rows
- *  - `pending` rows created in the last PENDING_EXPIRY_MIN minutes
+ * Fetch the bookings that should block slots — CONFIRMED rows only.
+ * Pending requests don't reserve a time; staff approving them from /staff
+ * is what locks the slot, and a rejected request never blocks anything.
  *
  * Falls back to the static JSON when Supabase isn't configured.
  */
@@ -161,11 +162,10 @@ export async function fetchBookings(): Promise<Booking[]> {
   const supabase = getSupabase();
   if (!supabase) return bookings;
 
-  const cutoff = new Date(Date.now() - PENDING_EXPIRY_MIN * 60_000).toISOString();
   const { data, error } = await supabase
     .from("bookings")
-    .select("booking_date, start_time, duration_min, status, created_at")
-    .neq("status", "cancelled");
+    .select("booking_date, start_time, duration_min")
+    .eq("status", "confirmed");
 
   if (error || !data) {
     if (typeof console !== "undefined") {
@@ -174,18 +174,8 @@ export async function fetchBookings(): Promise<Booking[]> {
     return bookings;
   }
 
-  type FetchRow = Pick<
-    BookingRow,
-    "booking_date" | "start_time" | "duration_min" | "status" | "created_at"
-  >;
-  const rows = data as unknown as FetchRow[];
-
-  return rows
-    .filter((r) =>
-      r.status === "confirmed" ||
-      (r.status === "pending" && r.created_at > cutoff),
-    )
-    .map(rowToBooking);
+  type FetchRow = Pick<BookingRow, "booking_date" | "start_time" | "duration_min">;
+  return (data as unknown as FetchRow[]).map(rowToBooking);
 }
 
 export type CreateBookingInput = {
@@ -204,15 +194,13 @@ export type CreateBookingResult =
   | { ok: false; reason: "slot-taken" | "supabase-error"; message?: string };
 
 /**
- * Insert a `pending` booking. The page subscribes to the same table over the
- * realtime channel, so every open BookingForm gets the new row within ~1s and
- * the slot greys out for everyone.
+ * Insert a `pending` booking request. The slot stays open to other visitors
+ * until staff approves the request from /staff — several customers may
+ * request the same time, and approval (not the request) is what locks it.
  *
- * Conflict handling: we re-query for any existing pending/confirmed row that
- * overlaps the requested window. There's still a tiny race between the check
- * and the insert; we treat that the same as "slot-taken" by surfacing the
- * postgres error. For atomic protection, the schema also defines an exclusion
- * constraint (see supabase/schema.sql).
+ * The only hard conflict is an already-CONFIRMED overlapping booking: we
+ * check for one up front for a nicer error, and the bookings_no_overlap
+ * exclusion constraint enforces it atomically at approval time.
  */
 export async function createPendingBooking(
   input: CreateBookingInput,
@@ -222,28 +210,23 @@ export async function createPendingBooking(
 
   const startSec = `${input.startTime}:00`;
 
-  // Soft race check first — gives a nicer error than a raw constraint violation.
-  const cutoff = new Date(Date.now() - PENDING_EXPIRY_MIN * 60_000).toISOString();
+  // Soft check — is the window already confirmed for someone else?
   const { data: existing, error: checkError } = await supabase
     .from("bookings")
-    .select("id, status, created_at, start_time, duration_min")
+    .select("id, start_time, duration_min")
     .eq("booking_date", input.date)
-    .neq("status", "cancelled");
+    .eq("status", "confirmed");
 
   if (checkError) {
     return { ok: false, reason: "supabase-error", message: checkError.message };
   }
 
   if (existing && existing.length > 0) {
-    type CheckRow = Pick<
-      BookingRow,
-      "status" | "created_at" | "start_time" | "duration_min"
-    >;
+    type CheckRow = Pick<BookingRow, "start_time" | "duration_min">;
     const rows = existing as unknown as CheckRow[];
     const reqStart = timeToMinutes(input.startTime);
     const reqEnd = reqStart + input.durationMin;
     const conflict = rows.some((r) => {
-      if (r.status === "pending" && r.created_at <= cutoff) return false;
       const eStart = timeToMinutes(r.start_time.slice(0, 5));
       const eEnd = eStart + r.duration_min;
       return reqStart < eEnd && reqEnd > eStart;

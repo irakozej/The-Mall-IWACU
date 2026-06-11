@@ -172,7 +172,7 @@
       "submit": "Request via WhatsApp",
       "preparing": "Preparing…",
       "opening": "Opening WhatsApp…",
-      "hold": "Your slot is held tentatively in your browser for 24 hours. Final confirmation comes when our team replies on WhatsApp."
+      "hold": "Your request goes to our team for approval — the time is only reserved once we approve it. We'll confirm on WhatsApp."
     },
     "minutes": "min",
     "slotReasons": {
@@ -282,7 +282,7 @@
     "empty": "No bookings.",
     "fetchError": "Couldn't load bookings. Check your connection and try again.",
     "retry": "Try again",
-    "weekSubtitle": "Everything booked from today through the next 7 days. Updates live as new requests come in.",
+    "weekSubtitle": "Everything booked from today through the next 7 days. Approve a request to lock its time — until then the slot stays open to other customers.",
     "pastSubtitle": "All bookings from the last {days} days, newest first.",
     "login": {
       "title": "Staff sign-in",
@@ -304,14 +304,19 @@
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
-      "cancelled": "Cancelled",
-      "expired": "Expired"
+      "cancelled": "Cancelled"
     },
     "dayCount": "Bookings: {n}",
     "byService": "By service",
     "byServiceSubtitle": "Confirmed sessions and earnings per treatment in this period.",
     "serviceCol": "Service",
     "sessions": "Sessions",
-    "filterAll": "All"
+    "filterAll": "All",
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "overlap": "Can't approve — this time overlaps a booking that is already confirmed.",
+      "error": "Could not update the booking. Try again."
+    }
   }
 }
