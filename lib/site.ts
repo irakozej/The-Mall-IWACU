@@ -75,10 +75,12 @@ export const site = {
     "Card & Mobile Money accepted",
     "Family-friendly",
   ],
+  // Replace these with the business's verified profile URLs once created —
+  // the handle-based links below are best guesses, not confirmed accounts.
   socials: [
-    { label: "Instagram", href: "https://instagram.com/", handle: "@themalliwacu" },
-    { label: "Facebook", href: "https://facebook.com/", handle: "The Mall IWACU" },
-    { label: "TikTok", href: "https://tiktok.com/", handle: "@themalliwacu" },
+    { label: "Instagram", href: "https://instagram.com/themalliwacu", handle: "@themalliwacu" },
+    { label: "Facebook", href: "https://facebook.com/search/top?q=The%20Mall%20IWACU", handle: "The Mall IWACU" },
+    { label: "TikTok", href: "https://tiktok.com/@themalliwacu", handle: "@themalliwacu" },
   ],
   // Embed query targets the business name first; Google falls back to the area
   // if the listing is not yet verified.

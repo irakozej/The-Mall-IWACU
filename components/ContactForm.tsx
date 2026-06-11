@@ -16,11 +16,15 @@ export default function ContactForm() {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
     setStatus("submitting");
-    const text = `${t("book.messagePrefix")}%0A%0A` +
-      `Name: ${encodeURIComponent(name)}%0A` +
-      (phone ? `Phone: ${encodeURIComponent(phone)}%0A` : "") +
-      `%0A${encodeURIComponent(message)}`;
-    const url = `https://wa.me/${site.whatsappDigits}?text=${text}`;
+    const text = [
+      t("book.messagePrefix"),
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : "",
+      message,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+    const url = `https://wa.me/${site.whatsappDigits}?text=${encodeURIComponent(text)}`;
     window.setTimeout(() => {
       window.open(url, "_blank", "noopener,noreferrer");
       setStatus("sent");
