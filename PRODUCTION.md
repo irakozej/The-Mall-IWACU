@@ -17,6 +17,9 @@ already wired — schema, client code, realtime, deploy workflow.
    secret**, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 3. Re-run the deploy (Actions tab → latest run → Re-run all jobs) or push any
    commit. Hard-refresh `/book` — the dot turns green: **Live availability**.
+4. Create the massage employee's login for the **`/staff` dashboard** —
+   see "Staff dashboard" in [SUPABASE.md](SUPABASE.md). If you ran the schema
+   before the staff feature existed, re-run `supabase/schema.sql` once (safe).
 
 ## 2. Replace the 3 stock photos
 

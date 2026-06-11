@@ -69,9 +69,18 @@
     "heading": "Three rooms. One feeling.",
     "cta": "See the full menu",
     "scenes": {
-      "kitchen": { "label": "From the Kitchen", "caption": "Brochettes & buffet plates" },
-      "bar": { "label": "From the Bar", "caption": "Cold beers & cocktail of the day" },
-      "spa": { "label": "Massage & Steam", "caption": "Slow down. Breathe. Reset." }
+      "kitchen": {
+        "label": "From the Kitchen",
+        "caption": "Brochettes & buffet plates"
+      },
+      "bar": {
+        "label": "From the Bar",
+        "caption": "Cold beers & cocktail of the day"
+      },
+      "spa": {
+        "label": "Massage & Steam",
+        "caption": "Slow down. Breathe. Reset."
+      }
     }
   },
   "whyUs": {
@@ -79,10 +88,22 @@
     "heading": "A neighborhood gem — built for the everyday.",
     "lead": "Iwacu means \"at home,\" and that is the feeling we are after — wherever you walk through our doors, you should feel it the moment you arrive.",
     "values": {
-      "community": { "title": "Community First", "body": "We were built around our neighbors. Familiar faces, friendly service, real conversations." },
-      "quality": { "title": "Quality You Can Taste", "body": "From fresh ingredients to attentive treatments — quality is the only standard we know." },
-      "convenience": { "title": "All-In-One", "body": "Four services, one warm roof. Stop by once and leave with everything you needed." },
-      "location": { "title": "Right Around the Corner", "body": "Easy to find in Kabeza — close enough that we are part of the everyday." }
+      "community": {
+        "title": "Community First",
+        "body": "We were built around our neighbors. Familiar faces, friendly service, real conversations."
+      },
+      "quality": {
+        "title": "Quality You Can Taste",
+        "body": "From fresh ingredients to attentive treatments — quality is the only standard we know."
+      },
+      "convenience": {
+        "title": "All-In-One",
+        "body": "Four services, one warm roof. Stop by once and leave with everything you needed."
+      },
+      "location": {
+        "title": "Right Around the Corner",
+        "body": "Easy to find in Kabeza — close enough that we are part of the everyday."
+      }
     }
   },
   "hours": {
@@ -217,10 +238,22 @@
     "valuesKicker": "What we stand for",
     "valuesHeading": "Four values, one steady standard.",
     "values": {
-      "community": { "title": "Community", "body": "Built around our neighbors. The faces who walk in every day make this what it is." },
-      "quality": { "title": "Quality", "body": "From shelves to plates to treatments — we choose better, every day." },
-      "convenience": { "title": "Convenience", "body": "Four services, one warm roof. Stop by once, leave with everything you needed." },
-      "hospitality": { "title": "Hospitality", "body": "Iwacu means at home — and that is exactly the welcome we serve." }
+      "community": {
+        "title": "Community",
+        "body": "Built around our neighbors. The faces who walk in every day make this what it is."
+      },
+      "quality": {
+        "title": "Quality",
+        "body": "From shelves to plates to treatments — we choose better, every day."
+      },
+      "convenience": {
+        "title": "Convenience",
+        "body": "Four services, one warm roof. Stop by once, leave with everything you needed."
+      },
+      "hospitality": {
+        "title": "Hospitality",
+        "body": "Iwacu means at home — and that is exactly the welcome we serve."
+      }
     },
     "ownerLabel": "The Owner",
     "ownerName": "Iwacu Family",
@@ -236,5 +269,42 @@
     "subtitle": "That page is not on the table. But the rest of the mall is open — pull up a chair.",
     "back": "Back to home",
     "seeMenu": "See the menu"
+  },
+  "staff": {
+    "kicker": "Staff only",
+    "heading": "Massage bookings",
+    "intro": "Sign in with your staff account to see the week ahead and past bookings.",
+    "notConfigured": "The live booking system isn't connected yet. The owner needs to set up Supabase first (see SUPABASE.md in the project).",
+    "loading": "Loading…",
+    "signedInAs": "Signed in as",
+    "signOut": "Sign out",
+    "today": "Today",
+    "empty": "No bookings.",
+    "fetchError": "Couldn't load bookings. Check your connection and try again.",
+    "retry": "Try again",
+    "weekSubtitle": "Everything booked from today through the next 7 days. Updates live as new requests come in.",
+    "pastSubtitle": "All bookings from the last {days} days, newest first.",
+    "login": {
+      "title": "Staff sign-in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "signingIn": "Signing in…",
+      "error": "Sign-in failed — check your email and password."
+    },
+    "views": {
+      "week": "Week ahead",
+      "past": "Past bookings"
+    },
+    "summary": {
+      "total": "Bookings",
+      "confirmed": "Confirmed",
+      "revenue": "Confirmed revenue"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    }
   }
 }

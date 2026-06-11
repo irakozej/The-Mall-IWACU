@@ -38,8 +38,10 @@ export function getSupabase(): SupabaseClient | null {
     client = null;
     return null;
   }
+  // persistSession keeps the staff login (/staff) alive across reloads.
+  // Anonymous visitors never sign in, so nothing is stored for them.
   client = createClient(url, anonKey, {
-    auth: { persistSession: false },
+    auth: { persistSession: true },
   });
   return client;
 }

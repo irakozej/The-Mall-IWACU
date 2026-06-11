@@ -4,6 +4,8 @@
 --   - the `bookings` table
 --   - an exclusion constraint so two non-cancelled rows cannot overlap
 --   - Row-Level Security policies for public read + public pending insert
+--   - staff (authenticated) full read access for the /staff dashboard,
+--     while anonymous visitors can only read availability columns
 --   - realtime publication for the table so the page can subscribe to changes
 
 -- ---------------------------------------------------------------------------
@@ -84,6 +86,31 @@ create policy "anon can insert pending"
 
 -- No public updates / deletes. You manage status changes from the
 -- Supabase dashboard (which uses the service_role bypass).
+
+-- Staff read access — any signed-in user (created from the dashboard under
+-- Authentication → Users) can read every row, including cancelled ones and
+-- customer details. Sign-ups are disabled in the dashboard, so "authenticated"
+-- means exactly the accounts the owner created.
+drop policy if exists "staff can read all bookings" on public.bookings;
+create policy "staff can read all bookings"
+  on public.bookings
+  for select
+  to authenticated
+  using (true);
+
+-- ---------------------------------------------------------------------------
+-- 4b. Column privacy — anonymous visitors only need availability data.
+--
+-- The /book page reads date/time/duration/status to grey out taken slots; it
+-- never needs customer names, phones or notes. Restricting the anon grant to
+-- those columns means the public anon key physically cannot read personal
+-- data, even with hand-crafted API calls. Staff accounts (authenticated role)
+-- keep the default full-column grant. Realtime (WALRUS) honours column
+-- grants too — anon subscribers receive change events with only these columns.
+-- ---------------------------------------------------------------------------
+revoke select on public.bookings from anon;
+grant select (id, created_at, booking_date, start_time, duration_min, status)
+  on public.bookings to anon;
 
 -- ---------------------------------------------------------------------------
 -- 5. Realtime — publish the table so the BookingForm can subscribe.

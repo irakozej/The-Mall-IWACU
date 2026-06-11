@@ -105,6 +105,7 @@ export default function Footer() {
             <Link href="/contact" className="hover:text-gold transition-colors">{t("nav.contact")}</Link>
             <Link href="/privacy" className="hover:text-gold transition-colors">{t("nav.privacy")}</Link>
             <Link href="/terms" className="hover:text-gold transition-colors">{t("nav.terms")}</Link>
+            <Link href="/staff" className="hover:text-gold transition-colors text-cream/35">{t("staff.kicker")}</Link>
           </nav>
         </div>
       </div>

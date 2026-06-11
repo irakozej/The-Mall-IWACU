@@ -71,6 +71,31 @@ wait ~2 minutes, hard-refresh — the green dot appears.
 
 ---
 
+## Staff dashboard (`/staff`)
+
+The massage employee can see the week ahead and the last 60 days of bookings
+(service, customer, price, status) at **`/staff`** — but only after signing in.
+One-time setup:
+
+1. **Keep public sign-ups off.** Supabase dashboard → **Authentication →
+   Sign In / Up → Email** — disable *"Allow new users to sign up"*. This makes
+   "any signed-in user" mean exactly the accounts you create below.
+2. **Create the employee's account.** **Authentication → Users → Add user →
+   Create new user.** Enter the employee's email and a strong password, and
+   tick **Auto Confirm User**.
+3. **Re-run [`supabase/schema.sql`](supabase/schema.sql)** in the SQL Editor if
+   your project was created before the staff policies were added. It is
+   idempotent — re-running is always safe. This grants signed-in staff full
+   read access and, importantly, **removes public access to customer names,
+   phones and notes** (anonymous visitors can only read slot availability).
+4. Give the employee the URL (`https://<your-site>/staff/`), email and
+   password. They sign in once per browser; the session persists.
+
+To revoke access (e.g. employee leaves): **Authentication → Users → … → Delete
+user**.
+
+---
+
 ## Daily workflow
 
 ### When a customer books
