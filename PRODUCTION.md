@@ -5,21 +5,23 @@ to `main` redeploys it automatically. The code side is done — what remains are
 **owner inputs** the code cannot supply on its own. Work through this list and
 the site is fully production-complete.
 
-## 1. Turn on live bookings (highest impact, ~10 min)
+## 1. Live bookings — DONE (June 11, 2026), two auth steps remain
 
-The `/book` page currently shows **"Offline mode"** in production because the
-Supabase secrets were never added to the GitHub repository. Everything else is
-already wired — schema, client code, realtime, deploy workflow.
+The Supabase project is created, the schema is applied, and the credentials
+are baked into the deploy workflow — `/book` runs with **Live availability**
+in production. Two dashboard-side steps remain (they cannot be done from code):
 
-1. Follow [SUPABASE.md](SUPABASE.md) steps 1–3 (create the free project, run
-   `supabase/schema.sql`, copy the URL + anon key).
-2. On GitHub: **Settings → Secrets and variables → Actions → New repository
-   secret**, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-3. Re-run the deploy (Actions tab → latest run → Re-run all jobs) or push any
-   commit. Hard-refresh `/book` — the dot turns green: **Live availability**.
-4. Create the massage employee's login for the **`/staff` dashboard** —
-   see "Staff dashboard" in [SUPABASE.md](SUPABASE.md). If you ran the schema
-   before the staff feature existed, re-run `supabase/schema.sql` once (safe).
+1. **Disable public sign-ups (security — do this first).** Supabase dashboard
+   → **Authentication → Sign In / Up → Email** → turn off *"Allow new users to
+   sign up"*. As of June 11, 2026 sign-ups were still ON, which would let a
+   stranger self-register and read customer details through the staff policy.
+2. **Create the massage employee's login** for the **`/staff` dashboard** —
+   **Authentication → Users → Add user** (tick *Auto Confirm User*). See
+   "Staff dashboard" in [SUPABASE.md](SUPABASE.md).
+
+Housekeeping: the bookings table contains one row dated `2026-01-05` named
+"TEST ROW — safe to delete" (used to verify the connection). Delete it from
+the Table Editor whenever.
 
 ## 2. Replace the 3 stock photos
 
