@@ -304,7 +304,14 @@
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
-      "cancelled": "Cancelled"
-    }
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "dayCount": "Bookings: {n}",
+    "byService": "By service",
+    "byServiceSubtitle": "Confirmed sessions and earnings per treatment in this period.",
+    "serviceCol": "Service",
+    "sessions": "Sessions",
+    "filterAll": "All"
   }
 }

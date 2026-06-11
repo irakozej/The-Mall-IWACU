@@ -305,7 +305,14 @@
     "status": {
       "pending": "Itegerejwe",
       "confirmed": "Yemejwe",
-      "cancelled": "Yahagaritswe"
-    }
+      "cancelled": "Yahagaritswe",
+      "expired": "Byarengeje igihe"
+    },
+    "dayCount": "Gahunda: {n}",
+    "byService": "Hakurikijwe serivisi",
+    "byServiceSubtitle": "Inshuro zemejwe n'amafaranga kuri buri serivisi muri iki gihe.",
+    "serviceCol": "Serivisi",
+    "sessions": "Inshuro",
+    "filterAll": "Zose"
   }
 }

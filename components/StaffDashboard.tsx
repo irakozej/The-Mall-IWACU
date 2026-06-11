@@ -10,8 +10,9 @@
  * availability columns — see supabase/schema.sql §4b.
  *
  * Two views:
- *   - Week ahead: today through +7 days, grouped per day (planning view).
- *   - Past: the last PAST_DAYS days, newest first, with a revenue summary.
+ *   - Week ahead: today through +7 days, one card per day (planning view).
+ *   - Past: the last PAST_DAYS days grouped by month, with status filters
+ *     and a per-service breakdown (sessions + revenue).
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -38,12 +39,14 @@ import {
   subscribeBookings,
   toDateString,
 } from "@/lib/booking";
+import { PENDING_EXPIRY_MIN } from "@/lib/supabase";
 import { useLocale, useT } from "@/lib/i18n";
 
 const PAST_DAYS = 60;
 const WEEK_DAYS = 7;
 
 type View = "week" | "past";
+type StatusFilter = "all" | StaffBooking["status"];
 
 function addDays(d: Date, days: number): Date {
   const out = new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -51,12 +54,29 @@ function addDays(d: Date, days: number): Date {
   return out;
 }
 
-function dayLabel(iso: string, locale: string): string {
+function isoToDate(iso: string): Date {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString(
-    locale === "rw" ? "rw-RW" : "en-GB",
-    { weekday: "long", day: "numeric", month: "long" },
-  );
+  return new Date(y, m - 1, d);
+}
+
+function localeTag(locale: string): string {
+  return locale === "rw" ? "rw-RW" : "en-GB";
+}
+
+/**
+ * A pending request older than PENDING_EXPIRY_MIN is ignored by the public
+ * booking page (the slot is offered again), so for staff it's effectively a
+ * dead request — shown as "expired" so it isn't mistaken for one that still
+ * needs a WhatsApp reply.
+ */
+function displayStatus(b: StaffBooking): StaffBooking["status"] | "expired" {
+  if (
+    b.status === "pending" &&
+    Date.now() - new Date(b.createdAt).getTime() > PENDING_EXPIRY_MIN * 60_000
+  ) {
+    return "expired";
+  }
+  return b.status;
 }
 
 export default function StaffDashboard() {
@@ -68,10 +88,10 @@ export default function StaffDashboard() {
 
   if (!isSupabaseConfigured) {
     return (
-      <Panel>
+      <Notice>
         <AlertCircle size={20} className="text-amber-600 shrink-0" />
         <p className="text-sm text-ink-soft">{t("staff.notConfigured")}</p>
-      </Panel>
+      </Notice>
     );
   }
 
@@ -254,7 +274,7 @@ function Dashboard({ session }: { session: Session }) {
       </p>
 
       {error ? (
-        <Panel>
+        <Notice>
           <AlertCircle size={20} className="text-amber-600 shrink-0" />
           <p className="text-sm text-ink-soft">{t("staff.fetchError")}</p>
           <button
@@ -264,7 +284,7 @@ function Dashboard({ session }: { session: Session }) {
           >
             <RefreshCw size={12} /> {t("staff.retry")}
           </button>
-        </Panel>
+        </Notice>
       ) : bookings === null ? (
         <div className="py-16 text-center text-sm text-ink-mute" role="status">
           {t("staff.loading")}
@@ -310,6 +330,8 @@ function ViewTab({
 
 function WeekView({ bookings }: { bookings: StaffBooking[] }) {
   const t = useT();
+  const { locale } = useLocale();
+
   const days = useMemo(() => {
     const today = new Date();
     return Array.from({ length: WEEK_DAYS + 1 }, (_, i) =>
@@ -325,75 +347,238 @@ function WeekView({ bookings }: { bookings: StaffBooking[] }) {
     return map;
   }, [bookings]);
 
+  const confirmed = bookings.filter((b) => b.status === "confirmed").length;
+  const pending = bookings.filter((b) => displayStatus(b) === "pending").length;
+
   return (
-    <div className="space-y-10">
-      {days.map((iso, i) => {
-        const dayBookings = byDate.get(iso) ?? [];
-        return (
-          <section key={iso}>
-            <h2 className="flex items-baseline gap-3 font-display text-2xl text-forest">
-              <DayHeading iso={iso} />
-              {i === 0 ? (
-                <span className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-sans">
-                  {t("staff.today")}
+    <div className="space-y-8">
+      {/* Week at a glance */}
+      <div className="grid grid-cols-3 gap-3 sm:max-w-lg">
+        <Stat label={t("staff.summary.total")} value={String(bookings.length)} />
+        <Stat label={t("staff.status.confirmed")} value={String(confirmed)} accent="confirmed" />
+        <Stat label={t("staff.status.pending")} value={String(pending)} accent="pending" />
+      </div>
+
+      <div className="space-y-5">
+        {days.map((iso, i) => {
+          const dayBookings = byDate.get(iso) ?? [];
+          const isToday = i === 0;
+          const dayRevenue = dayBookings
+            .filter((b) => b.status === "confirmed")
+            .reduce((sum, b) => sum + (b.price ?? 0), 0);
+          return (
+            <section
+              key={iso}
+              className={[
+                "border bg-cream-warm/50",
+                isToday ? "border-gold/60" : "border-ink/10",
+              ].join(" ")}
+            >
+              <header
+                className={[
+                  "flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 sm:px-5 py-3 border-b",
+                  isToday ? "border-gold/40 bg-gold/10" : "border-ink/10",
+                ].join(" ")}
+              >
+                <h2 className="font-display text-xl text-forest capitalize">
+                  {isoToDate(iso).toLocaleDateString(localeTag(locale), {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}
+                </h2>
+                {isToday ? (
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-gold-deep">
+                    {t("staff.today")}
+                  </span>
+                ) : null}
+                <span className="ml-auto text-xs text-ink-mute tabular-nums">
+                  {dayBookings.length > 0
+                    ? t("staff.dayCount", { n: dayBookings.length })
+                    : t("staff.empty")}
+                  {dayRevenue > 0 ? ` · ${formatPriceRWF(dayRevenue)}` : ""}
                 </span>
+              </header>
+              {dayBookings.length > 0 ? (
+                <ul className="divide-y divide-ink/10">
+                  {dayBookings.map((b) => (
+                    <BookingRow key={b.id} booking={b} />
+                  ))}
+                </ul>
               ) : null}
-            </h2>
-            {dayBookings.length === 0 ? (
-              <p className="mt-3 text-sm text-ink-mute">{t("staff.empty")}</p>
-            ) : (
-              <ul className="mt-4 space-y-3">
-                {dayBookings.map((b) => (
-                  <BookingCard key={b.id} booking={b} />
-                ))}
-              </ul>
-            )}
-          </section>
-        );
-      })}
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
-}
-
-function DayHeading({ iso }: { iso: string }) {
-  const { locale } = useLocale();
-  return <>{dayLabel(iso, locale)}</>;
 }
 
 /* ----------------------------- Past view -------------------------------- */
 
 function PastView({ bookings }: { bookings: StaffBooking[] }) {
   const t = useT();
-  const newestFirst = useMemo(() => [...bookings].reverse(), [bookings]);
+  const { locale } = useLocale();
+  const [filter, setFilter] = useState<StatusFilter>("all");
 
   const confirmed = bookings.filter((b) => b.status === "confirmed");
   const revenue = confirmed.reduce((sum, b) => sum + (b.price ?? 0), 0);
 
+  // Per-service breakdown — confirmed sessions only, biggest earner first.
+  const byService = useMemo(() => {
+    const map = new Map<string, { name: string; count: number; revenue: number }>();
+    for (const b of confirmed) {
+      const key = b.serviceId ?? b.serviceName;
+      const entry = map.get(key) ?? { name: b.serviceName, count: 0, revenue: 0 };
+      entry.count += 1;
+      entry.revenue += b.price ?? 0;
+      map.set(key, entry);
+    }
+    return [...map.values()].sort((a, b) => b.revenue - a.revenue);
+  }, [confirmed]);
+
+  const counts: Record<StatusFilter, number> = {
+    all: bookings.length,
+    confirmed: confirmed.length,
+    pending: bookings.filter((b) => b.status === "pending").length,
+    cancelled: bookings.filter((b) => b.status === "cancelled").length,
+  };
+
+  const filtered = useMemo(() => {
+    const list = filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
+    return [...list].reverse(); // newest first
+  }, [bookings, filter]);
+
+  // Group by month for scannability over a 60-day window.
+  const months = useMemo(() => {
+    const out: { label: string; items: StaffBooking[] }[] = [];
+    for (const b of filtered) {
+      const label = isoToDate(b.date).toLocaleDateString(localeTag(locale), {
+        month: "long",
+        year: "numeric",
+      });
+      const last = out[out.length - 1];
+      if (last && last.label === label) last.items.push(b);
+      else out.push({ label, items: [b] });
+    }
+    return out;
+  }, [filtered, locale]);
+
   return (
-    <div className="space-y-8">
-      {/* Summary strip */}
+    <div className="space-y-10">
+      {/* Totals */}
       <div className="grid grid-cols-3 gap-3 sm:max-w-lg">
         <Stat label={t("staff.summary.total")} value={String(bookings.length)} />
-        <Stat label={t("staff.summary.confirmed")} value={String(confirmed.length)} />
+        <Stat
+          label={t("staff.summary.confirmed")}
+          value={String(confirmed.length)}
+          accent="confirmed"
+        />
         <Stat label={t("staff.summary.revenue")} value={formatPriceRWF(revenue)} />
       </div>
 
-      {newestFirst.length === 0 ? (
-        <p className="text-sm text-ink-mute">{t("staff.empty")}</p>
-      ) : (
-        <ul className="space-y-3">
-          {newestFirst.map((b) => (
-            <BookingCard key={b.id} booking={b} showDate />
+      {/* Per-service breakdown */}
+      {byService.length > 0 ? (
+        <section>
+          <h2 className="font-display text-2xl text-forest">
+            {t("staff.byService")}
+          </h2>
+          <p className="mt-1 text-sm text-ink-soft">{t("staff.byServiceSubtitle")}</p>
+          <div className="mt-4 border border-ink/10 bg-cream-warm/50">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-ink/10 text-[10px] tracking-[0.25em] uppercase text-ink-mute">
+                  <th className="text-left font-normal px-4 sm:px-5 py-2.5">
+                    {t("staff.serviceCol")}
+                  </th>
+                  <th className="text-right font-normal px-4 py-2.5">
+                    {t("staff.sessions")}
+                  </th>
+                  <th className="text-right font-normal px-4 sm:px-5 py-2.5">
+                    {t("staff.summary.revenue")}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ink/10">
+                {byService.map((s) => (
+                  <tr key={s.name}>
+                    <td className="px-4 sm:px-5 py-2.5 text-ink">{s.name}</td>
+                    <td className="px-4 py-2.5 text-right tabular-nums text-ink-soft">
+                      {s.count}
+                    </td>
+                    <td className="px-4 sm:px-5 py-2.5 text-right tabular-nums text-forest font-medium">
+                      {formatPriceRWF(s.revenue)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
+      {/* History list with status filter */}
+      <section>
+        <div className="flex flex-wrap items-center gap-2">
+          {(["all", "confirmed", "pending", "cancelled"] as const).map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setFilter(s)}
+              aria-pressed={filter === s}
+              className={[
+                "px-3 py-1.5 text-xs border transition-colors tabular-nums",
+                filter === s
+                  ? "bg-forest text-cream border-forest"
+                  : "bg-cream-warm text-ink border-ink/15 hover:border-gold",
+              ].join(" ")}
+            >
+              {s === "all" ? t("staff.filterAll") : t(`staff.status.${s}`)} · {counts[s]}
+            </button>
           ))}
-        </ul>
-      )}
+        </div>
+
+        {months.length === 0 ? (
+          <p className="mt-6 text-sm text-ink-mute">{t("staff.empty")}</p>
+        ) : (
+          <div className="mt-6 space-y-8">
+            {months.map((m) => (
+              <div key={m.label}>
+                <h3 className="font-display text-xl text-forest capitalize">
+                  {m.label}
+                </h3>
+                <ul className="mt-3 border border-ink/10 bg-cream-warm/50 divide-y divide-ink/10">
+                  {m.items.map((b) => (
+                    <BookingRow key={b.id} booking={b} showDate />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: string;
+  accent?: "confirmed" | "pending";
+}) {
+  const bar =
+    accent === "confirmed"
+      ? "bg-emerald-600"
+      : accent === "pending"
+        ? "bg-amber-500"
+        : "bg-gold";
   return (
-    <div className="bg-cream-warm border border-ink/10 px-4 py-3">
+    <div className="relative bg-cream-warm border border-ink/10 px-4 py-3 overflow-hidden">
+      <span className={`absolute left-0 top-0 bottom-0 w-[3px] ${bar}`} aria-hidden />
       <div className="text-[10px] tracking-[0.25em] uppercase text-ink-mute">
         {label}
       </div>
@@ -404,9 +589,9 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-/* ---------------------------- Booking card ------------------------------ */
+/* ---------------------------- Booking row ------------------------------- */
 
-function BookingCard({
+function BookingRow({
   booking: b,
   showDate = false,
 }: {
@@ -414,52 +599,90 @@ function BookingCard({
   showDate?: boolean;
 }) {
   const t = useT();
-  const cancelled = b.status === "cancelled";
+  const { locale } = useLocale();
+  const status = displayStatus(b);
+  const dimmed = status === "cancelled" || status === "expired";
+
+  const edge =
+    status === "confirmed"
+      ? "border-l-emerald-600"
+      : status === "pending"
+        ? "border-l-amber-500"
+        : "border-l-ink/20";
+
   return (
     <li
       className={[
-        "bg-cream-warm border border-ink/10 px-4 py-3 sm:px-5",
-        cancelled ? "opacity-60" : "",
+        "relative border-l-[3px] px-4 sm:px-5 py-3",
+        edge,
+        dimmed ? "opacity-60" : "",
       ].join(" ")}
     >
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <span className="font-display text-lg text-forest tabular-nums">
-          {showDate ? `${b.date} · ` : ""}
-          {b.startTime} — {b.endTime}
-        </span>
-        <span className={["text-sm", cancelled ? "line-through" : "text-ink"].join(" ")}>
-          {b.serviceName}
-        </span>
-        <span className="text-sm text-ink-mute">
-          {b.durationMin} {t("book.minutes")}
-        </span>
-        <span className="ml-auto flex items-center gap-3">
-          <span className="text-sm font-medium text-forest tabular-nums">
-            {b.price !== null ? formatPriceRWF(b.price) : "—"}
-          </span>
-          <StatusBadge status={b.status} />
-        </span>
-      </div>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
+        {/* Time block */}
+        <div className="w-32 shrink-0">
+          {showDate ? (
+            <div className="text-[11px] text-ink-mute capitalize">
+              {isoToDate(b.date).toLocaleDateString(localeTag(locale), {
+                weekday: "short",
+                day: "numeric",
+                month: "short",
+              })}
+            </div>
+          ) : null}
+          <div className="font-display text-lg text-forest tabular-nums leading-tight">
+            {b.startTime} — {b.endTime}
+          </div>
+          <div className="text-[11px] text-ink-mute">
+            {b.durationMin} {t("book.minutes")}
+          </div>
+        </div>
 
-      <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-soft">
-        <span>{b.customerName}</span>
-        {b.customerPhone ? (
-          <a
-            href={`tel:${b.customerPhone.replace(/\s/g, "")}`}
-            className="inline-flex items-center gap-1.5 hover:text-gold-deep transition-colors tabular-nums"
+        {/* Service + customer */}
+        <div className="min-w-0 flex-1 basis-52">
+          <div
+            className={[
+              "text-sm font-medium",
+              status === "cancelled" ? "line-through text-ink-soft" : "text-ink",
+            ].join(" ")}
           >
-            <Phone size={12} className="text-gold" /> {b.customerPhone}
-          </a>
-        ) : null}
-        {b.customerNotes ? (
-          <span className="text-ink-mute italic">{b.customerNotes}</span>
-        ) : null}
+            {b.serviceName}
+          </div>
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-ink-soft">
+            <span>{b.customerName}</span>
+            {b.customerPhone ? (
+              <a
+                href={`tel:${b.customerPhone.replace(/\s/g, "")}`}
+                className="inline-flex items-center gap-1 hover:text-gold-deep transition-colors tabular-nums"
+              >
+                <Phone size={11} className="text-gold" /> {b.customerPhone}
+              </a>
+            ) : null}
+          </div>
+          {b.customerNotes ? (
+            <p className="mt-0.5 text-xs italic text-ink-mute">{b.customerNotes}</p>
+          ) : null}
+        </div>
+
+        {/* Price + status */}
+        <div className="ml-auto text-right shrink-0">
+          <div className="text-sm font-medium text-forest tabular-nums">
+            {b.price !== null ? formatPriceRWF(b.price) : "—"}
+          </div>
+          <div className="mt-1">
+            <StatusBadge status={status} />
+          </div>
+        </div>
       </div>
     </li>
   );
 }
 
-function StatusBadge({ status }: { status: StaffBooking["status"] }) {
+function StatusBadge({
+  status,
+}: {
+  status: StaffBooking["status"] | "expired";
+}) {
   const t = useT();
   const style =
     status === "confirmed"
@@ -470,7 +693,7 @@ function StatusBadge({ status }: { status: StaffBooking["status"] }) {
   return (
     <span
       className={[
-        "border px-2 py-0.5 text-[10px] tracking-[0.2em] uppercase",
+        "inline-block border px-2 py-0.5 text-[10px] tracking-[0.2em] uppercase",
         style,
       ].join(" ")}
     >
@@ -481,7 +704,7 @@ function StatusBadge({ status }: { status: StaffBooking["status"] }) {
 
 /* ------------------------------- Shared --------------------------------- */
 
-function Panel({ children }: { children: React.ReactNode }) {
+function Notice({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 border border-amber-600/40 bg-amber-50 px-5 py-4">
       {children}
