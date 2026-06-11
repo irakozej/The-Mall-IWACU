@@ -62,16 +62,48 @@ exist**. Create/claim the profiles or update the URLs to the real ones.
 domain is registered and email is set up. Either register the domain (see #6)
 or swap in an address that actually receives mail (e.g. a Gmail address).
 
-## 6. Optional — custom domain
+## 6. Custom domain — prepared, waiting on purchase
 
-The site works fine on github.io. If you buy `themalliwacu.rw` (or similar):
+Availability checked June 11, 2026: **`themalliwacu.rw` and `themalliwacu.com`
+both appear unregistered.** The repo is already wired — after you buy the
+domain, the switch is settings-only (no code changes).
 
-1. Add a `CNAME` file in `public/` containing just the domain.
-2. Point the domain's DNS at GitHub Pages (A/AAAA or CNAME records — GitHub
-   docs: "Managing a custom domain").
-3. In `.github/workflows/deploy.yml`, set `NEXT_PUBLIC_SITE_URL` to the domain
-   and `NEXT_PUBLIC_BASE_PATH` to empty.
-4. Re-print the menu QR code from `/contact` afterwards — it encodes the URL.
+### a) Buy the domain (only you can do this)
+
+- **`themalliwacu.rw` (recommended — local trust, "made in Rwanda" signal):**
+  sold by RICTA-accredited registrars — see the registrar list at
+  <https://registry.ricta.org.rw>. Typically ~15,000–20,000 RWF/year.
+- **`themalliwacu.com` (alternative / also worth grabbing to redirect):**
+  any registrar (Namecheap, Cloudflare, GoDaddy…), ~US$10–15/year.
+
+### b) Point DNS at GitHub Pages (in the registrar's DNS panel)
+
+| Type  | Host  | Value                  |
+| ----- | ----- | ---------------------- |
+| A     | `@`   | `185.199.108.153`      |
+| A     | `@`   | `185.199.109.153`      |
+| A     | `@`   | `185.199.110.153`      |
+| A     | `@`   | `185.199.111.153`      |
+| CNAME | `www` | `irakozej.github.io`   |
+
+### c) Flip the two GitHub settings
+
+1. Repo → **Settings → Pages → Custom domain** → enter the domain, save,
+   wait for the DNS check, then tick **Enforce HTTPS** (cert takes ~15 min).
+2. Repo → **Settings → Secrets and variables → Actions → Variables tab →
+   New repository variable**: name `CUSTOM_DOMAIN`, value the bare domain
+   (e.g. `themalliwacu.rw`).
+3. Re-run the deploy (Actions → latest run → Re-run all jobs). The workflow
+   rebuilds the site for the domain root, emits the `CNAME` file, and every
+   internal link, sitemap entry and OG tag switches to the new domain.
+
+### d) Afterwards
+
+- Re-print the menu QR code from `/contact` — it encodes the site URL.
+- The old `irakozej.github.io/The-Mall-IWACU/` URL keeps redirecting to the
+  custom domain automatically once Pages has it configured.
+- This also makes `hello@themalliwacu.rw` (item 5) possible — most registrars
+  sell email hosting, or use a free email-forwarding service.
 
 ## 7. Optional — Google Business listing
 

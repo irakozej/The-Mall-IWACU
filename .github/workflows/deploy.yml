@@ -30,16 +30,26 @@ jobs:
 
       - name: Compute base path
         id: base
+        env:
+          # Repo variable (Settings → Secrets and variables → Actions →
+          # Variables). When set to e.g. `themalliwacu.rw`, the site builds
+          # for that domain at the root path and a CNAME file is emitted.
+          # Leave unset to keep deploying to <owner>.github.io/<repo>/.
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
         run: |
           REPO="${{ github.event.repository.name }}"
           OWNER="${{ github.repository_owner }}"
           OWNER_LOWER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
-          # User/Org pages live at <owner>.github.io with no base path.
-          # Project pages live at <owner>.github.io/<repo>/ — base path is /<repo>.
-          if [ "$REPO" = "${OWNER_LOWER}.github.io" ]; then
+          if [ -n "$CUSTOM_DOMAIN" ]; then
+            # Custom domain — site lives at the domain root.
+            echo "base=" >> "$GITHUB_OUTPUT"
+            echo "url=https://${CUSTOM_DOMAIN}" >> "$GITHUB_OUTPUT"
+          elif [ "$REPO" = "${OWNER_LOWER}.github.io" ]; then
+            # User/Org pages live at <owner>.github.io with no base path.
             echo "base=" >> "$GITHUB_OUTPUT"
             echo "url=https://${OWNER_LOWER}.github.io" >> "$GITHUB_OUTPUT"
           else
+            # Project pages live at <owner>.github.io/<repo>/ — base path is /<repo>.
             echo "base=/${REPO}" >> "$GITHUB_OUTPUT"
             echo "url=https://${OWNER_LOWER}.github.io/${REPO}" >> "$GITHUB_OUTPUT"
           fi
@@ -61,6 +71,10 @@ jobs:
 
       - name: Disable Jekyll on Pages
         run: touch out/.nojekyll
+
+      - name: Emit CNAME for custom domain
+        if: vars.CUSTOM_DOMAIN != ''
+        run: echo "${{ vars.CUSTOM_DOMAIN }}" > out/CNAME
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

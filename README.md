@@ -57,11 +57,12 @@ The deployed URL is shown in the workflow run summary
 
 ### Custom domain
 
-If you point a custom domain (e.g. `themalliwacu.rw`) at GitHub Pages:
-
-1. Add a `CNAME` file to `public/` containing just the domain.
-2. In the workflow, override `NEXT_PUBLIC_SITE_URL` with `https://themalliwacu.rw`
-   and set `NEXT_PUBLIC_BASE_PATH` to empty so internal links resolve at the root.
+Already wired. Buy the domain, point its DNS at GitHub Pages, then set the
+repository variable `CUSTOM_DOMAIN` (Settings → Secrets and variables →
+Actions → Variables) to the bare domain and re-run the deploy — the workflow
+rebuilds at the domain root and emits the `CNAME` file. Step-by-step
+instructions (including the DNS records) are in
+[PRODUCTION.md](PRODUCTION.md) §6.
 
 ## File structure
 
