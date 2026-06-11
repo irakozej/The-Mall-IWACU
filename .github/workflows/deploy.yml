@@ -51,10 +51,12 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.base }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.base.outputs.url }}
-          # Optional Supabase secrets. When set, /book becomes live.
-          # When unset, the page falls back to data/bookings.json.
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          # Supabase project for live bookings. The anon key is public by
+          # design — it ships in the browser bundle and RLS is what protects
+          # the data — so committing it here is safe. Repo secrets, if set,
+          # still take precedence (e.g. after rotating the key).
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://amjamsuknlmnwdjzjwjx.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtamFtc3Vrbmxtbndkanpqd2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzA4NDksImV4cCI6MjA5NDcwNjg0OX0.Rk3YUCuqElV4bQ06kGZ_t6NuP6s4bquUb0IjXntNCWU' }}
         run: npm run build
 
       - name: Disable Jekyll on Pages
