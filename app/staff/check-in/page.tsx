@@ -15,12 +15,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Session } from "@supabase/supabase-js";
-import { AlertCircle, ArrowLeft, CalendarCheck, UserPlus } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  CalendarCheck,
+  LogOut,
+  UserPlus,
+} from "lucide-react";
 import ImigongoPattern from "@/components/ImigongoPattern";
 import WalkInForm from "@/components/WalkInForm";
 import CheckInList from "@/components/CheckInList";
 import { LoginForm, Notice } from "@/components/StaffDashboard";
-import { watchStaffSession } from "@/lib/staff";
+import { staffSignOut, watchStaffSession } from "@/lib/staff";
 import { isSupabaseConfigured } from "@/lib/booking";
 import { useT } from "@/lib/i18n";
 
@@ -72,6 +78,21 @@ export default function CheckInPage() {
             <LoginForm />
           ) : (
             <div className="space-y-7">
+              {/* Session bar — who is signed in + sign-out for shared phones */}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-ink-mute">
+                <span>
+                  {t("staff.signedInAs")}{" "}
+                  <span className="text-ink">{session.user.email}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => staffSignOut()}
+                  className="ml-auto inline-flex items-center gap-1.5 border border-ink/15 px-3 py-2 text-ink hover:border-gold transition-colors"
+                >
+                  <LogOut size={13} /> {t("staff.signOut")}
+                </button>
+              </div>
+
               {/* Big phone-friendly tabs */}
               <div className="grid grid-cols-2 border border-ink/15">
                 <TabButton
