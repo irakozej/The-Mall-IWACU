@@ -100,6 +100,7 @@ export default function Footer() {
           <p>© {year} The Mall IWACU. {t("footer.rights")}</p>
           <nav className="flex gap-5 flex-wrap">
             <Link href="/menu" className="hover:text-gold transition-colors">{t("nav.menu")}</Link>
+            <Link href="/spa" className="hover:text-gold transition-colors">{t("nav.spa")}</Link>
             <Link href="/book" className="hover:text-gold transition-colors">{t("nav.book")}</Link>
             <Link href="/about" className="hover:text-gold transition-colors">{t("nav.about")}</Link>
             <Link href="/contact" className="hover:text-gold transition-colors">{t("nav.contact")}</Link>

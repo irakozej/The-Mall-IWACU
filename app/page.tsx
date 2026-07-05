@@ -35,7 +35,7 @@ const SERVICE_HREFS: Record<(typeof SERVICE_IDS)[number], string> = {
   groceries: "/about#groceries",
   bar: "/menu#cat-bar",
   kitchen: "/menu#cat-kitchen",
-  spa: "/book",
+  spa: "/spa",
 };
 
 const VALUE_IDS = ["community", "quality", "convenience", "location"] as const;

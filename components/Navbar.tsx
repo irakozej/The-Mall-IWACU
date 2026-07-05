@@ -10,6 +10,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 const linkDefs = [
   { href: "/", labelKey: "nav.home" },
   { href: "/menu", labelKey: "nav.menu" },
+  { href: "/spa", labelKey: "nav.spa" },
   { href: "/book", labelKey: "nav.book" },
   { href: "/about", labelKey: "nav.about" },
   { href: "/contact", labelKey: "nav.contact" },

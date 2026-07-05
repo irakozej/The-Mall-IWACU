@@ -4,41 +4,39 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { menu } from "@/lib/menu";
 import MenuTabs from "@/components/MenuTabs";
-import JsonLd from "@/components/JsonLd";
+import ImigongoPattern from "@/components/ImigongoPattern";
 import { useT } from "@/lib/i18n";
 
-// Food & drink only — Massage & Wellness has its own page at /spa.
-const foodAndDrink = {
+// The spa price list lives in menu.json alongside food & drink, but renders
+// on its own page — /menu shows only bar + kitchen.
+const spaOnly = {
   ...menu,
-  categories: menu.categories.filter((c) => c.id !== "spa"),
+  categories: menu.categories.filter((c) => c.id === "spa"),
 };
 
-export default function MenuPage() {
+export default function SpaPage() {
   const t = useT();
   return (
     <>
-      <JsonLd variant="menu" />
-      <section className="bg-forest-deep text-cream relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-90">
-          <div className="absolute -right-8 -top-8 w-72 h-72 bg-gold/10 blur-3xl rounded-full" />
-        </div>
+      <section className="relative bg-forest-deep text-cream overflow-hidden">
+        <ImigongoPattern className="absolute -right-20 -top-20 w-[420px] h-[420px] opacity-80" />
         <div className="relative max-w-5xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
           <p className="text-[11px] tracking-[0.3em] uppercase text-gold/85">
-            {t("menu.kicker")}
+            {t("spaPage.kicker")}
           </p>
           <h1 className="mt-2 font-display text-5xl sm:text-7xl leading-[0.95]">
-            {t("menu.title")}
+            {t("spaPage.title")}
           </h1>
           <p className="mt-3 max-w-md text-cream/75 text-sm sm:text-base">
-            {t("menu.subtitle")}
+            {t("spaPage.subtitle")}
           </p>
           <Link
-            href="/spa"
-            className="group mt-4 inline-flex items-center gap-1.5 text-sm text-gold hover:text-gold-soft transition-colors"
+            href="/book"
+            className="group mt-6 inline-flex items-center gap-2 bg-gold text-forest-deep font-medium px-5 py-3 text-sm hover:bg-gold-soft transition-colors"
           >
-            {t("menu.spaLink")}
+            {t("menu.bookCta")}
             <ArrowUpRight
-              size={14}
+              size={16}
               className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </Link>
@@ -46,7 +44,7 @@ export default function MenuPage() {
         <div className="imigongo-strip" aria-hidden />
       </section>
 
-      <MenuTabs data={foodAndDrink} />
+      <MenuTabs data={spaOnly} />
     </>
   );
 }

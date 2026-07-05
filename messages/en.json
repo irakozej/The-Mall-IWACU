@@ -25,7 +25,8 @@
     "about": "About",
     "contact": "Contact",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "spa": "Spa"
   },
   "hero": {
     "locationChip": "Kicukiro · Kanombe · Kabeza · Kigali",
@@ -137,7 +138,8 @@
     "noMatches": "No matches",
     "tryDifferent": "Try a different word — or",
     "clearLink": "clear your search",
-    "bookCta": "Book a session"
+    "bookCta": "Book a session",
+    "spaLink": "Looking for Massage & Wellness? It has its own page"
   },
   "book": {
     "kicker": "Massage & Wellness",
@@ -318,5 +320,10 @@
       "overlap": "Can't approve — this time overlaps a booking that is already confirmed.",
       "error": "Could not update the booking. Try again."
     }
+  },
+  "spaPage": {
+    "kicker": "Massage & Wellness",
+    "title": "The Spa.",
+    "subtitle": "Massages, body treatments and steam — full price list below. Pick a treatment, then book your time online."
   }
 }
