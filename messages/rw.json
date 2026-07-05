@@ -22,7 +22,7 @@
   "nav": {
     "home": "Ahabanza",
     "menu": "Menu",
-    "book": "Saba",
+    "book": "Saba Massage",
     "about": "Ibyacu",
     "contact": "Twandikire",
     "privacy": "Umwihariko",
@@ -325,6 +325,7 @@
   "spaPage": {
     "kicker": "Massage n'Ubuzima",
     "title": "Spa.",
-    "subtitle": "Massage, ubuvuzi bw'umubiri na steam — ibiciro byose biri hano hepfo. Hitamo serivisi, hanyuma ufate igihe cyawe kuri interineti."
+    "subtitle": "Massage, ubuvuzi bw'umubiri na steam — ibiciro byose biri hano hepfo. Hitamo serivisi, hanyuma ufate igihe cyawe kuri interineti.",
+    "ctaHeading": "Wabonye serivisi ikunogeye? Fata igihe cyawe."
   }
 }

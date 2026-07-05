@@ -21,7 +21,7 @@
   "nav": {
     "home": "Home",
     "menu": "Menu",
-    "book": "Book",
+    "book": "Book Massage",
     "about": "About",
     "contact": "Contact",
     "privacy": "Privacy",
@@ -324,6 +324,7 @@
   "spaPage": {
     "kicker": "Massage & Wellness",
     "title": "The Spa.",
-    "subtitle": "Massages, body treatments and steam — full price list below. Pick a treatment, then book your time online."
+    "subtitle": "Massages, body treatments and steam — full price list below. Pick a treatment, then book your time online.",
+    "ctaHeading": "Found your treatment? Reserve your time."
   }
 }

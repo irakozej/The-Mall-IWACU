@@ -32,11 +32,11 @@ export default function SpaPage() {
           </p>
           <Link
             href="/book"
-            className="group mt-6 inline-flex items-center gap-2 bg-gold text-forest-deep font-medium px-5 py-3 text-sm hover:bg-gold-soft transition-colors"
+            className="group mt-7 inline-flex w-full sm:w-auto items-center justify-center gap-2.5 bg-gold text-forest-deep font-semibold px-10 py-4 text-base sm:text-lg shadow-lg shadow-gold/20 hover:bg-gold-soft transition-colors"
           >
             {t("menu.bookCta")}
             <ArrowUpRight
-              size={16}
+              size={20}
               className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </Link>
@@ -45,6 +45,25 @@ export default function SpaPage() {
       </section>
 
       <MenuTabs data={spaOnly} />
+
+      {/* Bottom call-to-action — catches users who scrolled the full list. */}
+      <section className="bg-forest-deep text-cream">
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 py-12 sm:py-16 text-center">
+          <h2 className="font-display text-3xl sm:text-4xl leading-tight">
+            {t("spaPage.ctaHeading")}
+          </h2>
+          <Link
+            href="/book"
+            className="group mt-6 inline-flex w-full sm:w-auto items-center justify-center gap-2.5 bg-gold text-forest-deep font-semibold px-10 py-4 text-base sm:text-lg hover:bg-gold-soft transition-colors"
+          >
+            {t("menu.bookCta")}
+            <ArrowUpRight
+              size={20}
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

@@ -61,8 +61,8 @@ export const site = {
   },
   phone: "+250 787 252 490",
   phoneDigits: "250787252490",
-  whatsapp: "+250 784 245 424",
-  whatsappDigits: "250784245424",
+  whatsapp: "+250 788 536 901",
+  whatsappDigits: "250788536901",
   email: "hello@themalliwacu.rw",
   hours: [
     { day: "Sunday – Thursday", time: "07:00 — 01:00" },
