@@ -41,6 +41,7 @@ export default function ContactForm() {
           id="name"
           name="name"
           required
+          maxLength={120}
           autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -57,6 +58,7 @@ export default function ContactForm() {
           id="phone"
           name="phone"
           type="tel"
+          maxLength={32}
           inputMode="tel"
           autoComplete="tel"
           value={phone}
@@ -75,6 +77,7 @@ export default function ContactForm() {
           name="message"
           required
           rows={5}
+          maxLength={1000}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="w-full bg-cream border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"

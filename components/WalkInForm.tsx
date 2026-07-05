@@ -131,6 +131,7 @@ export default function WalkInForm() {
           <input
             id="w-name"
             required
+            maxLength={120}
             autoComplete="off"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -148,6 +149,7 @@ export default function WalkInForm() {
           <input
             id="w-phone"
             type="tel"
+            maxLength={32}
             inputMode="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -251,6 +253,7 @@ export default function WalkInForm() {
         <textarea
           id="w-notes"
           rows={2}
+          maxLength={500}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           className="w-full bg-cream-warm border border-ink/15 px-4 py-3 text-base focus:border-gold focus:outline-none transition-colors resize-y"

@@ -61,6 +61,26 @@ alter table public.bookings
   add constraint bookings_source_check
   check (source in ('online', 'walk_in'));
 
+-- Input hygiene — server-side caps so hand-crafted API calls can't stuff
+-- megabytes into text columns or absurd values into price/date. UI caps
+-- mirror these; this layer is the one that actually binds.
+-- Note: booking_date has an upper bound only — rows keep their past dates
+-- and must remain updatable (check-in / cancel). Raise the 60 if
+-- maxDaysAhead in data/services.json ever exceeds it.
+alter table public.bookings drop constraint if exists bookings_input_check;
+alter table public.bookings
+  add constraint bookings_input_check
+  check (
+    char_length(coalesce(customer_name,  '')) <= 120 and
+    char_length(coalesce(customer_phone, '')) <= 32  and
+    char_length(coalesce(customer_notes, '')) <= 500 and
+    char_length(coalesce(service_id,     '')) <= 64  and
+    char_length(coalesce(service_name,   '')) <= 120 and
+    char_length(coalesce(checked_in_by,  '')) <= 80  and
+    coalesce(price_rwf, 0) between 0 and 10000000 and
+    booking_date <= current_date + 60
+  );
+
 create index if not exists bookings_date_idx on public.bookings(booking_date);
 create index if not exists bookings_status_idx on public.bookings(status);
 create index if not exists bookings_checked_in_at_idx on public.bookings(checked_in_at);

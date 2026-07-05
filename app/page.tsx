@@ -201,7 +201,7 @@ export default function HomePage() {
                 <a
                   href={site.mapLink}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                   className="inline-flex items-center gap-2 border border-forest/40 text-forest px-5 py-2.5 text-sm hover:bg-forest hover:text-cream transition-colors"
                 >
                   {t("common.getDirections")}
