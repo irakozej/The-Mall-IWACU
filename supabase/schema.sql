@@ -27,11 +27,43 @@ create table if not exists public.bookings (
   customer_name text,
   customer_phone text,
   customer_notes text,
-  status text not null default 'pending' check (status in ('pending', 'confirmed', 'cancelled'))
+  status text not null default 'pending',
+  -- Walk-in / revenue tracking (see /staff/check-in):
+  source text not null default 'online',       -- 'online' | 'walk_in'
+  checked_in_at timestamptz,                    -- when the session was logged as done
+  checked_in_by text,                           -- staff member who logged it
+  price_rwf int                                 -- price snapshot at completion time
 );
+
+-- Migration for installs created before the walk-in feature — these ALTERs
+-- are no-ops on fresh installs (the create table above already has the
+-- columns) and upgrade older tables in place:
+--   alter table public.bookings add column source text not null default 'online';
+--   alter table public.bookings add column checked_in_at timestamptz;
+--   alter table public.bookings add column checked_in_by text;
+--   alter table public.bookings add column price_rwf int;
+alter table public.bookings add column if not exists source text not null default 'online';
+alter table public.bookings add column if not exists checked_in_at timestamptz;
+alter table public.bookings add column if not exists checked_in_by text;
+alter table public.bookings add column if not exists price_rwf int;
+
+-- Status and source value constraints. 'completed' = the session happened —
+-- walk-ins are created completed; confirmed online bookings become completed
+-- when staff checks the client in. ONLY completed rows count as revenue.
+-- Drop-and-recreate so re-running upgrades installs that lacked 'completed'.
+alter table public.bookings drop constraint if exists bookings_status_check;
+alter table public.bookings
+  add constraint bookings_status_check
+  check (status in ('pending', 'confirmed', 'cancelled', 'completed'));
+
+alter table public.bookings drop constraint if exists bookings_source_check;
+alter table public.bookings
+  add constraint bookings_source_check
+  check (source in ('online', 'walk_in'));
 
 create index if not exists bookings_date_idx on public.bookings(booking_date);
 create index if not exists bookings_status_idx on public.bookings(status);
+create index if not exists bookings_checked_in_at_idx on public.bookings(checked_in_at);
 
 -- ---------------------------------------------------------------------------
 -- 3. Exclusion constraint — atomic protection against double-booking.
@@ -76,11 +108,12 @@ create policy "anon can read non-cancelled"
   for select
   using (status <> 'cancelled');
 
--- Public inserts — anyone can create a pending booking, nothing else.
+-- Public inserts — anyone can create a pending ONLINE booking, nothing else
+-- (walk-in rows count as revenue, so only staff may create them).
 create policy "anon can insert pending"
   on public.bookings
   for insert
-  with check (status = 'pending');
+  with check (status = 'pending' and source = 'online');
 
 -- No public updates / deletes. Status changes happen through the staff
 -- dashboard (authenticated, below) or the Supabase dashboard (service_role).
@@ -96,22 +129,33 @@ create policy "staff can read all bookings"
   to authenticated
   using (true);
 
--- Staff approve / reject — signed-in staff can change a booking's status
--- from the /staff dashboard (approve → confirmed, reject → cancelled).
--- The column grant below limits them to the status column; confirming a
--- time that overlaps an already-confirmed booking is rejected atomically
--- by the bookings_no_overlap constraint.
+-- Staff approve / reject / check-in — signed-in staff can change a booking's
+-- status from the /staff pages (approve → confirmed, reject → cancelled,
+-- check-in → completed). The column grant below limits them to the status +
+-- check-in columns; confirming a time that overlaps an already-confirmed
+-- booking is rejected atomically by the bookings_no_overlap constraint.
 drop policy if exists "staff can update status" on public.bookings;
 create policy "staff can update status"
   on public.bookings
   for update
   to authenticated
   using (true)
-  with check (status in ('pending', 'confirmed', 'cancelled'));
+  with check (status in ('pending', 'confirmed', 'cancelled', 'completed'));
 
 revoke update on public.bookings from anon;
 revoke update on public.bookings from authenticated;
-grant update (status) on public.bookings to authenticated;
+grant update (status, checked_in_at, checked_in_by, price_rwf)
+  on public.bookings to authenticated;
+
+-- Staff walk-in logging — signed-in staff can insert completed walk-in rows
+-- from /staff/check-in. Anonymous visitors still cannot (their insert policy
+-- only allows status='pending', and walk-ins require source='walk_in').
+drop policy if exists "staff can insert walk-ins" on public.bookings;
+create policy "staff can insert walk-ins"
+  on public.bookings
+  for insert
+  to authenticated
+  with check (source = 'walk_in' and status = 'completed');
 
 -- ---------------------------------------------------------------------------
 -- 4b. Column privacy — anonymous visitors only need availability data.

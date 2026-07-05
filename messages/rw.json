@@ -297,7 +297,8 @@
     },
     "views": {
       "week": "Icyumweru kiri imbere",
-      "past": "Izahise"
+      "past": "Izahise",
+      "revenue": "Amafaranga"
     },
     "summary": {
       "total": "Gahunda",
@@ -307,7 +308,8 @@
     "status": {
       "pending": "Itegerejwe",
       "confirmed": "Yemejwe",
-      "cancelled": "Yahagaritswe"
+      "cancelled": "Yahagaritswe",
+      "completed": "Byarangiye"
     },
     "dayCount": "Gahunda: {n}",
     "byService": "Hakurikijwe serivisi",
@@ -327,5 +329,52 @@
     "title": "Spa.",
     "subtitle": "Massage, ubuvuzi bw'umubiri na steam — ibiciro byose biri hano hepfo. Hitamo serivisi, hanyuma ufate igihe cyawe kuri interineti.",
     "ctaHeading": "Wabonye serivisi ikunogeye? Fata igihe cyawe."
+  },
+  "checkIn": {
+    "link": "Kwakira umukiriya",
+    "heading": "Kwakira",
+    "intro": "Andika abakiriya baje ako kanya wemeze n'abari basabye uyu munsi. Buri serivisi yanditswe hano ibarwa mu mafaranga yinjiye.",
+    "backToBookings": "Subira ku gahunda",
+    "notConfigured": "Sisitemu ntirakora — vugana n'uwakoze urubuga. Ntushobora kwandika abakiriya kugeza ihujwe.",
+    "error": "Ntibyabitswe. Reba interineti yawe wongere ugerageze.",
+    "staffMember": "Umukozi",
+    "staffMemberPlaceholder": "Ninde ubyandika?",
+    "tabs": {
+      "walkIn": "Uje ako kanya",
+      "bookings": "Emeza uwasabye"
+    },
+    "walkIn": {
+      "name": "Izina ry'umukiriya",
+      "namePlaceholder": "Jean-Paul Mugisha",
+      "phone": "Telefoni",
+      "service": "Serivisi",
+      "time": "Isaha",
+      "todayOnly": "(uyu munsi)",
+      "notes": "Icyitonderwa",
+      "submit": "Andika umukiriya",
+      "saving": "Birabikwa…",
+      "successHeading": "Byanditswe. Amafaranga yabazwe.",
+      "successBody": "Serivisi iri muri sisitemu nk'iyarangiye.",
+      "addAnother": "Andika undi"
+    },
+    "list": {
+      "empty": "Nta gahunda zemejwe z'uyu munsi.",
+      "checkIn": "Emeza yaje",
+      "done": "Byemejwe"
+    }
+  },
+  "revenue": {
+    "subtitle": "Habarwa gusa serivisi zarangiye — abaje ako kanya n'abemejwe ko baje.",
+    "today": "Uyu munsi",
+    "thisWeek": "Iki cyumweru",
+    "thisMonth": "Uku kwezi",
+    "sessions": "serivisi",
+    "bySource": "Kuri interineti n'abaje ako kanya (uku kwezi)",
+    "online": "Basabye kuri interineti",
+    "walkIn": "Baje ako kanya",
+    "byService": "Hakurikijwe serivisi (uku kwezi, 5 za mbere)",
+    "byStaff": "Hakurikijwe umukozi (uku kwezi)",
+    "empty": "Nta serivisi irarangira.",
+    "note": "Serivisi ibarwa iyo yarangiye — yanditswe nk'uwaje ako kanya, cyangwa yemejwe ko yaje ku gahunda yasabwe. Igiciro kibikwa igihe cyo kwemeza."
   }
 }

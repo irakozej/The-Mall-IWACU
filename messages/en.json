@@ -296,7 +296,8 @@
     },
     "views": {
       "week": "Week ahead",
-      "past": "Past bookings"
+      "past": "Past bookings",
+      "revenue": "Revenue"
     },
     "summary": {
       "total": "Bookings",
@@ -306,7 +307,8 @@
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "completed": "Completed"
     },
     "dayCount": "Bookings: {n}",
     "byService": "By service",
@@ -326,5 +328,52 @@
     "title": "The Spa.",
     "subtitle": "Massages, body treatments and steam — full price list below. Pick a treatment, then book your time online.",
     "ctaHeading": "Found your treatment? Reserve your time."
+  },
+  "checkIn": {
+    "link": "Check-in",
+    "heading": "Check-in",
+    "intro": "Log walk-in clients and check in today's bookings. Every session logged here counts as revenue.",
+    "backToBookings": "Back to bookings",
+    "notConfigured": "Backend not configured — contact the developer. Walk-ins can't be logged until the booking system is connected.",
+    "error": "Could not save. Check your connection and try again.",
+    "staffMember": "Staff member",
+    "staffMemberPlaceholder": "Who is logging this?",
+    "tabs": {
+      "walkIn": "Walk-in",
+      "bookings": "Check in booking"
+    },
+    "walkIn": {
+      "name": "Client name",
+      "namePlaceholder": "Jean-Paul Mugisha",
+      "phone": "Phone",
+      "service": "Service",
+      "time": "Time",
+      "todayOnly": "(today)",
+      "notes": "Notes",
+      "submit": "Log walk-in",
+      "saving": "Saving…",
+      "successHeading": "Logged. Revenue counted.",
+      "successBody": "The session is in the system as completed.",
+      "addAnother": "Add another"
+    },
+    "list": {
+      "empty": "No confirmed bookings for today.",
+      "checkIn": "Check in",
+      "done": "Checked in"
+    }
+  },
+  "revenue": {
+    "subtitle": "Only completed sessions count — walk-ins and checked-in bookings.",
+    "today": "Today",
+    "thisWeek": "This week",
+    "thisMonth": "This month",
+    "sessions": "sessions",
+    "bySource": "Online vs walk-in (this month)",
+    "online": "Online bookings",
+    "walkIn": "Walk-ins",
+    "byService": "By service (this month, top 5)",
+    "byStaff": "By staff member (this month)",
+    "empty": "Nothing completed yet.",
+    "note": "A session counts once it is completed — logged as a walk-in, or checked in from a confirmed booking. Prices are snapshotted at check-in time."
   }
 }

@@ -18,9 +18,11 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { Session } from "@supabase/supabase-js";
 import {
   AlertCircle,
+  Banknote,
   CalendarDays,
   Check,
   History,
@@ -28,8 +30,10 @@ import {
   LogOut,
   Phone,
   RefreshCw,
+  UserPlus,
   X,
 } from "lucide-react";
+import RevenueTab from "./RevenueTab";
 import {
   fetchStaffBookings,
   staffSignIn,
@@ -49,7 +53,7 @@ import { useLocale, useT } from "@/lib/i18n";
 const PAST_DAYS = 60;
 const WEEK_DAYS = 7;
 
-type View = "week" | "past";
+type View = "week" | "past" | "revenue";
 type StatusFilter = "all" | StaffBooking["status"];
 
 function addDays(d: Date, days: number): Date {
@@ -96,7 +100,8 @@ export default function StaffDashboard() {
 
 /* ------------------------------- Login ---------------------------------- */
 
-function LoginForm() {
+// Exported for /staff/check-in, which shares the same auth gate.
+export function LoginForm() {
   const t = useT();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -214,6 +219,7 @@ function Dashboard({ session }: { session: Session }) {
   }, []);
 
   useEffect(() => {
+    if (view === "revenue") return; // RevenueTab does its own fetching.
     setBookings(null);
     load(view);
     // Live refresh whenever any booking changes.
@@ -238,7 +244,20 @@ function Dashboard({ session }: { session: Session }) {
             icon={<History size={14} />}
             label={t("staff.views.past")}
           />
+          <ViewTab
+            active={view === "revenue"}
+            onClick={() => setView("revenue")}
+            icon={<Banknote size={14} />}
+            label={t("staff.views.revenue")}
+          />
         </div>
+
+        <Link
+          href="/staff/check-in"
+          className="inline-flex items-center gap-1.5 bg-forest text-cream px-4 py-2.5 text-xs tracking-wide hover:bg-forest-deep transition-colors"
+        >
+          <UserPlus size={13} /> {t("checkIn.link")}
+        </Link>
 
         <div className="ml-auto flex items-center gap-4 text-xs text-ink-mute">
           <span className="hidden sm:inline">
@@ -258,10 +277,14 @@ function Dashboard({ session }: { session: Session }) {
       <p className="text-sm text-ink-soft">
         {view === "week"
           ? t("staff.weekSubtitle")
-          : t("staff.pastSubtitle", { days: PAST_DAYS })}
+          : view === "past"
+            ? t("staff.pastSubtitle", { days: PAST_DAYS })
+            : t("revenue.subtitle")}
       </p>
 
-      {error ? (
+      {view === "revenue" ? (
+        <RevenueTab />
+      ) : error ? (
         <Notice>
           <AlertCircle size={20} className="text-amber-600 shrink-0" />
           <p className="text-sm text-ink-soft">{t("staff.fetchError")}</p>
@@ -415,13 +438,22 @@ function PastView({ bookings }: { bookings: StaffBooking[] }) {
   const { locale } = useLocale();
   const [filter, setFilter] = useState<StatusFilter>("all");
 
-  const confirmed = bookings.filter((b) => b.status === "confirmed");
-  const revenue = confirmed.reduce((sum, b) => sum + (b.price ?? 0), 0);
+  // Sessions with revenue value: checked-in (completed) plus confirmed ones
+  // that were never checked in. The Revenue tab is the strict source of truth
+  // (completed only); this stat is the looser historical view.
+  const done = useMemo(
+    () =>
+      bookings.filter(
+        (b) => b.status === "confirmed" || b.status === "completed",
+      ),
+    [bookings],
+  );
+  const revenue = done.reduce((sum, b) => sum + (b.price ?? 0), 0);
 
-  // Per-service breakdown — confirmed sessions only, biggest earner first.
+  // Per-service breakdown — biggest earner first.
   const byService = useMemo(() => {
     const map = new Map<string, { name: string; count: number; revenue: number }>();
-    for (const b of confirmed) {
+    for (const b of done) {
       const key = b.serviceId ?? b.serviceName;
       const entry = map.get(key) ?? { name: b.serviceName, count: 0, revenue: 0 };
       entry.count += 1;
@@ -429,11 +461,12 @@ function PastView({ bookings }: { bookings: StaffBooking[] }) {
       map.set(key, entry);
     }
     return [...map.values()].sort((a, b) => b.revenue - a.revenue);
-  }, [confirmed]);
+  }, [done]);
 
   const counts: Record<StatusFilter, number> = {
     all: bookings.length,
-    confirmed: confirmed.length,
+    confirmed: bookings.filter((b) => b.status === "confirmed").length,
+    completed: bookings.filter((b) => b.status === "completed").length,
     pending: bookings.filter((b) => b.status === "pending").length,
     cancelled: bookings.filter((b) => b.status === "cancelled").length,
   };
@@ -464,8 +497,8 @@ function PastView({ bookings }: { bookings: StaffBooking[] }) {
       <div className="grid grid-cols-3 gap-3 sm:max-w-lg">
         <Stat label={t("staff.summary.total")} value={String(bookings.length)} />
         <Stat
-          label={t("staff.summary.confirmed")}
-          value={String(confirmed.length)}
+          label={t("staff.status.completed")}
+          value={String(counts.completed)}
           accent="confirmed"
         />
         <Stat label={t("staff.summary.revenue")} value={formatPriceRWF(revenue)} />
@@ -514,7 +547,7 @@ function PastView({ bookings }: { bookings: StaffBooking[] }) {
       {/* History list with status filter */}
       <section>
         <div className="flex flex-wrap items-center gap-2">
-          {(["all", "confirmed", "pending", "cancelled"] as const).map((s) => (
+          {(["all", "completed", "confirmed", "pending", "cancelled"] as const).map((s) => (
             <button
               key={s}
               type="button"
@@ -603,9 +636,11 @@ function BookingRow({
   const edge =
     status === "confirmed"
       ? "border-l-emerald-600"
-      : status === "pending"
-        ? "border-l-amber-500"
-        : "border-l-ink/20";
+      : status === "completed"
+        ? "border-l-forest"
+        : status === "pending"
+          ? "border-l-amber-500"
+          : "border-l-ink/20";
 
   return (
     <li
@@ -752,9 +787,11 @@ function StatusBadge({ status }: { status: StaffBooking["status"] }) {
   const style =
     status === "confirmed"
       ? "bg-emerald-100 text-emerald-900 border-emerald-600/30"
-      : status === "pending"
-        ? "bg-amber-50 text-amber-900 border-amber-600/30"
-        : "bg-ink/5 text-ink-mute border-ink/15";
+      : status === "completed"
+        ? "bg-forest/10 text-forest border-forest/30"
+        : status === "pending"
+          ? "bg-amber-50 text-amber-900 border-amber-600/30"
+          : "bg-ink/5 text-ink-mute border-ink/15";
   return (
     <span
       className={[
@@ -769,7 +806,7 @@ function StatusBadge({ status }: { status: StaffBooking["status"] }) {
 
 /* ------------------------------- Shared --------------------------------- */
 
-function Notice({ children }: { children: React.ReactNode }) {
+export function Notice({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 border border-amber-600/40 bg-amber-50 px-5 py-4">
       {children}

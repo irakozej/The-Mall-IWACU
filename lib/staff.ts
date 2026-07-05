@@ -20,6 +20,9 @@ export type StaffBooking = {
   customerPhone: string | null;
   customerNotes: string | null;
   status: BookingRow["status"];
+  source: BookingRow["source"];
+  checkedInAt: string | null;
+  checkedInBy: string | null;
   createdAt: string;
   price: number | null;
 };
@@ -51,8 +54,13 @@ function rowToStaffBooking(r: BookingRow): StaffBooking {
     customerPhone: r.customer_phone,
     customerNotes: r.customer_notes,
     status: r.status,
+    source: r.source ?? "online",
+    checkedInAt: r.checked_in_at ?? null,
+    checkedInBy: r.checked_in_by ?? null,
     createdAt: r.created_at,
-    price: resolvePrice(r.service_id, r.service_name),
+    // Prefer the price snapshot taken at completion; fall back to the current
+    // services.json price for older / not-yet-completed rows.
+    price: r.price_rwf ?? resolvePrice(r.service_id, r.service_name),
   };
 }
 
@@ -77,6 +85,173 @@ export async function fetchStaffBookings(
 
   if (error) throw new Error(error.message);
   return ((data ?? []) as unknown as BookingRow[]).map(rowToStaffBooking);
+}
+
+/* --------------------------- Walk-in check-in ---------------------------- */
+
+export type WalkInInput = {
+  customerName: string;
+  customerPhone?: string;
+  serviceId: string;
+  serviceName: string;
+  durationMin: number;
+  price: number;
+  date: string;        // YYYY-MM-DD (today)
+  startTime: string;   // HH:MM
+  staffName: string;
+  notes?: string;
+};
+
+/**
+ * Log a client who showed up without booking. Inserted straight as a
+ * COMPLETED walk-in so it counts as revenue immediately. Requires a staff
+ * session — RLS only lets the authenticated role insert walk-in rows.
+ */
+export async function createWalkIn(
+  input: WalkInInput,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const supabase = getSupabase();
+  if (!supabase) return { ok: false, message: "Supabase is not configured" };
+
+  const { error } = await supabase.from("bookings").insert({
+    booking_date: input.date,
+    start_time: `${input.startTime}:00`,
+    duration_min: input.durationMin,
+    service_id: input.serviceId,
+    service_name: input.serviceName,
+    customer_name: input.customerName,
+    customer_phone: input.customerPhone ?? null,
+    customer_notes: input.notes ?? null,
+    status: "completed",
+    source: "walk_in",
+    checked_in_at: new Date().toISOString(),
+    checked_in_by: input.staffName,
+    price_rwf: input.price,
+  });
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
+
+/**
+ * Mark a confirmed online booking as done: status → completed, with the
+ * check-in timestamp, the staff member, and a price snapshot so revenue
+ * survives future price-list changes.
+ */
+export async function checkInBooking(
+  id: string,
+  staffName: string,
+  price: number | null,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const supabase = getSupabase();
+  if (!supabase) return { ok: false, message: "Supabase is not configured" };
+
+  const { error } = await supabase
+    .from("bookings")
+    .update({
+      status: "completed",
+      checked_in_at: new Date().toISOString(),
+      checked_in_by: staffName,
+      price_rwf: price,
+    })
+    .eq("id", id);
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
+
+/** Today's confirmed online bookings, ready to be checked in. */
+export async function fetchTodayConfirmedMassages(): Promise<StaffBooking[]> {
+  const supabase = getSupabase();
+  if (!supabase) throw new Error("Supabase is not configured");
+
+  const today = new Date();
+  const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("booking_date", iso)
+    .eq("status", "confirmed")
+    .order("start_time", { ascending: true });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as unknown as BookingRow[]).map(rowToStaffBooking);
+}
+
+/* ------------------------------- Revenue --------------------------------- */
+
+export type RevenueRange = "today" | "week" | "month";
+
+export type RevenueSummary = {
+  count: number;
+  total: number;
+  bySource: { source: "online" | "walk_in"; count: number; total: number }[];
+  byService: { name: string; count: number; total: number }[];
+  byStaff: { name: string; count: number; total: number }[];
+};
+
+function rangeStart(range: RevenueRange, now = new Date()): Date {
+  const day = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (range === "today") return day;
+  if (range === "week") {
+    // ISO week — Monday start.
+    const dow = (day.getDay() + 6) % 7;
+    day.setDate(day.getDate() - dow);
+    return day;
+  }
+  return new Date(now.getFullYear(), now.getMonth(), 1);
+}
+
+/**
+ * Revenue for a period. ONLY status='completed' rows count, bucketed by
+ * when the session was checked in (checked_in_at) — see OWNER_GUIDE.md.
+ */
+export async function fetchRevenueSummary(
+  range: RevenueRange,
+): Promise<RevenueSummary> {
+  const supabase = getSupabase();
+  if (!supabase) throw new Error("Supabase is not configured");
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("status", "completed")
+    .gte("checked_in_at", rangeStart(range).toISOString());
+  if (error) throw new Error(error.message);
+
+  const rows = ((data ?? []) as unknown as BookingRow[]).map(rowToStaffBooking);
+
+  const tally = <K extends string>(
+    keyOf: (b: StaffBooking) => K,
+  ): Map<K, { count: number; total: number }> => {
+    const m = new Map<K, { count: number; total: number }>();
+    for (const b of rows) {
+      const k = keyOf(b);
+      const e = m.get(k) ?? { count: 0, total: 0 };
+      e.count += 1;
+      e.total += b.price ?? 0;
+      m.set(k, e);
+    }
+    return m;
+  };
+
+  const bySource = tally((b) => b.source);
+  const byService = tally((b) => b.serviceName);
+  const byStaff = tally((b) => b.checkedInBy ?? "—");
+
+  const sorted = <T extends { total: number }>(arr: T[]) =>
+    arr.sort((a, b) => b.total - a.total);
+
+  return {
+    count: rows.length,
+    total: rows.reduce((s, b) => s + (b.price ?? 0), 0),
+    bySource: (["online", "walk_in"] as const).map((source) => ({
+      source,
+      count: bySource.get(source)?.count ?? 0,
+      total: bySource.get(source)?.total ?? 0,
+    })),
+    byService: sorted(
+      [...byService.entries()].map(([name, e]) => ({ name, ...e })),
+    ).slice(0, 5),
+    byStaff: sorted([...byStaff.entries()].map(([name, e]) => ({ name, ...e }))),
+  };
 }
 
 export type UpdateStatusResult =

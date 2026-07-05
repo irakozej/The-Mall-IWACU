@@ -23,7 +23,11 @@ export type BookingRow = {
   customer_name: string | null;
   customer_phone: string | null;
   customer_notes: string | null;
-  status: "pending" | "confirmed" | "cancelled";
+  status: "pending" | "confirmed" | "cancelled" | "completed";
+  source: "online" | "walk_in";
+  checked_in_at: string | null;
+  checked_in_by: string | null;
+  price_rwf: number | null;
 };
 
 /**
