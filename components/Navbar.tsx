@@ -55,7 +55,9 @@ export default function Navbar() {
           <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-gold ml-1 translate-y-[-2px] group-hover:scale-125 transition-transform" />
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1">
+        {/* Six links + switcher + CTA only fit at lg and up — tablets get the
+            hamburger, otherwise the row wraps and breaks the bar. */}
+        <ul className="hidden lg:flex items-center gap-1">
           {linkDefs.map((l) => {
             const active =
               l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
@@ -64,7 +66,7 @@ export default function Navbar() {
                 <Link
                   href={l.href}
                   className={[
-                    "relative px-4 py-2 text-sm tracking-wide transition-colors",
+                    "relative px-3 py-2 text-sm tracking-wide whitespace-nowrap transition-colors",
                     active ? "text-forest" : "text-ink-soft hover:text-forest",
                   ].join(" ")}
                 >
@@ -87,7 +89,7 @@ export default function Navbar() {
           <li className="ml-3">
             <Link
               href="/menu"
-              className="inline-flex items-center gap-2 bg-forest text-cream text-sm px-4 py-2.5 hover:bg-forest-deep transition-colors"
+              className="inline-flex items-center gap-2 bg-forest text-cream text-sm px-4 py-2.5 whitespace-nowrap hover:bg-forest-deep transition-colors"
             >
               {t("common.viewMenu")}
               <span aria-hidden>→</span>
@@ -98,7 +100,7 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          className="md:hidden -mr-2 p-2 text-forest"
+          className="lg:hidden -mr-2 p-2 text-forest"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -110,9 +112,11 @@ export default function Navbar() {
       <div
         id="mobile-nav"
         className={[
-          "md:hidden overflow-hidden border-t border-ink/5 bg-cream",
+          "lg:hidden overflow-hidden border-t border-ink/5 bg-cream",
           "transition-[max-height,opacity] duration-300",
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+          // Tall enough for all six links + language row + CTA; scrolls on
+          // short landscape screens instead of clipping.
+          open ? "max-h-[34rem] opacity-100 overflow-y-auto" : "max-h-0 opacity-0",
         ].join(" ")}
       >
         <ul className="px-5 py-4 flex flex-col gap-1">
