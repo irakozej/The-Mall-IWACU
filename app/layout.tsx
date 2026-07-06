@@ -24,6 +24,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin),
   referrer: "strict-origin-when-cross-origin",
+  alternates: { canonical: "/" },
   title: {
     default: "The Mall IWACU — Eat, Drink, Shop, Relax | Kigali",
     template: "%s · The Mall IWACU",

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "Staff-only massage bookings dashboard.",
   // Internal tool — keep it out of search results.
   robots: { index: false, follow: false },
+  alternates: { canonical: "/staff" },
 };
 
 export default function StaffLayout({ children }: { children: React.ReactNode }) {
