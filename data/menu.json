@@ -879,11 +879,11 @@
             {
               "name": "Special Omelette",
               "description": "4 eggs, meat, onions, chips, green pepper",
-              "price": 4500
+              "price": 5000
             },
             {
               "name": "Macadamia Omelette",
-              "description": "Eggs, tomatoes, spinach, onion, tomato, olives, cheese",
+              "description": "Eggs, tomatoes, spinach, onion, olives, cheese",
               "price": 7000
             },
             {
@@ -917,7 +917,7 @@
             {
               "name": "The Mall Salad",
               "description": "Onions, avocado, lettuce, eggs, chicken",
-              "price": 6000,
+              "price": 7000,
               "featured": true
             },
             {
@@ -928,7 +928,7 @@
             {
               "name": "Thon on Avocado",
               "description": "Fresh avocado with tuna and cocktail sauce",
-              "price": 4000
+              "price": 5000
             },
             {
               "name": "Mix Salad",
@@ -945,26 +945,26 @@
             {
               "name": "Fish Soup",
               "description": "Fresh fish, milk, carrots, onions, puwalo, celeli",
-              "price": 5000
+              "price": 7000
             },
             {
               "name": "Chicken Soup",
               "description": "Fresh chicken meat, milk, carrots, onions, puwalo, celeli",
-              "price": 5000
+              "price": 6000
             },
             {
               "name": "Mushroom Soup",
-              "description": "Mushroom, milk, carrots, onions, puwalo, celeli",
+              "description": "Mushroom, milk, carrots, onions, puwalo, celery",
               "price": 5000
             },
             {
               "name": "Vegetable Soup",
               "description": "Milk, onions, carrots, courgette, green pepper, potato, fresh garlic",
-              "price": 4000
+              "price": 5000
             },
             {
               "name": "Toast Vegetarian or Toast Ham",
-              "price": 4000
+              "price": 5000
             }
           ]
         },
@@ -979,7 +979,7 @@
             },
             {
               "name": "Chicken Burger of The Mall",
-              "price": 5000
+              "price": 6500
             },
             {
               "name": "Croque Madame Sandwich",
@@ -997,7 +997,7 @@
             },
             {
               "name": "Fish Fingers with Chips",
-              "price": 7000
+              "price": 8000
             },
             {
               "name": "Meat Ball",
@@ -1033,11 +1033,11 @@
           "items": [
             {
               "name": "Beef Fillet (Steak)",
-              "price": 9000
+              "price": 12000
             },
             {
               "name": "Tilapia Fillet Fried",
-              "price": 10000
+              "price": 15000
             },
             {
               "name": "Captain Fillet",
@@ -1049,7 +1049,7 @@
             },
             {
               "name": "Chicken Stroganoff",
-              "price": 8000
+              "price": 10000
             },
             {
               "name": "Chips and Liver",
@@ -1074,13 +1074,13 @@
             },
             {
               "name": "Iwacu Plate",
-              "price": 6000,
+              "price": 8000,
               "featured": true
             },
             {
               "name": "Beef Cordon Bleu",
               "description": "Beef fillet, ham, cheese, salad",
-              "price": 10000
+              "price": 12000
             },
             {
               "name": "Chicken Cordon Bleu",
@@ -1148,13 +1148,18 @@
           "items": [
             {
               "name": "Igisafuriya cy'Ihene (Goat)",
-              "description": "Goat leg, potatoes, bananas, carrots, gnuts, amashaza",
+              "description": "Goat leg, potatoes, bananas, carrots, groundnuts, amashaza",
               "price": 25000
             },
             {
               "name": "Beef Boilo",
-              "description": "Peanut, carrot, pease",
-              "price": 6000
+              "description": "Peanut, carrot, peas",
+              "price": 7000
+            },
+            {
+              "name": "Goat Boilo",
+              "description": "Peanut, carrot, peas",
+              "price": 7000
             },
             {
               "name": "Igisafuriya cy'Inkoko",
@@ -1163,7 +1168,7 @@
             {
               "name": "Fish Boilo",
               "description": "Fish fillet, potatoes, bananas, green pepper, carrots, puwalo",
-              "price": 8000
+              "price": 9000
             },
             {
               "name": "Chicken Boilo Quarter",
@@ -1173,6 +1178,10 @@
               "name": "Agatogo (Beef)",
               "description": "Banana, potatoes, carrot, pease, peanut",
               "price": 7000
+            },
+            {
+              "name": "Agatogo (Veg)",
+              "price": 5000
             }
           ]
         },
@@ -1184,58 +1193,58 @@
             {
               "name": "Margarita",
               "description": "Tomato, olives, oregano, basilic, cheese",
-              "price": 4000
+              "price": 7500
             },
             {
               "name": "Vegetable Pizza",
               "description": "Tomato, green pepper, onion, carrots, zucchini, garlic, green chilli, sweet conies",
-              "price": 5000
+              "price": 9000
             },
             {
               "name": "Beef Pizza",
               "description": "Tomato sauce, onion, green pepper, cheese, meat",
-              "price": 7000
+              "price": 10000
             },
             {
               "name": "Chicken Pizza",
               "description": "Tomato, onion, green pepper, cheese, chicken",
-              "price": 9000
+              "price": 10000
             },
             {
               "name": "Mushroom Pizza",
               "description": "Tomato sauce, onion, mushroom, garlic, cheese",
-              "price": 6000
+              "price": 8000
             },
             {
               "name": "Tuna Pizza",
               "description": "Tomato sauce, green peppers, tuna, oregano, cheese",
-              "price": 9000
+              "price": 12000
             },
             {
               "name": "Ham Pizza",
               "description": "Potato sauce, ham, cheese, oregano",
-              "price": 7000
+              "price": 10000
             },
             {
               "name": "Iwacu Pizza",
-              "description": "Tomato sauce, chicken, green pepper, fresh ginger, fresh sausage",
-              "price": 12000,
+              "description": "Tomato sauce, chicken, green pepper, fresh ginger, fresh sausage, Isambaza",
+              "price": 15000,
               "featured": true
             },
             {
               "name": "4 Saison Pizza",
               "description": "Tomato sauce, chicken, ham, mushroom, sausage, onion, cheese, oregano",
-              "price": 12000
+              "price": 15000
             },
             {
-              "name": "Hawaine Pizza",
+              "name": "Hawaiian Pizza",
               "description": "Tomato sauce, oregano, pineapple, ham, cheese",
-              "price": 9000
+              "price": 10000
             },
             {
               "name": "Kivu Pizza",
               "description": "Tomato sauce, oregano, cheese, tilapia",
-              "price": 10000
+              "price": 12000
             }
           ]
         },
@@ -1246,7 +1255,7 @@
           "items": [
             {
               "name": "Whole Chicken",
-              "price": 17000
+              "price": 20000
             },
             {
               "name": "Half Chicken with Potatoes, Bananas",
@@ -1274,11 +1283,11 @@
             },
             {
               "name": "Ikidali BBQ",
-              "price": 17000
+              "price": 20000
             },
             {
               "name": "Ikidali Steamed with Kawunga",
-              "price": 20000
+              "price": 25000
             },
             {
               "name": "Umugongo BBQ",
@@ -1289,9 +1298,14 @@
               "price": 25000
             },
             {
-              "name": "Akapenzi (1 kg)",
-              "description": "Pork, with banana, or potatoes",
+              "name": "Akabenzi (1 kg)",
+              "description": "Pork with banana or potatoes",
               "price": 12000
+            },
+            {
+              "name": "Akabenzi (0.5 kg)",
+              "description": "Pork with banana or potatoes",
+              "price": 6000
             },
             {
               "name": "Pork Ribs 3 pcs",
@@ -1368,7 +1382,7 @@
             },
             {
               "name": "Beef Lasagna",
-              "price": 7000
+              "price": 9000
             },
             {
               "name": "Chicken Lasagna",
