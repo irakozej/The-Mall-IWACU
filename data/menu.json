@@ -40,7 +40,7 @@
             },
             {
               "name": "Soda — Plastic",
-              "price": 1200
+              "price": 1500
             },
             {
               "name": "Soda — 1.5 L",
@@ -48,7 +48,7 @@
             },
             {
               "name": "Inyange Juice — 500 ml",
-              "price": 1200
+              "price": 1500
             },
             {
               "name": "Inyange Juice — 1 L",
@@ -148,7 +148,7 @@
             },
             {
               "name": "Big Mutzig",
-              "price": 2300
+              "price": 3000
             },
             {
               "name": "Amstel",
@@ -160,7 +160,7 @@
             },
             {
               "name": "Big Skol Mart",
-              "price": 2300
+              "price": 3000
             },
             {
               "name": "Skol Lager",
@@ -168,7 +168,7 @@
             },
             {
               "name": "Virunga Mist",
-              "price": 1500
+              "price": 2000
             },
             {
               "name": "Virunga Silver",
@@ -180,7 +180,7 @@
             },
             {
               "name": "Primus",
-              "price": 2300
+              "price": 3000
             },
             {
               "name": "Knowless",
@@ -200,7 +200,7 @@
             },
             {
               "name": "Savannah",
-              "price": 5000
+              "price": 6000
             },
             {
               "name": "Smirnoff Ice Black",
@@ -220,7 +220,7 @@
             },
             {
               "name": "Guinness",
-              "price": 2500
+              "price": 3000
             },
             {
               "name": "Desperados",
@@ -437,7 +437,7 @@
             },
             {
               "name": "Jameson Black Barrel",
-              "price": 85000
+              "price": 100000
             },
             {
               "name": "Nelson",
@@ -529,7 +529,7 @@
             },
             {
               "name": "Absolute Vodka",
-              "price": 50000
+              "price": 60000
             },
             {
               "name": "Absolute (Small)",
@@ -573,7 +573,7 @@
             },
             {
               "name": "Gordon's",
-              "price": 40000
+              "price": 60000
             },
             {
               "name": "Konyagi (Big)",
@@ -616,11 +616,11 @@
           "items": [
             {
               "name": "Jameson Black",
-              "price": 30000
+              "price": 35000
             },
             {
               "name": "Jameson Irish",
-              "price": 20000
+              "price": 25000
             },
             {
               "name": "Absolute Vodka",
@@ -644,11 +644,11 @@
             },
             {
               "name": "Ballentines",
-              "price": 15000
+              "price": 20000
             },
             {
               "name": "Beefeater",
-              "price": 15000
+              "price": 20000
             },
             {
               "name": "Camino",
@@ -660,7 +660,7 @@
             },
             {
               "name": "Gordon's",
-              "price": 15000
+              "price": 17000
             }
           ]
         },
@@ -695,7 +695,7 @@
             },
             {
               "name": "Absolute Vodka",
-              "price": 4000
+              "price": 5000
             },
             {
               "name": "Hennessy VSOP",
@@ -719,11 +719,11 @@
             },
             {
               "name": "Camino",
-              "price": 3000
+              "price": 4000
             },
             {
               "name": "Gordon's",
-              "price": 3000
+              "price": 4000
             },
             {
               "name": "Blue Curaçao",
@@ -743,7 +743,7 @@
             },
             {
               "name": "Beefeater",
-              "price": 3000
+              "price": 4000
             },
             {
               "name": "Captain Morgan",
@@ -908,7 +908,7 @@
             {
               "name": "Simple Salad",
               "description": "Onions, celery, cucumber, avocado, tomatoes",
-              "price": 4000
+              "price": 5000
             },
             {
               "name": "Gacumbari",
@@ -1061,8 +1061,8 @@
             },
             {
               "name": "Chicken Breast",
-              "description": "Chicken breast fried, onions, green pepper, garlic (Flambé or Curry)",
-              "price": 8000
+              "description": "Chicken breast fried, Rice or Chips, onions, green pepper, garlic (Flambé or Curry)",
+              "price": 9000
             },
             {
               "name": "Whole Chicken with Pilawu Rice",
